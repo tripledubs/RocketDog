@@ -11,6 +11,7 @@ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
+Background - Designed by Bilal-khan - Freepik.com
  */
 package rocketdog;
 
@@ -37,9 +38,11 @@ public class RocketDogGame extends Application {
     @Override
     public void init() {
         rd = new RocketDog();
+        rd.y = 300;
+        rd.x = -300;
         gamePlayLoop = new GamePlayLoop(this);
         gamePlayLoop.start();
-        lvl1Image = new Image("/Level 1.png",1000,210,false,false);
+        lvl1Image = new Image("/Level 2.png",1000,924,false,false);
         level1ImageView = new ImageView(lvl1Image);
     }
     
@@ -48,7 +51,7 @@ public class RocketDogGame extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(level1ImageView);
         root.getChildren().add(rd.spriteFrame);
-        Scene scene = new Scene(root, 1000, 210);
+        Scene scene = new Scene(root, 1000, 924);
         scene.setOnKeyPressed((KeyEvent event) -> {
             switch (event.getCode()) {
             }
