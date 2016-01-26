@@ -19,7 +19,7 @@ public class RocketDog {
     public int y;
     
     public RocketDog() {
-        sprite = new Image("/Ugly Dog.png",32,32,true,true);
+        sprite = new Image("/Ugly Dog.png",128,128,true,true);
         spriteFrame = new ImageView(sprite);
     }
 
