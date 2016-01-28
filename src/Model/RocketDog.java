@@ -11,7 +11,7 @@ public class RocketDog {
     public static final int moveSpace = 25;
     
     public RocketDog() {
-        sprite = new Image("/Ugly Dog.png",128,128,true,true);
+        sprite = new Image("/Dog.png",128,128,true,true);
         spriteFrame = new ImageView(sprite);
     }
 
