@@ -6,6 +6,7 @@
 package Model;
 
 import java.util.ArrayList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -27,11 +28,12 @@ public class Level1 extends Scene implements Level{
         // Background
         Node bg = new ImageView(new Image("/Level 2.png"));
         root.getChildren().add(bg);
-        
+        root.setAlignment(Pos.TOP_LEFT); // So Origin is in top left
+
         // Hero
         rd = new RocketDog();
-        rd.y = 300;
-        rd.x = -300;
+        rd.x = 70;
+        rd.y = 700;
 
         root.getChildren().add(rd.spriteFrame);
         
