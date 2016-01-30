@@ -5,6 +5,7 @@
  */
 package Model;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -28,8 +29,13 @@ public class BadGuy {
         public int y;    
         
         public Builder(String imgFile, double x, double y) {
-            this.img = new Image(imgFile,x,y,true,false);
-            sprite = new ImageView(this.img);
+            try { 
+                img = new Image(imgFile,x,y,true,false);
+            } catch (IllegalArgumentException exc) {
+                System.out.println("'" + imgFile + "'" + " not found, exiting...");
+                Platform.exit();
+            }
+            sprite = new ImageView(img);
         }
         
         public Builder behavior(IBehavior b) {
@@ -61,7 +67,6 @@ public class BadGuy {
     }
     
     void update() {
-        System.out.println("X:" + this.x + "Y:" + this.y);
         x-=5;
         this.sprite.setTranslateX(x);
         this.sprite.setTranslateY(y);
