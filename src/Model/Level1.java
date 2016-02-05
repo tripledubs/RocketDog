@@ -32,10 +32,8 @@ public class Level1 extends Scene implements Level{
 
         // Hero
         rd = new RocketDog();
-        rd.x = 70;
-        rd.y = 700;
 
-        root.getChildren().add(rd.spriteFrame);
+        root.getChildren().add(rd.getSprite());
         
         // Bad Guys
         BadGuys = new ArrayList();
