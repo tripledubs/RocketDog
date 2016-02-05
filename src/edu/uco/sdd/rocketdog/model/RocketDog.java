@@ -1,4 +1,4 @@
-package Model;
+package edu.uco.sdd.rocketdog.model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -13,9 +13,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 Background - Designed by Bilal-khan - Freepik.com
  */
-package Controller;
+package edu.uco.sdd.rocketdog.controller;
 
-import Model.Level1;
+import edu.uco.sdd.rocketdog.model.Level1;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;

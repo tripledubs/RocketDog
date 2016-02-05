@@ -1,4 +1,4 @@
-package Controller;
+package edu.uco.sdd.rocketdog.controller;
 
 import javafx.animation.AnimationTimer;
 
