@@ -13,7 +13,6 @@ public class SpitzIdleAnimateStrategy extends AbstractSpitzAnimationStrategy imp
             new Rectangle2D(748, 31, 132, 140),
             new Rectangle2D(927, 31, 131, 140)
         });
-
     }
 
 }
