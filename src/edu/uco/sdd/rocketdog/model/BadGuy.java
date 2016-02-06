@@ -5,7 +5,9 @@
  */
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.PatrolController;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -13,13 +15,11 @@ import javafx.scene.image.ImageView;
  *
  * @author Dubs
  */
-public class BadGuy {
+public class BadGuy extends TangibleEntity {
     
     private Image img;
     public ImageView sprite;
     private IBehavior behavior;
-    public int x;
-    public int y;
 
     static class Builder {
         private Image img;
@@ -27,6 +27,7 @@ public class BadGuy {
         private IBehavior behavior;
         public int x;
         public int y;    
+        public EntityClass entityClass;
         
         public Builder(String imgFile, double x, double y) {
             try { 
@@ -53,8 +54,20 @@ public class BadGuy {
             return this;
         }
         
+        public Builder setEntityClass(EntityClass ec) {
+          this.entityClass = ec;
+          return this;
+        }
+        
         public BadGuy build() {
-            return new BadGuy(this);
+            BadGuy newBadGuy = new BadGuy(this);
+            PatrolController controller = new PatrolController(newBadGuy);
+            newBadGuy.addController(controller);
+            controller.setRange(200.);
+            controller.setStart(x - 100.);
+            controller.setEnd(x + 100.);
+            newBadGuy.addEntityClass(entityClass, 1);
+            return newBadGuy;
         }
     }
     
@@ -62,13 +75,11 @@ public class BadGuy {
         this.img = b.img;
         this.behavior = b.behavior;
         this.sprite = b.sprite;
-        this.x = b.x;
-        this.y = b.y;
+        this.setPosition(new Point2D(b.x, b.y));
     }
     
     void update() {
-        x-=5;
-        this.sprite.setTranslateX(x);
-        this.sprite.setTranslateY(y);
+        this.sprite.setTranslateX(this.getPosition().getX());
+        this.sprite.setTranslateY(this.getPosition().getY());
     }
 }
