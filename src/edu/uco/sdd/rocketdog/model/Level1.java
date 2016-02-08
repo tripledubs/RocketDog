@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.uco.sdd.rocketdog.model;
 
 import java.util.ArrayList;
@@ -38,6 +33,7 @@ public class Level1 extends Scene implements Level {
         rd.setPosition(new Point2D(70, 700));
         EntityClass player = new EntityClass("Player");
         rd.addEntityClass(player, 1);
+        root.getChildren().add(rd.sprite);
 
         // Bad Guys
         BadGuys = new ArrayList();
@@ -55,10 +51,10 @@ public class Level1 extends Scene implements Level {
         this.setOnKeyPressed((KeyEvent event) -> {
             double deltax = 0., deltay = 0.;
             switch (event.getCode()) {
-              case LEFT:  deltax = -10; break;
-              case RIGHT: deltax =  10; break;
-              case UP:    deltay = -10; break;
-              case DOWN:  deltay =  10; break;
+              case LEFT:  rd.x -= 10; break;
+              case RIGHT: rd.x +=  10; break;
+              case UP:    rd.y -= -10; break;
+              case DOWN:  rd.y +=  10; break;
             }
             rd.setPosition(rd.getPosition().add(deltax, deltay));
         });
