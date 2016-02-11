@@ -51,13 +51,26 @@ public class Level1 extends Scene implements Level {
         this.setOnKeyPressed((KeyEvent event) -> {
             double deltax = 0., deltay = 0.;
             switch (event.getCode()) {
-              case LEFT:  rd.x -= 10; break;
-              case RIGHT: rd.x +=  10; break;
-              case UP:    rd.y -= -10; break;
-              case DOWN:  rd.y +=  10; break;
+              case LEFT:  rd.setVelX(-10); break; //rd.x -= 10;         
+              case RIGHT: rd.setVelX(10);  break; //rd.x +=  10;
+              case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
+              case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
             }
             rd.setPosition(rd.getPosition().add(deltax, deltay));
         });
+        
+           this.setOnKeyReleased((KeyEvent event) -> {
+            double deltax = 0., deltay = 0.;
+            switch (event.getCode()) {
+              case LEFT:  rd.setVelX(0); break;        
+              case RIGHT: rd.setVelX(0);  break; 
+              case UP:    rd.setVelY(0); break; 
+              case DOWN:  rd.setVelY(0); break;  
+            }
+            rd.setPosition(rd.getPosition().add(deltax, deltay));
+        });
+        
+        
     }
 
     @Override

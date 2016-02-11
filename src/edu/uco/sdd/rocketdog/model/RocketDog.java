@@ -5,6 +5,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     public ImageView sprite;
     private IAnimateStrategy animating;
     public int x,y;
+    private int velX, velY;
 
     
     public boolean isDead;
@@ -30,9 +31,19 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
         if (isDead) {
             y+=5;
         }
+        x += velX;
+        y += velY;
         animating.handle();
         sprite.setTranslateX(x);
         sprite.setTranslateY(y);
+    }
+    
+    public void setVelX(int velX){
+        this.velX = velX;
+    }
+    
+    public void setVelY(int velY){
+        this.velY = velY;
     }
     
     public void changeAnimation(IAnimateStrategy newAnimation) {
