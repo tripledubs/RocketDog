@@ -39,7 +39,7 @@ public class Level1 extends Scene implements Level {
         BadGuys = new ArrayList();
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(player, EntityClass.Relationship.ENEMY);
-        BadGuys.add(new BadGuy.Builder("/Ugly Dog.png",32,32).setX(650).setY(700).setEntityClass(enemy).build());
+        BadGuys.add(new BadGuy.Builder("/Ugly Dog.png",32,32).setX(650).setY(600).setEntityClass(enemy).build());
         BadGuys.add(new BadGuy.Builder("/Ugly Dog.png",64,64).setX(500).setY(700).setEntityClass(enemy).build());
         
         // Add to view
@@ -53,7 +53,7 @@ public class Level1 extends Scene implements Level {
             switch (event.getCode()) {
               case LEFT:  rd.x -= 10; break;
               case RIGHT: rd.x +=  10; break;
-              case UP:    rd.y -= -10; break;
+              case UP:    rd.y -= 10; break;
               case DOWN:  rd.y +=  10; break;
             }
             rd.setPosition(rd.getPosition().add(deltax, deltay));
