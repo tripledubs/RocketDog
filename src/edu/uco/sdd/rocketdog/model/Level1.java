@@ -49,6 +49,8 @@ public class Level1 extends Scene implements Level {
 
         // Set Controls
         this.setOnKeyPressed((KeyEvent event) -> {
+            Point2D rdPosition = rd.getPosition();
+            System.out.println(rdPosition);
             double deltax = 0., deltay = 0.;
             switch (event.getCode()) {
               case LEFT:  rd.getSprite().setScaleX(-1);
@@ -60,12 +62,18 @@ public class Level1 extends Scene implements Level {
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
               case F1:  root.getChildren().remove(1);
-                        rd.changeAnimation(new SpitzIdleAnimateStrategy()); 
+                        rd = new RocketDog(new SpitzIdleAnimateStrategy(),rdPosition);
+                        rd.setPosition(rdPosition);
+                        rd.getSprite().setTranslateX(rdPosition.getX());
+                        rd.getSprite().setTranslateY(rdPosition.getY());
                         root.getChildren().add(1,rd.getSprite());
                         break;
                         
               case F2:  root.getChildren().remove(1);
-                        rd.changeAnimation(new SpitzDeadAnimateStrategy()); 
+                        rd = new RocketDog(new SpitzDeadAnimateStrategy(),rdPosition);
+                        rd.setPosition(rdPosition);
+                        rd.getSprite().setTranslateX(rdPosition.getX());
+                        rd.getSprite().setTranslateY(rdPosition.getY());
                         root.getChildren().add(1,rd.getSprite());
                         break;
                   
