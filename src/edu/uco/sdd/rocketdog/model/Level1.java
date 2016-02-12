@@ -59,6 +59,16 @@ public class Level1 extends Scene implements Level {
                           break; //rd.x +=  10;
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
+              case F1:  root.getChildren().remove(1);
+                        rd.changeAnimation(new SpitzIdleAnimateStrategy()); 
+                        root.getChildren().add(1,rd.getSprite());
+                        break;
+                        
+              case F2:  root.getChildren().remove(1);
+                        rd.changeAnimation(new SpitzDeadAnimateStrategy()); 
+                        root.getChildren().add(1,rd.getSprite());
+                        break;
+                  
             }
             rd.setPosition(rd.getPosition().add(deltax, deltay));
         });
