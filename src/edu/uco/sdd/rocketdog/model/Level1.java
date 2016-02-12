@@ -85,6 +85,7 @@ public class Level1 extends Scene implements Level {
             b.process(changed);
         }
         for (BadGuy b: BadGuys) {
+          b.update();
         }
     }
 }
