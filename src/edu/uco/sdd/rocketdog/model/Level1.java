@@ -51,8 +51,12 @@ public class Level1 extends Scene implements Level {
         this.setOnKeyPressed((KeyEvent event) -> {
             double deltax = 0., deltay = 0.;
             switch (event.getCode()) {
-              case LEFT:  rd.setVelX(-10); break; //rd.x -= 10;         
-              case RIGHT: rd.setVelX(10);  break; //rd.x +=  10;
+              case LEFT:  rd.getSprite().setScaleX(-1);
+                          rd.setVelX(-10); 
+                          break; //rd.x -= 10;         
+              case RIGHT: rd.getSprite().setScaleX(1);
+                          rd.setVelX(10);  
+                          break; //rd.x +=  10;
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
             }

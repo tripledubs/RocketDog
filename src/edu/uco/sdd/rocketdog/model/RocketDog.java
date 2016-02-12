@@ -33,7 +33,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
         }
         x += velX;
         y += velY;
-        animating.handle();
+        this.handle();
        
         sprite.setTranslateX(x);
         sprite.setTranslateY(y); 
