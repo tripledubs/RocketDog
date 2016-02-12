@@ -1,4 +1,5 @@
 package edu.uco.sdd.rocketdog.model;
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public class RocketDog extends TangibleEntity implements IAnimateStrategy{
@@ -23,19 +24,18 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     RocketDog(IAnimateStrategy animating, int x, int y) {
         this.animating = animating;
         this.sprite = animating.getSprite();
-        this.x = x;
-        this.y = y;
+        this.setPosition(new Point2D(x, y));
     }
 
     public void update() {
         if (isDead) {
-            y+=5;
+            this.getPosition().add(0, 5);
         }
         x += velX;
         y += velY;
         animating.handle();
-        sprite.setTranslateX(x);
-        sprite.setTranslateY(y);
+        sprite.setTranslateX(this.getPosition().getX());
+        sprite.setTranslateY(this.getPosition().getY());
     }
     
     public void setVelX(int velX){
