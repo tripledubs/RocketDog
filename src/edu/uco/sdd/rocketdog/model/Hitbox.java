@@ -59,7 +59,7 @@ public class Hitbox extends Shape {
     /* 
     *Check for collision(intersection) verse another hitbox object
     */
-    public Boolean intersecionCheck(Rectangle r){
+    public Boolean intersectionCheck(Rectangle r){
         boolean intersect = this.hitbox.intersects(r.getBoundsInParent());
         if(intersect && this.shown) hitbox.setStroke(Color.RED);
         return intersect;
