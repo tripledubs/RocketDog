@@ -22,14 +22,15 @@ public class Level1 extends Scene implements Level {
     Hitbox hitbox;
     ArrayList<Hitbox> Hitboxes;
     public boolean visibleHitboxes = false;
-    KeyMappingContext keyMappingContext;
+    public KeyMappingContext keyMappingContext;
     KeyMapping keyMapping;
     StackPane root;
     public EntityClass player;
 
-    public Level1(StackPane root, int x, int y, KeyMappingContext keyMappingContext) {
+    public Level1(StackPane root, int x, int y, KeyMappingContext keyMappingContext2) {
         super(root, x, y);
         this.root = root;
+        this.keyMappingContext = keyMappingContext2;
         // Background
         Node bg = new ImageView(new Image("/Level 2.png"));
         root.getChildren().add(bg);
@@ -70,7 +71,7 @@ public class Level1 extends Scene implements Level {
         // Set Controls
         this.setOnKeyPressed((KeyEvent event) -> {
             Point2D rdPosition = rd.getPosition();
-            System.out.println(rdPosition);
+            //System.out.println(rdPosition);
             double deltax = 0., deltay = 0.;
             keyMappingContext.getKeyMapping().handleKeyPressed(event, 10, this);
             rd.setPosition(rd.getPosition().add(deltax, deltay));
@@ -85,7 +86,6 @@ public class Level1 extends Scene implements Level {
     }
 
     @Override
-
     public void update() {
         rd.update();
         hitbox.update();

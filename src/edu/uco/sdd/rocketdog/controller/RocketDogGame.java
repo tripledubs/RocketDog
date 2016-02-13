@@ -24,7 +24,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -38,7 +37,7 @@ public class RocketDogGame extends Application {
     static final int WIDTH = 1000;
     static final int HEIGHT = 924;
 
-    private GamePlayLoop gamePlayLoop;
+    public GamePlayLoop gamePlayLoop;
     public Level1 currentLevel; /* Will implement as abstract class later */
 
     private StackPane root;
@@ -54,7 +53,6 @@ public class RocketDogGame extends Application {
     @Override
     public void init() {
         keyMappingContext = new KeyMappingContext();
-        keyMappingContext.setKeyMapping(new DefaultKeyMapping());
         gamePlayLoop = new GamePlayLoop(this);
         root = new StackPane();
         currentLevel = new Level1(root, WIDTH, HEIGHT, keyMappingContext);
@@ -132,13 +130,13 @@ public class RocketDogGame extends Application {
          * *****************SCORES BOARD******************
          */
         scoresButton = new Button("Scores");
-         scoresButton.setOnAction((ActionEvent) -> {
-         System.out.println("ScoresLayer displayed!");
-         splashScreenBackplate.setVisible(true);
-         splashScreenTextArea.setVisible(true);
-         splashScreenTextArea.setImage(scoresLayer);
-         }
-         );
+        scoresButton.setOnAction((ActionEvent) -> {
+            System.out.println("ScoresLayer displayed!");
+            splashScreenBackplate.setVisible(true);
+            splashScreenTextArea.setVisible(true);
+            splashScreenTextArea.setImage(scoresLayer);
+        }
+        );
         buttonContainer.getChildren().addAll(startButton, instructionsButton, optionsButton, scoresButton, exitButton);
         splashScreenBackplate.setImage(splashScreenbg);
         root.getChildren().add(buttonContainer);
@@ -147,7 +145,7 @@ public class RocketDogGame extends Application {
         gamePlayLoop.start();
     }
 
-    private void displayOptionsScreen(Stage MainWindow) {
+    public void displayOptionsScreen(Stage MainWindow) {
         Stage optionStage = new Stage();
 
         GridPane grid = new GridPane();
@@ -161,23 +159,40 @@ public class RocketDogGame extends Application {
         grid.setVgap(5);
         grid.setHgap(5);
         //Defining the Name text field
-        final TextField moveUp = new TextField();
-        moveUp.setPromptText("UP");
-        moveUp.setPrefColumnCount(10);
-        moveUp.getText();
-        GridPane.setConstraints(moveUp, 0, 0);
-        grid.getChildren().add(moveUp);
+        final Button defaultButton = new Button("Default KeyMapping");
+        final Button wasdButton = new Button("WASD KeyMapping");
+        GridPane.setConstraints(defaultButton, 40, 0);
+        
+        defaultButton.setDisable(true);
         //Defining the Last Name text field
-        final TextField moveDown = new TextField();
-        moveDown.setPromptText("Down");
-        GridPane.setConstraints(moveDown, 0, 1);
-        grid.getChildren().add(moveDown);
-
+        GridPane.setConstraints(wasdButton, 40, 1);
+        
+        if(keyMappingContext.getClass().getName().compareTo("DefaultKeyMapping") != 0){
+            defaultButton.setDisable(true);
+            wasdButton.setDisable(false);
+        } else {
+            wasdButton.setDisable(true);
+            defaultButton.setDisable(false);
+        }
+        
+        defaultButton.setOnAction((ActionEvent) -> {
+            keyMappingContext.setDefaultKeyMapping();
+            defaultButton.setDisable(true);
+            wasdButton.setDisable(false);
+        });
+        
+        wasdButton.setOnAction((ActionEvent) -> {
+            keyMappingContext.setWASDKeyMapping();
+            wasdButton.setDisable(true);
+            defaultButton.setDisable(false);
+        });
+        grid.getChildren().add(defaultButton);
+        grid.getChildren().add(wasdButton);
         Button close = new Button("Close");
         close.setOnAction((ActionEvent) -> {
             optionStage.close();
         });
-        GridPane.setConstraints(close, 1, 0);
+        GridPane.setConstraints(close, 40, 2);
         grid.getChildren().add(close);
         optionStage.show();
     }
@@ -186,11 +201,7 @@ public class RocketDogGame extends Application {
         currentLevel.update();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
-
 }

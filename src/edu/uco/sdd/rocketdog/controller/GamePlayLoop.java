@@ -5,7 +5,7 @@ import javafx.animation.AnimationTimer;
 
 public class GamePlayLoop extends AnimationTimer {
     
-    private RocketDogGame game;
+    public RocketDogGame game;
     
     GamePlayLoop(RocketDogGame game) {
         this.game = game;
