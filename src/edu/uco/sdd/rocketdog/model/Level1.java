@@ -77,9 +77,11 @@ public class Level1 extends Scene implements Level {
                           break; //rd.x +=  10;
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
-              case F1:  rd.changeAnimation(new SpitzDeadAnimateStrategy());
+              case F1:  rd.changeAnimation(new SpitzIdleAnimateStrategy());
                         break;
               case F2:  rd.changeAnimation(new SpitzChargeGunAnimateStrategy());
+                        break;
+              case F3:  rd.changeAnimation(new SpitzDeadAnimateStrategy());
                         break;
               case H: if (visibleHitboxes) {
                   visibleHitboxes = false;
