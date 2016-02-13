@@ -8,4 +8,7 @@ public class KeyMappingContext {
     {
         this.keyMapping = keyMapping;
     }
+    public KeyMapping getKeyMapping() {
+        return keyMapping;
+    }
 }
