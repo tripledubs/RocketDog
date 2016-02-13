@@ -15,6 +15,9 @@ Background - Designed by Bilal-khan - Freepik.com
  */
 package edu.uco.sdd.rocketdog.controller;
 
+import edu.uco.sdd.rocketdog.model.DefaultKeyMapping;
+import edu.uco.sdd.rocketdog.model.KeyMapping;
+import edu.uco.sdd.rocketdog.model.KeyMappingContext;
 import edu.uco.sdd.rocketdog.model.Level1;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -26,14 +29,18 @@ public class RocketDogGame extends Application {
     static final int HEIGHT = 924;
     
     private GamePlayLoop gamePlayLoop;
-    private Level1 currentLevel; /* Will implement as abstract class later */
+    public Level1 currentLevel; /* Will implement as abstract class later */
     private StackPane root;
+    public KeyMappingContext keyMappingContext;
+    public KeyMapping keyMapping;
     
     @Override
     public void init() {
+        keyMappingContext = new KeyMappingContext();
+        keyMappingContext.setKeyMapping(new DefaultKeyMapping());
         gamePlayLoop = new GamePlayLoop(this);
         root = new StackPane();
-        currentLevel = new Level1(root, WIDTH, HEIGHT);
+        currentLevel = new Level1(root, WIDTH, HEIGHT, keyMappingContext);
     }
     
     /* This is the starting point for JavaFX applications */
