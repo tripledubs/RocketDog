@@ -19,5 +19,5 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
-nbproject/*-impl_backup.xml
+nbproject/*-impl_backup*.xml
 nbproject/genfiles.properties
