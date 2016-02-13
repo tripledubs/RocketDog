@@ -69,30 +69,17 @@ public class Level1 extends Scene implements Level {
             System.out.println(rdPosition);
             double deltax = 0., deltay = 0.;
             switch (event.getCode()) {
-              case LEFT:  rd.getSprite().setScaleX(-1);
+              case LEFT:  
                           rd.setVelX(-10); 
                           break; //rd.x -= 10;         
-              case RIGHT: rd.getSprite().setScaleX(1);
+              case RIGHT: 
                           rd.setVelX(10);  
                           break; //rd.x +=  10;
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
-              case F1:  root.getChildren().remove(1);
-                        rd = new RocketDog(new SpitzIdleAnimateStrategy(),rdPosition);
-                        rd.addEntityClass(player, 1);
-                        rd.setPosition(rdPosition);
-                        rd.getSprite().setTranslateX(rdPosition.getX());
-                        rd.getSprite().setTranslateY(rdPosition.getY());
-                        root.getChildren().add(1,rd.getSprite());
+              case F1:  rd.changeAnimation(new SpitzDeadAnimateStrategy());
                         break;
-                        
-              case F2:  root.getChildren().remove(1);
-                        rd = new RocketDog(new SpitzDeadAnimateStrategy(),rdPosition);
-                        rd.addEntityClass(player, 1);
-                        rd.setPosition(rdPosition);
-                        rd.getSprite().setTranslateX(rdPosition.getX());
-                        rd.getSprite().setTranslateY(rdPosition.getY());
-                        root.getChildren().add(1,rd.getSprite());
+              case F2:  rd.changeAnimation(new SpitzChargeGunAnimateStrategy());
                         break;
               case H: if (visibleHitboxes) {
                   visibleHitboxes = false;

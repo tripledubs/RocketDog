@@ -1,8 +1,10 @@
 package edu.uco.sdd.rocketdog.model;
 
-import javafx.scene.image.ImageView;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 
 interface IAnimateStrategy {
     void handle();
-    ImageView getSprite();
+    Rectangle2D getCurrentView();
+    Image getImage();
 }

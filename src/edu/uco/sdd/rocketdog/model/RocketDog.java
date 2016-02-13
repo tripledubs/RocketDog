@@ -1,5 +1,7 @@
 package edu.uco.sdd.rocketdog.model;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class RocketDog extends TangibleEntity implements IAnimateStrategy{
@@ -13,17 +15,12 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
 
     public RocketDog() {
         animating = new SpitzIdleAnimateStrategy();
-        this.sprite = animating.getSprite();
-    }
-    
-    RocketDog(IAnimateStrategy animating) {
-        this.animating = animating;
-        this.sprite = animating.getSprite();
+        sprite = new ImageView(animating.getImage());
+        sprite.setViewport(animating.getCurrentView());
     }
     
     RocketDog(IAnimateStrategy animating, Point2D point) {
         this.animating = animating;
-        this.sprite = animating.getSprite();
         this.setPosition(point);
     }
 
@@ -38,6 +35,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
          */
         sprite.setTranslateX(super.getPosition().getX());
         sprite.setTranslateY(super.getPosition().getY());
+        sprite.setViewport(animating.getCurrentView());
         
         this.handle(); // Animations
     }
@@ -51,9 +49,8 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     }
     
     public void changeAnimation(IAnimateStrategy newAnimation) {
-        this.animating = newAnimation;
-        this.getSprite().setTranslateX(x);
-        this.getSprite().setTranslateY(y);
+        animating = newAnimation;
+        sprite.setImage(animating.getImage());
     }
 
     @Override
@@ -62,8 +59,13 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     }
 
     @Override
-    public ImageView getSprite() {
-        return animating.getSprite();
+    public Rectangle2D getCurrentView() {
+        return animating.getCurrentView();
+    }
+
+    @Override
+    public Image getImage() {
+        return animating.getImage();
     }
 
 }
