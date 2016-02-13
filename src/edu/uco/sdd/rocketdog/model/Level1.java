@@ -78,15 +78,19 @@ public class Level1 extends Scene implements Level {
               case UP:    rd.setVelY(-10); break; //rd.y -= -10; 
               case DOWN:  rd.setVelY(10); break; //rd.y +=  10; 
               case F1:  root.getChildren().remove(1);
+                        root.getChildren().remove(1);
                         rd = new RocketDog(new SpitzIdleAnimateStrategy(),rdPosition);
                         rd.addEntityClass(player, 1);
                         rd.setPosition(rdPosition);
                         rd.getSprite().setTranslateX(rdPosition.getX());
                         rd.getSprite().setTranslateY(rdPosition.getY());
                         root.getChildren().add(1,rd.getSprite());
+                        hitbox = new Hitbox(rd.getPosition(),130,130,rd);
+                        root.getChildren().add(hitbox.getHitbox());
                         break;
                         
               case F2:  root.getChildren().remove(1);
+                        root.getChildren().remove(1);
                         rd = new RocketDog(new SpitzDeadAnimateStrategy(),rdPosition);
                         rd.addEntityClass(player, 1);
                         rd.setPosition(rdPosition);
