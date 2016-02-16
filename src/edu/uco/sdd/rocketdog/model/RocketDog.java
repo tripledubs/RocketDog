@@ -1,59 +1,41 @@
 package edu.uco.sdd.rocketdog.model;
+
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class RocketDog extends TangibleEntity implements IAnimateStrategy{
-    public ImageView sprite;
-    private IAnimateStrategy animating;
-    public int x,y;
-    private int velX, velY;
 
-    
-    public boolean isDead;
+    private IAnimateStrategy animating;
 
     public RocketDog() {
+        super();
         animating = new SpitzIdleAnimateStrategy();
-        this.sprite = animating.getSprite();
-    }
-    
-    RocketDog(IAnimateStrategy animating) {
-        this.animating = animating;
-        this.sprite = animating.getSprite();
-    }
-    
-    RocketDog(IAnimateStrategy animating, Point2D point) {
-        this.animating = animating;
-        this.sprite = animating.getSprite();
-        this.setPosition(point);
+        setSprite(new ImageView(animating.getImage()));
+        getSprite().setViewport(animating.getCurrentView());
     }
 
     public void update() {
-        x += velX;
-        y += velY;
-
-        this.setPosition(new Point2D(x,y));
-
-        /** 
+        setPosition(new Point2D(getPosition().getX() + getVelocity().getX(), getPosition().getY() + getVelocity().getY()));
+        /**
          * Moving the character is handled by the TangibleEntity class
          */
-        sprite.setTranslateX(super.getPosition().getX());
-        sprite.setTranslateY(super.getPosition().getY());
+        getSprite().setTranslateX(getPosition().getX());
+        getSprite().setTranslateY(getPosition().getY());
+
+        getHitbox().setTranslateX(getPosition().getX());
+        getHitbox().setTranslateY(getPosition().getY());
         
-        this.handle(); // Animations
+        getSprite().setViewport(animating.getCurrentView());
+        handle(); // Animations
     }
-    
-    public void setVelX(int velX){
-        this.velX = velX;
-    }
-    
-    public void setVelY(int velY){
-        this.velY = velY;
-    }
-    
-    public void changeAnimation(IAnimateStrategy newAnimation) {
-        this.animating = newAnimation;
-        this.getSprite().setTranslateX(x);
-        this.getSprite().setTranslateY(y);
+
+    public void setAnimation(IAnimateStrategy newAnimation) {
+        animating = newAnimation;
+        getSprite().setImage(animating.getImage());
+        getSprite().setTranslateX(getPosition().getX());
+        getSprite().setTranslateY(getPosition().getY());
     }
 
     @Override
@@ -62,8 +44,13 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     }
 
     @Override
-    public ImageView getSprite() {
-        return animating.getSprite();
+    public Rectangle2D getCurrentView() {
+        return animating.getCurrentView();
+    }
+
+    @Override
+    public Image getImage() {
+        return animating.getImage();
     }
 
 }

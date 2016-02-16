@@ -15,10 +15,9 @@
  */
 package edu.uco.sdd.rocketdog.controller;
 
-import edu.uco.sdd.rocketdog.model.DefaultKeyMapping;
-import edu.uco.sdd.rocketdog.model.KeyMapping;
-import edu.uco.sdd.rocketdog.model.KeyMappingContext;
-import edu.uco.sdd.rocketdog.model.Level1;
+import edu.uco.sdd.rocketdog.model.Level;
+import edu.uco.sdd.rocketdog.model.LevelOne;
+import edu.uco.sdd.rocketdog.model.WASDKeyMapping;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,171 +33,173 @@ import javafx.stage.Stage;
 
 public class RocketDogGame extends Application {
 
-    static final int WIDTH = 1000;
-    static final int HEIGHT = 924;
+    static final int GAME_SCREEN_WIDTH = 1000;
+    static final int GAME_SCREEN_HEIGHT = 924;
 
-    public GamePlayLoop gamePlayLoop;
-    public Level1 currentLevel; /* Will implement as abstract class later */
+    private GamePlayLoop gamePlayLoop;
+    private Level currentLevel; /* Will implement as abstract class later */
 
     private StackPane root;
-    public KeyMappingContext keyMappingContext;
-    public KeyMapping keyMapping;
 
-    Insets buttonContainerPadding;
-    ImageView splashScreenBackplate, splashScreenTextArea;
-    Image splashScreenbg, instructionsLayer, optionsLayer, scoresLayer;
-    static HBox buttonContainer;
-    Button startButton, instructionsButton, optionsButton, scoresButton, exitButton;
+    private Insets buttonContainerPadding;
+    private ImageView splashScreenBackplate, splashScreenTextArea;
+    private Image splashScreenbg, instructionsLayer, optionsLayer, scoresLayer;
+    private static HBox buttonContainer;
+    private Button startButton, instructionsButton, optionsButton, scoresButton,
+            exitButton, optionsCloseButton, optionsDefaultButton, optionsWASDButton;
 
     @Override
     public void init() {
-        keyMappingContext = new KeyMappingContext();
-        gamePlayLoop = new GamePlayLoop(this);
         root = new StackPane();
-        currentLevel = new Level1(root, WIDTH, HEIGHT, keyMappingContext);
+        gamePlayLoop = new GamePlayLoop(this);
+        currentLevel = new LevelOne(root, new ImageView(new Image("/Level 2.png")), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+
+        splashScreenTextArea = new ImageView();
+        splashScreenBackplate = new ImageView();
+        buttonContainer = new HBox(12);// Horizontal box holding all buttons
+        buttonContainerPadding = new Insets(0, 0, 10, 16);
+
+        startButton = new Button("Play");
+        instructionsButton = new Button("Instructions");
+        optionsButton = new Button("Options");
+        scoresButton = new Button("Scores");
+        optionsCloseButton = new Button("Close");
+        optionsDefaultButton = new Button("Default KeyMapping");
+        optionsWASDButton = new Button("WASD KeyMapping");
+
+        optionsDefaultButton.setDisable(true);
     }
 
     private void loadImages() {
         // load all needed images
-        splashScreenbg = new Image("/splashscreenbg.png", WIDTH, HEIGHT, true, true, true);
-        System.out.println("/splashscreenbg.png");
-        instructionsLayer = new Image("/instruct.png", WIDTH, HEIGHT, true, false, true);
-        optionsLayer = new Image("/options.png", WIDTH, HEIGHT, true, true, true);
-        scoresLayer = new Image("/scores.png", WIDTH, HEIGHT, true, true, true);
-
+        splashScreenbg = new Image("/splashscreenbg.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
+        instructionsLayer = new Image("/instruct.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, false, true);
+        optionsLayer = new Image("/options.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
+        scoresLayer = new Image("/scores.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
     }
 
     /* This is the starting point for JavaFX applications */
     @Override
     public void start(Stage primaryStage) {
         /*  Stage and Scene must be constructed from within the start method */
-//        Scene scene = currentLevel;
-//        primaryStage.setTitle("Rocket Dog!");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//        gamePlayLoop.start();
         root = new StackPane();
         primaryStage.setTitle("Rocket Dog!");
-        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
+        primaryStage.setScene(new Scene(root, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT));
         primaryStage.show();
-        splashScreenTextArea = new ImageView();
-        splashScreenBackplate = new ImageView();
 
-        buttonContainer = new HBox(12);// Horizontal box holding all buttons
-        buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
-        buttonContainerPadding = new Insets(0, 0, 10, 16);
-        buttonContainer.setPadding(buttonContainerPadding);
         loadImages();
-        startButton = new Button("Play");
+
+        /**
+         * *****************START APPLICATION******************
+         */
         startButton.setOnAction((ActionEvent) -> {
-            System.out.println("Start game called");
+            if (!optionsDefaultButton.isDisable()) {
+                currentLevel.getKeyMapping().setKeyMapping(new WASDKeyMapping());
+            }
             primaryStage.setScene(currentLevel);
             primaryStage.show();
         });
+
         /**
          * *****************EXIT APPLICATION******************
          */
         exitButton = new Button("Exit");
         exitButton.setOnAction((ActionEvent) -> {
-            System.out.println("Exit window");
             primaryStage.close();
-
         });
+        
         /**
          * *****************GAME INSTRUCTIONS******************
          */
-        instructionsButton = new Button("Instructions");
         instructionsButton.setOnAction((ActionEvent) -> {
-            System.out.println("instructions displayed!");
             splashScreenBackplate.setVisible(true);
             splashScreenTextArea.setVisible(true);
             splashScreenTextArea.setImage(instructionsLayer);
 
         });
+        
         /**
          * *****************KEYBOARD KEY MAPPING******************
          */
-        optionsButton = new Button("Options");
         optionsButton.setOnAction((ActionEvent) -> {
             splashScreenBackplate.setVisible(true);
             splashScreenTextArea.setVisible(true);
             splashScreenTextArea.setImage(optionsLayer);
-            displayOptionsScreen(primaryStage);
+            displayOptionsScreen();
         }
         );
+        
         /**
          * *****************SCORES BOARD******************
          */
-        scoresButton = new Button("Scores");
         scoresButton.setOnAction((ActionEvent) -> {
-            System.out.println("ScoresLayer displayed!");
             splashScreenBackplate.setVisible(true);
             splashScreenTextArea.setVisible(true);
             splashScreenTextArea.setImage(scoresLayer);
         }
         );
+
+        buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
+        buttonContainer.setPadding(buttonContainerPadding);
         buttonContainer.getChildren().addAll(startButton, instructionsButton, optionsButton, scoresButton, exitButton);
         splashScreenBackplate.setImage(splashScreenbg);
+
         root.getChildren().add(buttonContainer);
         root.getChildren().add(splashScreenBackplate);
         root.getChildren().add(splashScreenTextArea);
+
         gamePlayLoop.start();
     }
 
-    public void displayOptionsScreen(Stage MainWindow) {
+    public void displayOptionsScreen() {
+        GridPane grid = new GridPane();
+        Scene optionScene = new Scene(grid, 500, 500);
         Stage optionStage = new Stage();
 
-        GridPane grid = new GridPane();
-
-        Scene optionScene = new Scene(grid, 500, 500);
         optionStage.initModality(Modality.APPLICATION_MODAL);
         optionStage.setScene(optionScene);
         optionStage.setTitle("Change KeyBindings");
+
         //Creating a GridPane container
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
         grid.setHgap(5);
-        //Defining the Name text field
-        final Button defaultButton = new Button("Default KeyMapping");
-        final Button wasdButton = new Button("WASD KeyMapping");
-        GridPane.setConstraints(defaultButton, 40, 0);
-        
-        defaultButton.setDisable(true);
-        //Defining the Last Name text field
-        GridPane.setConstraints(wasdButton, 40, 1);
-        
-        if(keyMappingContext.getClass().getName().compareTo("DefaultKeyMapping") != 0){
-            defaultButton.setDisable(true);
-            wasdButton.setDisable(false);
-        } else {
-            wasdButton.setDisable(true);
-            defaultButton.setDisable(false);
-        }
-        
-        defaultButton.setOnAction((ActionEvent) -> {
-            keyMappingContext.setDefaultKeyMapping();
-            defaultButton.setDisable(true);
-            wasdButton.setDisable(false);
+
+        GridPane.setConstraints(optionsCloseButton, 42, 2);
+        GridPane.setConstraints(optionsDefaultButton, 40, 0);
+        GridPane.setConstraints(optionsWASDButton, 40, 1);
+
+        optionsDefaultButton.setOnAction((ActionEvent) -> {
+            optionsDefaultButton.setDisable(true);
+            optionsWASDButton.setDisable(false);
         });
-        
-        wasdButton.setOnAction((ActionEvent) -> {
-            keyMappingContext.setWASDKeyMapping();
-            wasdButton.setDisable(true);
-            defaultButton.setDisable(false);
+
+        optionsWASDButton.setOnAction((ActionEvent) -> {
+            optionsWASDButton.setDisable(true);
+            optionsDefaultButton.setDisable(false);
         });
-        grid.getChildren().add(defaultButton);
-        grid.getChildren().add(wasdButton);
-        Button close = new Button("Close");
-        close.setOnAction((ActionEvent) -> {
+
+        optionsCloseButton.setOnAction((ActionEvent) -> {
             optionStage.close();
         });
-        GridPane.setConstraints(close, 40, 2);
-        grid.getChildren().add(close);
+
+        grid.getChildren().add(optionsCloseButton);
+        grid.getChildren().add(optionsDefaultButton);
+        grid.getChildren().add(optionsWASDButton);
+
         optionStage.show();
     }
 
-    void update() {
+    public void update() {
         currentLevel.update();
+    }
+
+    public GamePlayLoop getGamePlayLoop() {
+        return gamePlayLoop;
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
     }
 
     public static void main(String[] args) {

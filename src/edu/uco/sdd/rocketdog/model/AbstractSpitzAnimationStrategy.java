@@ -3,15 +3,14 @@ package edu.uco.sdd.rocketdog.model;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public abstract class AbstractSpitzAnimationStrategy implements IAnimateStrategy {
 
     protected Image image;
-    public ImageView sprite;
     protected int frameCount;
     protected int showIndex;
     protected Rectangle2D[] frames;
+    protected Rectangle2D currentView;
     
     public AbstractSpitzAnimationStrategy() {
         System.out.println("ACK! Default constructor called");
@@ -28,8 +27,7 @@ public abstract class AbstractSpitzAnimationStrategy implements IAnimateStrategy
         this.frames = frames;
         frameCount = 0;
         showIndex = 0;
-        sprite = new ImageView(image);
-        sprite.setViewport(frames[0]);
+        currentView = frames[0]; 
     }
 
     @Override
@@ -41,13 +39,14 @@ public abstract class AbstractSpitzAnimationStrategy implements IAnimateStrategy
             }
         }
         frameCount++;
-        sprite.setViewport(frames[showIndex]);
-
+        currentView = frames[showIndex];
     }
     
-    @Override
-    public ImageView getSprite() {
-        return this.sprite;
+    public Rectangle2D getCurrentView() {
+        return currentView;
     }
-
+    
+    public Image getImage() {
+        return image;
+    }
 }
