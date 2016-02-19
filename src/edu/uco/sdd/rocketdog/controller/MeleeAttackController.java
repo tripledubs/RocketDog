@@ -16,7 +16,7 @@ public class MeleeAttackController extends AttackController {
     if (entity == null)
       throw new IllegalArgumentException(new NullPointerException("entity"));
     this.controlledObject = entity;
-    this.damage = 1.;
+    this.damage = 2.5;
   }
 
   public double getDamage() {
