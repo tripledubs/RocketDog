@@ -58,6 +58,9 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     @Override
     public void damage(double attackStrength) {
       this.health -= attackStrength;
+      if (this.health <= 0) {
+        this.setAnimation(new SpitzDeadAnimateStrategy());
+      }
     }
 
 }
