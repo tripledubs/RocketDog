@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.MeleeAttackController;
 import edu.uco.sdd.rocketdog.controller.PatrolController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
@@ -15,10 +11,11 @@ import javafx.scene.image.ImageView;
  *
  * @author Dubs
  */
-public class Enemy extends TangibleEntity {
+public class Enemy extends TangibleEntity implements Attacker {
 
     private Image img;
     private IBehavior behavior;
+    private MeleeAttackController meleeAttack;
 
     static class Builder {
 
@@ -68,7 +65,9 @@ public class Enemy extends TangibleEntity {
             controller.setRange(200.);
             controller.setStart(x - 100.);
             controller.setEnd(x + 100.);
+            controller.setAttackRange(10.);
             newBadGuy.addEntityClass(entityClass, 1);
+            newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
             return newBadGuy;
         }
     }
@@ -87,5 +86,20 @@ public class Enemy extends TangibleEntity {
 
         getHitbox().setTranslateX(getPosition().getX());
         getHitbox().setTranslateY(getPosition().getY());
+    }
+
+    public MeleeAttackController getMeleeAttack() {
+        return meleeAttack;
+    }
+
+    public void setMeleeAttack(MeleeAttackController meleeAttack) {
+        this.meleeAttack = meleeAttack;
+    }
+
+    @Override
+    public void attack(TangibleEntity target) {
+        if (meleeAttack != null) {
+          meleeAttack.attack(target);
+        }
     }
 }
