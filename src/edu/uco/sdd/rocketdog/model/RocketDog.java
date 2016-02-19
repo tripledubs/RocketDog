@@ -5,15 +5,17 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class RocketDog extends TangibleEntity implements IAnimateStrategy{
+public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attackable{
 
     private IAnimateStrategy animating;
+    private double health;
 
     public RocketDog() {
         super();
         animating = new SpitzIdleAnimateStrategy();
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
+        this.health = 20.;
     }
 
     public void update() {
@@ -51,6 +53,11 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     @Override
     public Image getImage() {
         return animating.getImage();
+    }
+
+    @Override
+    public void damage(double attackStrength) {
+      this.health -= attackStrength;
     }
 
 }
