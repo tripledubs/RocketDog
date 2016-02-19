@@ -39,7 +39,7 @@ public class MeleeAttackController extends AttackController {
 
   @Override
   public boolean attack(TangibleEntity target) {
-    if (hitbox != null && controlledObject instanceof Attackable) {
+    if (hitbox != null && target instanceof Attackable) {
       if (hitbox.intersects(hitbox.parentToLocal(target.getHitbox().getBoundsInParent()))) {
         ((Attackable)target).damage(damage);
         return true;
