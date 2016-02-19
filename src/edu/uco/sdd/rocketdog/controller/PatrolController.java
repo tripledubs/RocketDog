@@ -7,7 +7,7 @@ import java.util.Map;
 import javafx.geometry.Point2D;
 
 public class PatrolController extends AccelerationController {
-  private double range, start, end;
+  private double range, start, end, attackRange;
   private TangibleEntity target = null;
 
   public double getRange() {
@@ -16,6 +16,14 @@ public class PatrolController extends AccelerationController {
 
   public void setRange(double range) {
     this.range = range;
+  }
+
+  public double getAttackRange() {
+    return attackRange;
+  }
+
+  public void setAttackRange(double range) {
+    this.attackRange = range;
   }
 
   public double getStart() {
@@ -104,6 +112,9 @@ public class PatrolController extends AccelerationController {
         controlledObject.setVelocity(new Point2D(-7.5, 0));
       } else {
         controlledObject.setVelocity(new Point2D(0, 0));
+      }
+      if (Math.abs(controlledObject.getPosition().distance(target.getPosition())) < attackRange) {
+        //TODO: implement Attacker interface
       }
     }
     if (controlledObject.getVelocity() == null || Math.abs(controlledObject.getVelocity().getX()) < 1)
