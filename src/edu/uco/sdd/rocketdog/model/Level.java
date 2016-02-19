@@ -41,6 +41,7 @@ public class Level extends Scene {
         rocketDog.getHitbox().setHeight(130);
         root.getChildren().add(rocketDog.getSprite());
         root.getChildren().add(rocketDog.getHitbox());
+        root.getChildren().add(rocketDog.getHealthText());
 
         //Keyboard Handling
         this.setOnKeyPressed((KeyEvent event) -> {
@@ -110,6 +111,7 @@ public class Level extends Scene {
 
         //Set rocketDog hitbox visibility
         rocketDog.getHitbox().setVisible(visibleHitBoxes);
+        rocketDog.getHealthText().setVisible(visibleHitBoxes);
 
         Map<Entity, Boolean> changed = new HashMap<>();
         changed.put(rocketDog, true);
