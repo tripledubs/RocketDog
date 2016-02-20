@@ -4,7 +4,6 @@ import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -13,15 +12,11 @@ public class LevelOne extends Level {
     ImageView bg;
     Pane root;
     Group houses;
-    double width;
     
 
     public LevelOne(Pane root, ImageView background, int width, int height) {
         super(root,background,width,height);
         this.root = root;
-        this.width = width;
-        t = new Text(10,50,"Hello");
-        root.getChildren().add(t);
         bg = (ImageView) root.getChildren().get(0);
         
         // Bad Guys
@@ -103,12 +98,21 @@ public class LevelOne extends Level {
         
     }
     
-    public void addHouses() {
+    /**
+     * We will not have a background image big enough so more background images 
+     * will have to be added. They need to be added under a Group object so that
+     * they can all be moved at the same time. This would more accurately be 
+     * be called 'addBackground' or something of that nature.  They also need to be
+     * added before RocketDog so they are higher in the tree so Rocketdog is
+     * not obscured. 
+     */
+    
+    public final void addHouses() {
         // Add random houses every 300 pixels or so
-        houses = new Group();
+        houses = new Group(); // Create the Group
         ImageViewLoader ldr = ImageViewLoader.getInstance();
         for (int i=0; i < 10; i++)  {
-            double x = Math.random() * 10 % 6 + 1;
+            double x = Math.random() * 10 % 6 + 1; // Integer between 1 and 6
             ImageView sprite = ldr.loadImage("/Resources/houses/house" + (int) x + ".png");
             sprite.setTranslateX(i * 420 + 600);
             houses.getChildren().add(sprite);
@@ -127,8 +131,7 @@ public class LevelOne extends Level {
                 "\n" + 
                 "Background(translation): [x: " + bg.getTranslateX()+ 
                 " y: " + bg.getTranslateY() +
-                "]\n" + 
-                "width" + width
+                "]\n" 
         );
         positionScreen(this.getRocketDog(),bg);
         //houses.setTranslateX(houses.getTranslateX()-1);
