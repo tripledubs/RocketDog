@@ -25,9 +25,9 @@ public final class ImageViewLoader {
         try {
             img = new Image(imgFile);
         } catch (IllegalArgumentException exc) {
-            System.out.println("'" + imgFile + "'" + " not found, exiting...");
+            System.err.println("'" + imgFile + "'" + " not found, exiting...");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-            System.out.println(traces[2]);
+            System.err.println(traces[2]);
             Platform.exit();
         }
         return new ImageView(img);

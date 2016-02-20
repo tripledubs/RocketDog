@@ -2,13 +2,10 @@ package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
-import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 public class LevelOne extends Level {
@@ -26,7 +23,7 @@ public class LevelOne extends Level {
         t = new Text(10,50,"Hello");
         root.getChildren().add(t);
         bg = (ImageView) root.getChildren().get(0);
-
+        
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
@@ -71,29 +68,35 @@ public class LevelOne extends Level {
         //RD goes left so BG goes right
         if (rdx < zoneWidth[0]) {
             bg.setTranslateX(bg.getTranslateX()+1);
+            houses.setTranslateX(houses.getTranslateX()+1);
             rd.setPos(zoneWidth[0],rdy);
         }
                 
         if (rdx < zoneWidth[1]) {
             bg.setTranslateX(bg.getTranslateX()+1);
+            houses.setTranslateX(houses.getTranslateX()+1);
         }
         if (rdy > zoneHeight[8]) {
             bg.setTranslateY(bg.getTranslateY()-5);
+            houses.setTranslateY(houses.getTranslateY()-5);
             rd.setPos(rdx,zoneHeight[8]);
         }
         // RD goes down so bg goes up
         if (rdy > zoneHeight[7]) {
             bg.setTranslateY(bg.getTranslateY()-1);
+            houses.setTranslateY(houses.getTranslateY()-1);
         }
 
 
         // RD goes up so bg goes down
         if (rdy < zoneHeight[1]) {
             bg.setTranslateY(bg.getTranslateY()+1);
+            houses.setTranslateY(houses.getTranslateY()+1);
         
         }
         if (rdy < zoneHeight[0]) {
             bg.setTranslateY(bg.getTranslateY()+5);
+            houses.setTranslateY(houses.getTranslateY()+5);
             rd.setPos(rdx,zoneHeight[0]);
          
         }
@@ -105,9 +108,9 @@ public class LevelOne extends Level {
         houses = new Group();
         ImageViewLoader ldr = ImageViewLoader.getInstance();
         for (int i=0; i < 10; i++)  {
-            ImageView sprite = ldr.loadImage("/Resources/houses/house1.png");
+            double x = Math.random() * 10 % 6 + 1;
+            ImageView sprite = ldr.loadImage("/Resources/houses/house" + (int) x + ".png");
             sprite.setTranslateX(i * 420 + 600);
-            System.out.println(0);
             houses.getChildren().add(sprite);
         }
         houses.setScaleX(.7);
