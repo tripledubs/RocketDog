@@ -77,8 +77,8 @@ public class Level extends Scene {
 
         //Add enemy information to level
         enemies.add(enemy);
-        root.getChildren().add(enemy.getSprite());
-        root.getChildren().add(enemy.getHitbox());
+        this.root.getChildren().add(enemy.getSprite());
+        this.root.getChildren().add(enemy.getHitbox());
     }
 
     public void removeEnemy(Enemy enemy) {
@@ -104,6 +104,7 @@ public class Level extends Scene {
     public void setVisibleHitBoxes(boolean value) {
         visibleHitBoxes = value;
     }
+    
 
     public void update() {
 

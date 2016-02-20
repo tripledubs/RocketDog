@@ -16,25 +16,37 @@ public class LevelOne extends Level {
 
     public LevelOne(Pane root, ImageView background, int width, int height) {
         super(root,background,width,height);
-        this.root = root;
-        bg = (ImageView) root.getChildren().get(0);
+        this.root = root; // Need a handle to root to add images
+       
+        bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll
         
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        //addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 128, 128);
-        //addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).build(), 64, 64);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 128, 128);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).build(), 64, 64);
         addHouses();
-        
-     
     }
     
-    public void positionScreen(RocketDog rd, ImageView bg) {
+    /**
+     * 
+     * Like this, zoneWidth[0] is first zone on the left
+     * zoneWidth[1] would be the first vertical line, zoneWidth[2]
+     * would be second vertical line, etc. 
+     * +---+---+---+---+
+     * +---|---|---|---|
+     * +---|---|---|---|
+     * +---+---+---+---+
+     * 
+    */
+    
+    public void positionScreen() {
+        RocketDog rd = this.getRocketDog();
         double width = RocketDogGame.GAME_SCREEN_WIDTH;
         double height = RocketDogGame.GAME_SCREEN_HEIGHT;
         
-        double rdx = this.getRocketDog().getPosition().getX();
-        double rdy = this.getRocketDog().getPosition().getY();
+        double rdx = rd.getPosition().getX();
+        double rdy = rd.getPosition().getY();
 
         /**
          *  Divide the screen into 10 zones
@@ -46,9 +58,7 @@ public class LevelOne extends Level {
             zoneWidth[i] = i * (width / numZones);
             zoneHeight[i] = i * (height / numZones);
         }
-        
-        //RD Goes right so BG goes left
-        
+
         if (rdx > zoneWidth[8]) {
             bg.setTranslateX(bg.getTranslateX()-5);
             houses.setTranslateX(houses.getTranslateX()-5);
@@ -58,7 +68,6 @@ public class LevelOne extends Level {
             bg.setTranslateX(bg.getTranslateX()-1);
             houses.setTranslateX(houses.getTranslateX()-1);
         }
-        ///
         
         //RD goes left so BG goes right
         if (rdx < zoneWidth[0]) {
@@ -71,31 +80,29 @@ public class LevelOne extends Level {
             bg.setTranslateX(bg.getTranslateX()+1);
             houses.setTranslateX(houses.getTranslateX()+1);
         }
+        
         if (rdy > zoneHeight[8]) {
             bg.setTranslateY(bg.getTranslateY()-5);
             houses.setTranslateY(houses.getTranslateY()-5);
             rd.setPos(rdx,zoneHeight[8]);
         }
+        
         // RD goes down so bg goes up
         if (rdy > zoneHeight[7]) {
             bg.setTranslateY(bg.getTranslateY()-1);
             houses.setTranslateY(houses.getTranslateY()-1);
         }
 
-
         // RD goes up so bg goes down
         if (rdy < zoneHeight[1]) {
             bg.setTranslateY(bg.getTranslateY()+1);
             houses.setTranslateY(houses.getTranslateY()+1);
-        
         }
         if (rdy < zoneHeight[0]) {
             bg.setTranslateY(bg.getTranslateY()+5);
             houses.setTranslateY(houses.getTranslateY()+5);
             rd.setPos(rdx,zoneHeight[0]);
-         
         }
-        
     }
     
     /**
@@ -127,14 +134,7 @@ public class LevelOne extends Level {
     @Override
     public void update() {
         super.update();
-        t.setText(this.getRocketDog().toString() + 
-                "\n" + 
-                "Background(translation): [x: " + bg.getTranslateX()+ 
-                " y: " + bg.getTranslateY() +
-                "]\n" 
-        );
-        positionScreen(this.getRocketDog(),bg);
+        positionScreen();
         //houses.setTranslateX(houses.getTranslateX()-1);
-        
     }
 }
