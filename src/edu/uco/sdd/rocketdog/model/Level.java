@@ -1,5 +1,6 @@
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class Level extends Scene {
         root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
-        rocketDog.setPosition(new Point2D(70, 700));
+        rocketDog.setPosition(new Point2D(RocketDogGame.GAME_SCREEN_WIDTH/3,RocketDogGame.GAME_SCREEN_HEIGHT/2));
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
