@@ -3,41 +3,26 @@ package edu.uco.sdd.rocketdog.model;
 import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 public class LevelOne extends Level {
     Text t;
     ImageView bg;
-    StackPane root;
-    double width;
+    Pane root;
     Group houses;
+    double width;
     
 
-    public LevelOne(StackPane root, ImageView background, int width, int height) {
+    public LevelOne(Pane root, ImageView background, int width, int height) {
         super(root,background,width,height);
         this.root = root;
         this.width = width;
-        
-        houses = new Group();
-        houses.setAutoSizeChildren(false);
-        
-        ImageViewLoader ldr = ImageViewLoader.getInstance();
-        for (int i=0; i < 2; i++)  {
-            ImageView sprite = ldr.loadImage("/Resources/houses/house1.png");
-            houses.getChildren().add(sprite);
-        }
-        houses.setScaleX(.8);
-        houses.setScaleY(.8);
-        
-        
-        root.getChildren().add(1,houses);
-        
-        
-        
         t = new Text(10,50,"Hello");
         root.getChildren().add(t);
         bg = (ImageView) root.getChildren().get(0);
@@ -47,11 +32,9 @@ public class LevelOne extends Level {
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
         //addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 128, 128);
         //addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).build(), 64, 64);
+        addHouses();
         
-        // Add random houses every 300 pixels or so
-        houses.setTranslateY(280);
-
-        
+     
     }
     
     public void positionScreen(RocketDog rd, ImageView bg) {
@@ -76,11 +59,12 @@ public class LevelOne extends Level {
         
         if (rdx > zoneWidth[8]) {
             bg.setTranslateX(bg.getTranslateX()-5);
-            houses.setTranslateX(bg.getTranslateX()-5);
+            houses.setTranslateX(houses.getTranslateX()-5);
             rd.setPos(zoneWidth[8],rdy);
         }
         if (rdx > zoneWidth[4]) { 
             bg.setTranslateX(bg.getTranslateX()-1);
+            houses.setTranslateX(houses.getTranslateX()-1);
         }
         ///
         
@@ -116,6 +100,23 @@ public class LevelOne extends Level {
         
     }
     
+    public void addHouses() {
+        // Add random houses every 300 pixels or so
+        houses = new Group();
+        ImageViewLoader ldr = ImageViewLoader.getInstance();
+        for (int i=0; i < 10; i++)  {
+            ImageView sprite = ldr.loadImage("/Resources/houses/house1.png");
+            sprite.setTranslateX(i * 420 + 600);
+            System.out.println(0);
+            houses.getChildren().add(sprite);
+        }
+        houses.setScaleX(.7);
+        houses.setScaleY(.7);
+        houses.setTranslateY(360);
+        root.getChildren().add(1,houses);
+    }
+    
+    
     @Override
     public void update() {
         super.update();
@@ -127,6 +128,7 @@ public class LevelOne extends Level {
                 "width" + width
         );
         positionScreen(this.getRocketDog(),bg);
+        //houses.setTranslateX(houses.getTranslateX()-1);
         
     }
 }

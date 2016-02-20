@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class Level extends Scene {
@@ -17,10 +18,10 @@ public class Level extends Scene {
     final private EntityClass player;
     private ArrayList<Enemy> enemies;
     private boolean visibleHitBoxes;
-    private StackPane root;
+    private Pane root;
     private KeyMappingContext keyMapping;
 
-    public Level(StackPane root, ImageView background, int width, int height) {
+    public Level(Pane root, ImageView background, int width, int height) {
         super(root, width, height);
         this.root = root;
 
@@ -33,7 +34,7 @@ public class Level extends Scene {
 
         //Background Added to game
         root.getChildren().add(background);
-        root.setAlignment(Pos.TOP_LEFT);
+        //root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
         rocketDog.setPosition(new Point2D(RocketDogGame.GAME_SCREEN_WIDTH/3,RocketDogGame.GAME_SCREEN_HEIGHT/2));

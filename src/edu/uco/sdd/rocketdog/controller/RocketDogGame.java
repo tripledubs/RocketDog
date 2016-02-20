@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,7 +41,7 @@ public class RocketDogGame extends Application {
     private GamePlayLoop gamePlayLoop;
     private Level currentLevel; /* Will implement as abstract class later */
 
-    private StackPane root;
+    private Pane root;
 
     private Insets buttonContainerPadding;
     private ImageView splashScreenBackplate, splashScreenTextArea;
@@ -51,7 +52,7 @@ public class RocketDogGame extends Application {
 
     @Override
     public void init() {
-        root = new StackPane();
+        root = new Pane();
         gamePlayLoop = new GamePlayLoop(this);
         currentLevel = new LevelOne(root, new ImageView(new Image("/Level 2.png")), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
 
