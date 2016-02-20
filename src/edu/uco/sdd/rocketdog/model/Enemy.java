@@ -65,7 +65,7 @@ public class Enemy extends TangibleEntity implements Attacker {
             controller.setRange(200.);
             controller.setStart(x - 100.);
             controller.setEnd(x + 100.);
-            controller.setAttackRange(10.);
+            controller.setAttackRange(100.);
             newBadGuy.addEntityClass(entityClass, 1);
             newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
             return newBadGuy;
