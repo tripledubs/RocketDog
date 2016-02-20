@@ -52,5 +52,14 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy{
     public Image getImage() {
         return animating.getImage();
     }
+    
+    @Override
+    public String toString() {
+        return new String(
+                "RocketDog[x:" + this.getPosition().getX() + 
+                " y: " + this.getPosition().getY() + 
+                "]"
+        );
+    }
 
 }
