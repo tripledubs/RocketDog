@@ -87,27 +87,27 @@ public class PatrolController extends AccelerationController {
           end = start;
           start = temp;
         }
-        controlledObject.setSpeed(new Point2D(2.5, 0));
+        controlledObject.setVelocity(new Point2D(2.5, 0));
       } else {
         if (currentX < end) {
           double temp = end;
           end = start;
           start = temp;
         }
-        controlledObject.setSpeed(new Point2D(-2.5, 0));
+        controlledObject.setVelocity(new Point2D(-2.5, 0));
       }
     } else {
       double targetX = target.getPosition().getX();
       if (targetX - currentX > 10) {  // we are left of target
-        controlledObject.setSpeed(new Point2D(7.5, 0));
+        controlledObject.setVelocity(new Point2D(7.5, 0));
       } else if (currentX - targetX > 10) {  // we are right of target
-        controlledObject.setSpeed(new Point2D(-7.5, 0));
+        controlledObject.setVelocity(new Point2D(-7.5, 0));
       } else {
-        controlledObject.setSpeed(new Point2D(0, 0));
+        controlledObject.setVelocity(new Point2D(0, 0));
       }
     }
-    if (controlledObject.getSpeed() == null || Math.abs(controlledObject.getSpeed().getX()) < 1)
-      controlledObject.setSpeed(new Point2D(2.5, 0));
+    if (controlledObject.getVelocity() == null || Math.abs(controlledObject.getVelocity().getX()) < 1)
+      controlledObject.setVelocity(new Point2D(2.5, 0));
     return true;
   }
 }

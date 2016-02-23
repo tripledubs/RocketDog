@@ -6,14 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class TangibleEntity implements Entity {
 
+    private boolean isDead;
+    private boolean colliding; //flag for collision
     private Point2D position;
-    private Point2D speed;
     private Point2D acceleration;
+    private Point2D velocity;
+    private Hitbox hitbox;
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
-    protected ImageView sprite;
+    private ImageView sprite;
+
+    public TangibleEntity() {
+        isDead = false;
+        colliding = false;
+        hitbox = new Hitbox(0, 0);
+        acceleration = new Point2D(0, 0);
+        position = new Point2D(0, 0);
+        velocity = new Point2D(0, 0);
+    }
 
     public Map<EntityClass, Integer> getEntityClasses() {
         return new HashMap<>(entityClasses);
@@ -33,48 +46,83 @@ public class TangibleEntity implements Entity {
             }
         }
         if (acceleration == null) {
-            if (speed == null) {
+            if (velocity == null) {
                 return false;
             } else {
-                double x = speed.getX();
+                double x = velocity.getX();
                 if (x >= 1 || x <= -1) {
-                    position = position.add(speed);
+                    position = position.add(velocity);
                     return true;
                 }
                 return false;
             }
         } else {
-            if (speed == null) {
-                speed = new Point2D(0, 0);
+            if (velocity == null) {
+                velocity = new Point2D(0, 0);
             }
-            position = position.add(speed);
-            speed = speed.add(acceleration);
+            position = position.add(velocity);
+            velocity = velocity.add(acceleration);
             return true;
         }
     }
 
-    public final Point2D getPosition() {
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+    public ImageView getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(ImageView newSprite) {
+        sprite = newSprite;
+    }
+
+    public Point2D getPosition() {
         return position;
     }
-
-    public final void setPosition(Point2D position) {
-        this.position = position;
+    
+    /** 
+     * The client should not have to call new Point2D
+     * every time.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public void setPos(double x, double y) {
+        setPosition(new Point2D(x,y));
+    }
+    
+    public void setPosition(Point2D newPosition) {
+        position = newPosition;
     }
 
-    public Point2D getSpeed() {
-        return speed;
+    public Point2D getVelocity() {
+        return velocity;
     }
 
-    public void setSpeed(Point2D speed) {
-        this.speed = speed;
+    /** 
+     * The client should not have to call new Point2D
+     * every time.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public void setVel(double x, double y) {
+        setVelocity(new Point2D(x,y));
+    }
+    public void setVelocity(Point2D newVelocity) {
+        velocity = newVelocity;
     }
 
     public Point2D getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(Point2D acceleration) {
-        this.acceleration = acceleration;
+    public void setAcceleration(Point2D newAcceleration) {
+        acceleration = newAcceleration;
     }
 
     public int getEntityClassPriority(EntityClass entityClass) {
@@ -101,4 +149,24 @@ public class TangibleEntity implements Entity {
         controllers.remove(controller);
     }
 
+    public void processCollision(TangibleEntity otherEntity) {
+        if (getHitbox().getBoundsInParent().intersects(otherEntity.getHitbox().getBoundsInParent())) {
+            otherEntity.getHitbox().setStroke(Color.RED);
+            getHitbox().setStroke(Color.RED);
+            colliding = true;
+        } else {
+            getHitbox().setStroke(Color.GREEN);
+            otherEntity.getHitbox().setStroke(Color.GREEN);
+            colliding = false;
+        }
+    }
+    
+    public boolean isColliding() {
+        return colliding;
+    }
+
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+     
 }
