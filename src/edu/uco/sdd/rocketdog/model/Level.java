@@ -1,5 +1,6 @@
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class Level extends Scene {
@@ -16,10 +18,10 @@ public class Level extends Scene {
     final private EntityClass player;
     private ArrayList<Enemy> enemies;
     private boolean visibleHitBoxes;
-    private StackPane root;
+    private Pane root;
     private KeyMappingContext keyMapping;
 
-    public Level(StackPane root, ImageView background, int width, int height) {
+    public Level(Pane root, ImageView background, int width, int height) {
         super(root, width, height);
         this.root = root;
 
@@ -32,10 +34,10 @@ public class Level extends Scene {
 
         //Background Added to game
         root.getChildren().add(background);
-        root.setAlignment(Pos.TOP_LEFT);
+        //root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
-        rocketDog.setPosition(new Point2D(70, 700));
+        rocketDog.setPosition(new Point2D(RocketDogGame.GAME_SCREEN_WIDTH/3,RocketDogGame.GAME_SCREEN_HEIGHT/2));
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
@@ -75,8 +77,8 @@ public class Level extends Scene {
 
         //Add enemy information to level
         enemies.add(enemy);
-        root.getChildren().add(enemy.getSprite());
-        root.getChildren().add(enemy.getHitbox());
+        this.root.getChildren().add(enemy.getSprite());
+        this.root.getChildren().add(enemy.getHitbox());
     }
 
     public void removeEnemy(Enemy enemy) {
@@ -102,6 +104,7 @@ public class Level extends Scene {
     public void setVisibleHitBoxes(boolean value) {
         visibleHitBoxes = value;
     }
+    
 
     public void update() {
 

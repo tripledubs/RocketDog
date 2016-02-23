@@ -83,7 +83,17 @@ public class TangibleEntity implements Entity {
     public Point2D getPosition() {
         return position;
     }
-
+    
+    /** 
+     * The client should not have to call new Point2D
+     * every time.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public void setPos(double x, double y) {
+        setPosition(new Point2D(x,y));
+    }
+    
     public void setPosition(Point2D newPosition) {
         position = newPosition;
     }
@@ -92,6 +102,15 @@ public class TangibleEntity implements Entity {
         return velocity;
     }
 
+    /** 
+     * The client should not have to call new Point2D
+     * every time.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public void setVel(double x, double y) {
+        setVelocity(new Point2D(x,y));
+    }
     public void setVelocity(Point2D newVelocity) {
         velocity = newVelocity;
     }

@@ -9,11 +9,11 @@ public class DefaultKeyMapping implements KeyMapping {
     public void handleKeyPressed(Level currentLevel, KeyEvent keyEvent, double speed) {
         switch (keyEvent.getCode()) {
             case LEFT:
-                currentLevel.getRocketDog().getSprite().setScaleX(-1);
+                currentLevel.getRocketDog().getSprite().setScaleX(-1); // Flip image so facing left
                 currentLevel.getRocketDog().setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
                 break;
             case RIGHT:
-                currentLevel.getRocketDog().getSprite().setScaleX(1);
+                currentLevel.getRocketDog().getSprite().setScaleX(1); // Flip image so facing right
                 currentLevel.getRocketDog().setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 break;
             case UP:
