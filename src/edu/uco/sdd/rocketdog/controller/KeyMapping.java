@@ -1,5 +1,6 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.controller;
 
+import edu.uco.sdd.rocketdog.model.Level;
 import javafx.scene.input.KeyEvent;
 
 public interface KeyMapping {

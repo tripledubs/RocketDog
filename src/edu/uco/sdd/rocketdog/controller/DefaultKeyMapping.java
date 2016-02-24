@@ -1,7 +1,8 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Animations.SpitzChargeGunAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.Level;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
 

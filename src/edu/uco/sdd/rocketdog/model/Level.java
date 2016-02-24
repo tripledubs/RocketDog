@@ -1,5 +1,6 @@
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.KeyMappingContext;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import java.util.ArrayList;

@@ -17,7 +17,6 @@ package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Level;
 import edu.uco.sdd.rocketdog.model.LevelOne;
-import edu.uco.sdd.rocketdog.model.WASDKeyMapping;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

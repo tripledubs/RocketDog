@@ -18,12 +18,10 @@ import javafx.scene.image.ImageView;
 public class Enemy extends TangibleEntity {
 
     private Image img;
-    private IBehavior behavior;
 
     static class Builder {
 
         private Image img;
-        private IBehavior behavior;
         private int x;
         private int y;
         private EntityClass entityClass;
@@ -35,11 +33,6 @@ public class Enemy extends TangibleEntity {
                 System.out.println("'" + imgFile + "'" + " not found, exiting...");
                 Platform.exit();
             }
-        }
-
-        public Builder behavior(IBehavior b) {
-            this.behavior = b;
-            return this;
         }
 
         public Builder setX(int x) {
@@ -77,7 +70,6 @@ public class Enemy extends TangibleEntity {
         super();
         img = builder.img;
         setSprite(new ImageView(img));
-        behavior = builder.behavior;
         setPosition(new Point2D(builder.x, builder.y));
     }
 
