@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class SplashLevel {
+public class SplashLevel extends Scene implements ILevel {
 
     private final ImageView splashScreenTextArea;
     private final ImageView splashScreenBackplate;
@@ -34,8 +34,12 @@ public class SplashLevel {
     private Image scoresLayer;
     private StackPane root;
     private final Button exitButton;
+    private boolean isDone;
 
-    public SplashLevel() {
+    public SplashLevel(StackPane root) {
+        super(root,800,800);
+        isDone = false;
+        this.root = root;
 
         splashScreenTextArea = new ImageView();
         splashScreenBackplate = new ImageView();
@@ -57,8 +61,7 @@ public class SplashLevel {
          */
         startButton.setOnAction((ActionEvent) -> {
             if (!optionsDefaultButton.isDisable()) {
-                System.out.println("Start button clicked");
-
+                isDone = true;
             }
         });
 
@@ -157,6 +160,16 @@ public class SplashLevel {
         instructionsLayer = new Image("/instruct.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, false, true);
         optionsLayer = new Image("/options.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
         scoresLayer = new Image("/scores.png", GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
+    }
+
+    @Override
+    public void update() {
+        
     }
 
 }

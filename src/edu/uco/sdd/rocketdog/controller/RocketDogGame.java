@@ -18,28 +18,37 @@ package edu.uco.sdd.rocketdog.controller;
 import edu.uco.sdd.rocketdog.model.ILevel;
 import edu.uco.sdd.rocketdog.model.Level;
 import edu.uco.sdd.rocketdog.model.LevelFactory;
-import edu.uco.sdd.rocketdog.model.LevelOne;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class RocketDogGame extends Application {
     public static final int GAME_SCREEN_WIDTH = 800 ; 
     public static final int GAME_SCREEN_HEIGHT = 600 ;
-    private ILevel currentLevel; 
-    private Group root;
+    private Parent root;
     private GamePlayLoop gamePlayLoop;
+    private Scene currentLevel;
+    private ILevel updateableLevel;
+    Stage currentStage;
+    
     LevelFactory lf;
+    String[] levels;
+    int levelIndex;
 
     @Override
     public void init() {
-        root = new Group();
         gamePlayLoop = new GamePlayLoop(this);
-        lf = new LevelFactory("splash");
+        levels = new String[]{
+            "Splash",
+            "One"
+        };
+        levelIndex = 1;
+        lf = new LevelFactory(levels[levelIndex]);
         currentLevel = lf.getLevel();
+        updateableLevel = (ILevel) currentLevel;
+        
     }
 
 
@@ -47,7 +56,7 @@ public class RocketDogGame extends Application {
     @Override
     public void start(Stage primaryStage) {
         /*  Stage and Scene must be constructed from within the start method */
-        root = new Group();
+        root = lf.getRoot(levels[0]);
         primaryStage.setTitle("Rocket Dog!");
         primaryStage.setScene(currentLevel);
         primaryStage.show();
@@ -55,7 +64,12 @@ public class RocketDogGame extends Application {
     }
 
     public void update() {
-        currentLevel.update();
+        while (!updateableLevel.isDone()) {
+            updateableLevel.update();
+        }
+        String newLevel = levels[++levelIndex];
+        lf = new LevelFactory(levels[++levelIndex]);
+        currentStage.setScene(lf.getLevel());
     }
 
     public static void main(String[] args) {
