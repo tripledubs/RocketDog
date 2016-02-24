@@ -30,7 +30,7 @@ public class Level extends Scene {
         visibleHitBoxes = false;
         rocketDog = new RocketDog();
         player = new EntityClass("Player");
-        enemies = new ArrayList();
+        enemies = new ArrayList<>();
 
         //Background Added to game
         root.getChildren().add(background);
