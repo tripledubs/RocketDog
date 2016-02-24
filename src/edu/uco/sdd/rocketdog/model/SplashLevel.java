@@ -60,6 +60,7 @@ public class SplashLevel extends Scene implements ILevel {
          * *****************START APPLICATION******************
          */
         startButton.setOnAction((ActionEvent) -> {
+            isDone = true;
             if (!optionsDefaultButton.isDisable()) {
                 isDone = true;
             }
