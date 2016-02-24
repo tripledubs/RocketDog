@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class Level extends Scene {
+public class Level extends Scene implements ILevel {
 
     final private RocketDog rocketDog;
     final private EntityClass player;
@@ -24,10 +25,11 @@ public class Level extends Scene {
     private ArrayList<Hazard> Hazards; // container of Hazards
     private ArrayList<Obstruction> Obstructions; //container of Obstructions
     private boolean visibleHitBoxes;
-    private Pane root;
+    private Group root;
     private KeyMappingContext keyMapping;
+    private boolean isDone;
 
-    public Level(Pane root, ImageView background, int width, int height) {
+    public Level(Group root, ImageView background, int width, int height) {
         super(root, width, height);
         this.root = root;
 
@@ -339,5 +341,10 @@ public class Level extends Scene {
                     rocketDog.setVelocity(new Point2D(0, 0));               
             }
         });
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
     }
 }

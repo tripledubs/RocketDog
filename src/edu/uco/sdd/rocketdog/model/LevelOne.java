@@ -10,11 +10,11 @@ import javafx.scene.text.Text;
 public class LevelOne extends Level {
     Text t;
     ImageView bg;
-    Pane root;
+    Group root;
     Group houses;
     
 
-    public LevelOne(Pane root, ImageView background, int width, int height) {
+    public LevelOne(Group root, ImageView background, int width, int height) {
         super(root,background,width,height);
         this.root = root; // Need a handle to root to add images
        

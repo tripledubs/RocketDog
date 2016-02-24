@@ -15,28 +15,31 @@
  */
 package edu.uco.sdd.rocketdog.controller;
 
+import edu.uco.sdd.rocketdog.model.ILevel;
 import edu.uco.sdd.rocketdog.model.Level;
+import edu.uco.sdd.rocketdog.model.LevelFactory;
 import edu.uco.sdd.rocketdog.model.LevelOne;
 import javafx.application.Application;
-import javafx.scene.Scene;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class RocketDogGame extends Application {
     public static final int GAME_SCREEN_WIDTH = 800 ; 
     public static final int GAME_SCREEN_HEIGHT = 600 ;
-    private Level currentLevel; 
-    private Pane root;
+    private ILevel currentLevel; 
+    private Group root;
     private GamePlayLoop gamePlayLoop;
+    LevelFactory lf;
 
     @Override
     public void init() {
-        root = new Pane();
+        root = new Group();
         gamePlayLoop = new GamePlayLoop(this);
-        currentLevel = new LevelOne(root, new ImageView(new Image("/Level 2.png")), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+        lf = new LevelFactory("splash");
+        currentLevel = lf.getLevel();
     }
 
 
@@ -44,12 +47,11 @@ public class RocketDogGame extends Application {
     @Override
     public void start(Stage primaryStage) {
         /*  Stage and Scene must be constructed from within the start method */
-        root = new StackPane();
+        root = new Group();
         primaryStage.setTitle("Rocket Dog!");
         primaryStage.setScene(currentLevel);
         primaryStage.show();
-
-
+        gamePlayLoop.start();
     }
 
     public void update() {
