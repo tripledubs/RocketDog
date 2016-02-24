@@ -1,4 +1,4 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.model.Animations;
 
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;

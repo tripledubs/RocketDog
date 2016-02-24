@@ -5,6 +5,8 @@
  */
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.model.Animations.ShieldAnimateStrategy;
+
 /**
  * Class for a shield power up 
  * Inherits from ActiveAidItem, see description in ActiveAidItem.java 

@@ -1,5 +1,7 @@
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.model.Animations.IAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.Animations.SpitzIdleAnimateStrategy;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
