@@ -16,7 +16,7 @@
 package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.ILevel;
-import edu.uco.sdd.rocketdog.model.LevelFactory;
+import edu.uco.sdd.rocketdog.model.SceneFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,7 +30,7 @@ public class RocketDogGame extends Application {
     private ILevel updateableLevel;
     Stage currentStage;
    
-    LevelFactory lf; // Level Factory will produce the level
+    SceneFactory lf; // Level Factory will produce the level
     String[] levels; // Used to sequence the levels
     int levelIndex;  // Used to increment the current Level 
 
@@ -50,7 +50,7 @@ public class RocketDogGame extends Application {
         };
         
         levelIndex = 0; // Used so levels can be incremented through
-        lf = new LevelFactory(levels[levelIndex]); // Start the factory up
+        lf = new SceneFactory(levels[levelIndex]); // Start the factory up
         currentLevel = lf.getLevel();              
         updateableLevel = (ILevel) currentLevel; // Level must obey ILevel interface
 

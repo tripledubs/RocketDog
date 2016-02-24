@@ -8,12 +8,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 
-public class LevelFactory {
+public class SceneFactory {
 
     protected String level;
     ImageViewLoader ldr;
 
-    public LevelFactory(String level) {
+    public SceneFactory(String level) {
         this.level = level;
         ldr = ImageViewLoader.getInstance();
     }
