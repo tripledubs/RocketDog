@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 public class TangibleEntity implements Entity {
 
     private boolean isDead;
+    private boolean colliding; //flag for collision
     private Point2D position;
     private Point2D acceleration;
     private Point2D velocity;
@@ -20,6 +21,7 @@ public class TangibleEntity implements Entity {
 
     public TangibleEntity() {
         isDead = false;
+        colliding = false;
         hitbox = new Hitbox(0, 0);
         acceleration = new Point2D(0, 0);
         position = new Point2D(0, 0);
@@ -151,10 +153,20 @@ public class TangibleEntity implements Entity {
         if (getHitbox().getBoundsInParent().intersects(otherEntity.getHitbox().getBoundsInParent())) {
             otherEntity.getHitbox().setStroke(Color.RED);
             getHitbox().setStroke(Color.RED);
+            colliding = true;
         } else {
             getHitbox().setStroke(Color.GREEN);
             otherEntity.getHitbox().setStroke(Color.GREEN);
+            colliding = false;
         }
     }
+    
+    public boolean isColliding() {
+        return colliding;
+    }
 
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+     
 }
