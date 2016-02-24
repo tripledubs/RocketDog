@@ -18,7 +18,6 @@ package edu.uco.sdd.rocketdog.controller;
 import edu.uco.sdd.rocketdog.model.ILevel;
 import edu.uco.sdd.rocketdog.model.LevelFactory;
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -26,27 +25,34 @@ public class RocketDogGame extends Application {
 
     public static final int GAME_SCREEN_WIDTH = 800;
     public static final int GAME_SCREEN_HEIGHT = 600;
-    private Parent root;
     private GamePlayLoop gamePlayLoop;
     private Scene currentLevel;
     private ILevel updateableLevel;
     Stage currentStage;
-
-    LevelFactory lf;
-    String[] levels;
-    int levelIndex;
+   
+    LevelFactory lf; // Level Factory will produce the level
+    String[] levels; // Used to sequence the levels
+    int levelIndex;  // Used to increment the current Level 
 
     @Override
     public void init() {
         gamePlayLoop = new GamePlayLoop(this);
+        
+        /**
+         * This array is used to sequence the levels that will be requested
+         * from LevelFactory
+         */
         levels = new String[]{
             "Splash",
-            "One"
+            "One",
+            "Two",
+            "Three",
         };
-        levelIndex = 0;
-        lf = new LevelFactory(levels[levelIndex]);
-        currentLevel = lf.getLevel();
-        updateableLevel = (ILevel) currentLevel;
+        
+        levelIndex = 0; // Used so levels can be incremented through
+        lf = new LevelFactory(levels[levelIndex]); // Start the factory up
+        currentLevel = lf.getLevel();              
+        updateableLevel = (ILevel) currentLevel; // Level must obey ILevel interface
 
     }
 
@@ -55,7 +61,6 @@ public class RocketDogGame extends Application {
     public void start(Stage primaryStage) {
         /*  Stage and Scene must be constructed from within the start method */
         currentStage = primaryStage;
-        root = lf.getRoot(levels[levelIndex]);
         primaryStage.setTitle("Rocket Dog!");
         primaryStage.setScene(currentLevel);
         primaryStage.show();
@@ -65,12 +70,10 @@ public class RocketDogGame extends Application {
     public void update() {
         updateableLevel.update();
         if (updateableLevel.isDone()) {
-            lf = new LevelFactory(levels[++levelIndex]);
+            lf.setLevel(levels[++levelIndex]);
             currentLevel = lf.getLevel();
             updateableLevel = (ILevel) currentLevel;
-            System.out.println("HERE");
             currentStage.setScene(currentLevel);
-
         }
     }
 
