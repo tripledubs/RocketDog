@@ -1,14 +1,19 @@
 package edu.uco.sdd.rocketdog.controller;
 
+import edu.uco.sdd.rocketdog.model.Attacker;
 import edu.uco.sdd.rocketdog.model.Entity;
 import edu.uco.sdd.rocketdog.model.EntityClass;
 import edu.uco.sdd.rocketdog.model.TangibleEntity;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javafx.geometry.Point2D;
 
 public class PatrolController extends AccelerationController {
   private double range, start, end;
   private TangibleEntity target = null;
+  private boolean attackDelayed = false;
+  private long attackDelay = 1000L;
 
   public double getRange() {
     return range;
@@ -33,7 +38,20 @@ public class PatrolController extends AccelerationController {
   public void setEnd(double end) {
     this.end = end;
   }
-  
+
+  public boolean isAttackDelayed() {
+    return attackDelayed;
+  }
+
+  public long getAttackDelay() {
+    return attackDelay;
+  }
+
+  public void setAttackDelay(long attackDelay) {
+    if (attackDelay < 0)
+      throw new IllegalArgumentException("Delay must not be negative.");
+    this.attackDelay = attackDelay;
+  }
   
   public PatrolController(TangibleEntity entity) {
     super(entity);
@@ -104,6 +122,14 @@ public class PatrolController extends AccelerationController {
         controlledObject.setVelocity(new Point2D(-7.5, 0));
       } else {
         controlledObject.setVelocity(new Point2D(0, 0));
+      }
+      if (controlledObject instanceof Attacker && !attackDelayed) {
+        ((Attacker)controlledObject).attack(target);
+        attackDelayed = true;
+        ScheduledThreadPoolExecutor delayExecutor = new ScheduledThreadPoolExecutor(1);
+        delayExecutor.schedule(() -> {
+          attackDelayed = false;
+        }, attackDelay, TimeUnit.MILLISECONDS);
       }
     }
     if (controlledObject.getVelocity() == null || Math.abs(controlledObject.getVelocity().getX()) < 1)
