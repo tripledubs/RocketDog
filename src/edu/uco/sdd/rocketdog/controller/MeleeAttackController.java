@@ -8,7 +8,7 @@ import edu.uco.sdd.rocketdog.model.TangibleEntity;
  * @author Spencer Harris
  */
 public class MeleeAttackController implements AttackController {
-  private double damage;
+  private double damage, range;
   protected TangibleEntity controlledObject;
 
 
@@ -17,6 +17,7 @@ public class MeleeAttackController implements AttackController {
       throw new IllegalArgumentException(new NullPointerException("entity"));
     this.controlledObject = entity;
     this.damage = 2.5;
+    this.range = 200.;
   }
 
   public double getDamage() {
@@ -27,9 +28,17 @@ public class MeleeAttackController implements AttackController {
     this.damage = damage;
   }
 
+  public double getRange() {
+    return range;
+  }
+
+  public void setRange(double range) {
+    this.range = range;
+  }
+
   @Override
   public boolean attack(TangibleEntity target) {
-    if (target instanceof Attackable) {
+    if (target instanceof Attackable && Math.abs(controlledObject.getPosition().distance(target.getPosition())) < range) {
       ((Attackable)target).damage(damage);
       return true;
     }
