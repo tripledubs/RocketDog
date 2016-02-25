@@ -1,6 +1,7 @@
 package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Entity;
+import edu.uco.sdd.rocketdog.model.Level;
 import edu.uco.sdd.rocketdog.model.TangibleEntity;
 import java.util.Map;
 import javafx.geometry.Point2D;
@@ -33,6 +34,16 @@ public class AccelerationController extends MovementController {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Level getLevel() {
+      return this.controlledObject.getLevel();
+    }
+
+    @Override
+    public void setLevel(Level level) {
+      throw new UnsupportedOperationException("setLevel must be called on the controlled object.");
     }
 
 }

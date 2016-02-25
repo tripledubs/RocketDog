@@ -17,6 +17,7 @@ public class TangibleEntity implements Entity {
     private Hitbox hitbox;
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
+    private Level level;
 
     public TangibleEntity() {
         dead = false;
@@ -140,6 +141,16 @@ public class TangibleEntity implements Entity {
             getHitbox().setStroke(Color.GREEN);
             otherEntity.getHitbox().setStroke(Color.GREEN);
         }
+    }
+
+    @Override
+    public Level getLevel() {
+      return this.level;
+    }
+
+    @Override
+    public void setLevel(Level level) {
+      this.level = level;
     }
 
 }

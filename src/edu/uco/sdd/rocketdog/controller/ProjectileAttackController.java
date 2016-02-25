@@ -1,7 +1,9 @@
 package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Attackable;
+import edu.uco.sdd.rocketdog.model.Projectile;
 import edu.uco.sdd.rocketdog.model.TangibleEntity;
+import javafx.geometry.Point2D;
 
 /**
  * Attack controller for entities that fire projectiles. A new entity is
@@ -51,7 +53,20 @@ public class ProjectileAttackController implements AttackController {
     double distance = controlledObject.getPosition().distance(target.getPosition());
     if (target instanceof Attackable && Math.abs(distance) < maxRange
             && Math.abs(distance) > minRange) {
-      ((Attackable)target).damage(damage);
+        Point2D velocity = target.getPosition()
+                                 .subtract(controlledObject.getPosition())
+                                 .normalize()
+                                 .multiply(8);
+
+        Projectile projectile = new Projectile.Builder("/bullet.png", 32, 32)
+                        .setX((int)controlledObject.getPosition().getX())
+                        .setY((int)controlledObject.getPosition().getY())
+                        .setVelocity(velocity)
+                        .setLevel(controlledObject.getLevel()).build();
+        controlledObject.getEntityClasses().forEach((c, i) -> {
+          projectile.addEntityClass(c, i);
+        });
+        controlledObject.getLevel().addProjectile(projectile, 32, 32);
       return true;
     }
     return false;
