@@ -17,7 +17,7 @@ public class MeleeAttackController implements AttackController {
       throw new IllegalArgumentException(new NullPointerException("entity"));
     this.controlledObject = entity;
     this.damage = 2.5;
-    this.range = 200.;
+    this.range = 100.;
   }
 
   public double getDamage() {

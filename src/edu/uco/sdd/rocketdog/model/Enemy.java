@@ -2,6 +2,7 @@ package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.MeleeAttackController;
 import edu.uco.sdd.rocketdog.controller.PatrolController;
+import edu.uco.sdd.rocketdog.controller.ProjectileAttackController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ public class Enemy extends TangibleEntity implements Attacker {
     private Image img;
     private IBehavior behavior;
     private MeleeAttackController meleeAttack;
+    private ProjectileAttackController projectileAttack;
 
     static class Builder {
 
@@ -62,12 +64,12 @@ public class Enemy extends TangibleEntity implements Attacker {
             Enemy newBadGuy = new Enemy(this);
             PatrolController controller = new PatrolController(newBadGuy);
             newBadGuy.addController(controller);
-            controller.setRange(200.);
+            controller.setRange(300.);
             controller.setStart(x - 100.);
             controller.setEnd(x + 100.);
-            controller.setAttackRange(100.);
             newBadGuy.addEntityClass(entityClass, 1);
             newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
+            newBadGuy.setProjectileAttack(new ProjectileAttackController(newBadGuy));
             return newBadGuy;
         }
     }
@@ -96,10 +98,21 @@ public class Enemy extends TangibleEntity implements Attacker {
         this.meleeAttack = meleeAttack;
     }
 
+    public ProjectileAttackController getProjectileAttack() {
+        return projectileAttack;
+    }
+
+    public void setProjectileAttack(ProjectileAttackController projectileAttack) {
+        this.projectileAttack = projectileAttack;
+    }
+
     @Override
     public void attack(TangibleEntity target) {
         if (meleeAttack != null) {
           meleeAttack.attack(target);
+        }
+        if (projectileAttack != null) {
+          projectileAttack.attack(target);
         }
     }
 }

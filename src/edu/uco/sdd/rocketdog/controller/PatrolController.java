@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.geometry.Point2D;
 
 public class PatrolController extends AccelerationController {
-  private double range, start, end, attackRange;
+  private double range, start, end;
   private TangibleEntity target = null;
   private boolean attackDelayed = false;
   private long attackDelay = 1000L;
@@ -21,14 +21,6 @@ public class PatrolController extends AccelerationController {
 
   public void setRange(double range) {
     this.range = range;
-  }
-
-  public double getAttackRange() {
-    return attackRange;
-  }
-
-  public void setAttackRange(double range) {
-    this.attackRange = range;
   }
 
   public double getStart() {
@@ -131,7 +123,7 @@ public class PatrolController extends AccelerationController {
       } else {
         controlledObject.setVelocity(new Point2D(0, 0));
       }
-      if (controlledObject instanceof Attacker && !attackDelayed && Math.abs(controlledObject.getPosition().distance(target.getPosition())) < attackRange) {
+      if (controlledObject instanceof Attacker && !attackDelayed) {
         ((Attacker)controlledObject).attack(target);
         attackDelayed = true;
         ScheduledThreadPoolExecutor delayExecutor = new ScheduledThreadPoolExecutor(1);
