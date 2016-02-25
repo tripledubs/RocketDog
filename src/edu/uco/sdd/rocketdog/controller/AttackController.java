@@ -2,8 +2,7 @@ package edu.uco.sdd.rocketdog.controller;
 import edu.uco.sdd.rocketdog.model.Entity;
 import edu.uco.sdd.rocketdog.model.TangibleEntity;
 
-public abstract class AttackController implements Entity {
+public interface AttackController {
   
-  protected TangibleEntity controlledObject;
-  public abstract boolean attack(TangibleEntity target);
+   boolean attack(TangibleEntity target);
 }

@@ -1,16 +1,16 @@
 package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Attackable;
-import edu.uco.sdd.rocketdog.model.Entity;
 import edu.uco.sdd.rocketdog.model.TangibleEntity;
-import java.util.Map;
 
 /**
  * Attack controller for melee entities.
  * @author Spencer Harris
  */
-public class MeleeAttackController extends AttackController {
+public class MeleeAttackController implements AttackController {
   private double damage;
+  protected TangibleEntity controlledObject;
+
 
   public MeleeAttackController(TangibleEntity entity) {
     if (entity == null)
@@ -35,7 +35,4 @@ public class MeleeAttackController extends AttackController {
     }
     return false;
   }
-
-  @Override
-  public boolean process(Map<Entity, Boolean> changedEntities) {return false;}
 }
