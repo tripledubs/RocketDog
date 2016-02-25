@@ -2,6 +2,7 @@ package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -25,6 +26,23 @@ public class LevelOne extends Level {
         addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 512, 512);
         addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).build(), 64, 64);
         addHouses();
+        // Aid Items
+        addAidItem(new ShieldItem(new Point2D(200,200)),56,56);
+        addAidItem(new ShieldItem(new Point2D(600,200)),56,56);
+        //addAidItem(new BoostItem(new Point2D(400,200)),56,56);
+        
+        // Hazards
+        addHazard(new HazardSpikes(new Point2D(936,300)),64,64);
+        addHazard(new HazardSpikes(new Point2D(936,236)),64,64);
+        addHazard(new HazardSpikes(new Point2D(936,172)),64,64);
+        
+        //Obstructions
+        addObstruction(new ObstructionBrickWall(new Point2D(700,300)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(700,236)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(700,172)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
     }
     
     /**
