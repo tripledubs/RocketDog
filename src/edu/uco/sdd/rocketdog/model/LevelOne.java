@@ -7,16 +7,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class LevelOne extends Level {
+public class LevelOne extends Level implements ILevel {
     Text t;
     ImageView bg;
     Pane root;
     Group houses;
+    boolean isDone;
     
 
     public LevelOne(Pane root, ImageView background, int width, int height) {
         super(root,background,width,height);
         this.root = root; // Need a handle to root to add images
+        isDone = false;
        
         bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll
         
@@ -136,5 +138,10 @@ public class LevelOne extends Level {
         super.update();
         positionScreen();
         //houses.setTranslateX(houses.getTranslateX()-1);
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
     }
 }
