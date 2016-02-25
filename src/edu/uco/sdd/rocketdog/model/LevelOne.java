@@ -4,17 +4,16 @@ import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class LevelOne extends Level {
     Text t;
     ImageView bg;
-    Pane root;
+    Group root;
     Group houses;
     
 
-    public LevelOne(Pane root, ImageView background, int width, int height) {
+    public LevelOne(Group root, ImageView background, int width, int height) {
         super(root,background,width,height);
         this.root = root; // Need a handle to root to add images
        
@@ -23,7 +22,7 @@ public class LevelOne extends Level {
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 128, 128);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).build(), 512, 512);
         addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).build(), 64, 64);
         addHouses();
     }

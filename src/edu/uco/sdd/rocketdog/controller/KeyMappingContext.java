@@ -1,4 +1,4 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.controller;
 
 public class KeyMappingContext {
 

@@ -1,8 +1,8 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.model.Animations;
 
 import javafx.geometry.Rectangle2D;
 
-class SpitzDeadAnimateStrategy extends AbstractSpitzAnimationStrategy implements IAnimateStrategy {
+public class SpitzDeadAnimateStrategy extends AbstractSpitzAnimationStrategy implements IAnimateStrategy {
 
     public SpitzDeadAnimateStrategy() {
         super("/Spitzer_Dead.png", new Rectangle2D[]{

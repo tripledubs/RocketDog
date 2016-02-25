@@ -1,5 +1,7 @@
-package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.model.Animations;
 
+import edu.uco.sdd.rocketdog.model.Animations.IAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.Animations.AbstractSpitzAnimationStrategy;
 import javafx.geometry.Rectangle2D;
 
 public class BoostAnimateStrategy extends AbstractSpitzAnimationStrategy implements IAnimateStrategy {

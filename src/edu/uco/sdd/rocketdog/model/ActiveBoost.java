@@ -1,6 +1,8 @@
 
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.model.Animations.SpitzDashAnimateStrategy;
+
 /**
  * Class for a boost power up 
  * Inherits from ActiveAidItem, see description in ActiveAidItem.java 
