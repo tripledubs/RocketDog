@@ -6,7 +6,7 @@ import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_HEIGHT;
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_WIDTH;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 public class SceneFactory {
 
@@ -28,6 +28,8 @@ public class SceneFactory {
                 return new SplashLevel(new StackPane());
             case "One":
                 return new LevelOne(new Group(), ldr.loadImage("/Level 2.png"), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+            case "introScene":
+                return new CutSceneIntro(new BorderPane());
         }
         throw new LevelNotFound(level + " is not valid for getLevel in LevelFactory.java");
     }

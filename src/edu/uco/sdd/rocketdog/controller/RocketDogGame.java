@@ -43,6 +43,7 @@ public class RocketDogGame extends Application {
          * from LevelFactory
          */
         levels = new String[]{
+            "introScene",
             "Splash",
             "One",
             "Two",
