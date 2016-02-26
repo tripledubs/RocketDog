@@ -51,13 +51,13 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
         }
 
         public Builder setVelocity(Point2D velocity) {
-          this.velocity = velocity;
-          return this;
+            this.velocity = velocity;
+            return this;
         }
 
         public Builder setLevel(Level level) {
-          this.level = level;
-          return this;
+            this.level = level;
+            return this;
         }
 
         public Builder setEntityClass(EntityClass ec) {
@@ -75,8 +75,9 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
             newProjectile.addController(controller);
             controller.setAcceleration(new Point2D(0, 0));
             controller.setVelocity(velocity);
-            if (entityClass != null)
-              newProjectile.addEntityClass(entityClass, 1);
+            if (entityClass != null) {
+                newProjectile.addEntityClass(entityClass, 1);
+            }
             MeleeAttackController attackController = new MeleeAttackController(newProjectile);
             attackController.setDamage(1);
             newProjectile.setMeleeAttack(attackController);
@@ -92,7 +93,8 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
         setPosition(new Point2D(builder.x, builder.y));
     }
 
-    void update() {
+    @Override
+    public void update() {
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
 
@@ -111,8 +113,9 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
     @Override
     public void attack(TangibleEntity target) {
         if (!isDead() && meleeAttack != null) {
-          if (meleeAttack.attack(target))
-            this.setDead(true);
+            if (meleeAttack.attack(target)) {
+                this.setDead(true);
+            }
         }
     }
 }
