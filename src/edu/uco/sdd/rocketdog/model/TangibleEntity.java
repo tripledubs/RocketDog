@@ -8,8 +8,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public class TangibleEntity implements Entity {
+public abstract class TangibleEntity implements Entity {
 
+    protected double currentHealth;
+    private double maximumHealth;
     private boolean dead;
     private boolean colliding; //flag for collision
     private Point2D position;
@@ -19,20 +21,48 @@ public class TangibleEntity implements Entity {
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
     private Level level;
+    private State currentState;
+    private ArrayList<Modification> modifications;
+    private final ArrayList<Observer> observers;
 
     public TangibleEntity() {
-        dead = false;
-        colliding = false;
-        hitbox = new Hitbox(0, 0);
-        acceleration = new Point2D(0, 0);
-        position = new Point2D(0, 0);
-        velocity = new Point2D(0, 0);
+        this(new Point2D(0, 0));
+    }
+
+    public TangibleEntity(Point2D startPosition) {
+        this(startPosition, 0, 0, 0);
+    }
+
+    public TangibleEntity(Point2D startPosition, double hitboxWidth, double hitboxHeight, int startHealth) {
+        this.dead = false;
+        this.colliding = false;
+        this.modifications = new ArrayList<>();
+        this.currentState = new FullHealthState(startHealth);
+        this.observers = new ArrayList<>();
+        this.hitbox = new Hitbox(0, 0);
+        this.acceleration = new Point2D(0, 0);
+        this.position = startPosition;
+        this.velocity = new Point2D(0, 0);
+        this.hitbox.setWidth(hitboxWidth);
+        this.hitbox.setHeight(hitboxHeight);
     }
 
     public Map<EntityClass, Integer> getEntityClasses() {
         return new HashMap<>(entityClasses);
     }
+
+    public ArrayList<Modification> getModifications() {
+        return modifications;
+    }
     protected ArrayList<MovementController> controllers = new ArrayList<>();
+
+    public boolean hasCollided(TangibleEntity otherEntity) {
+        return getHitbox().getBoundsInParent().intersects(otherEntity.getHitbox().getBoundsInParent());
+    }
+
+    public State getState() {
+        return this.currentState;
+    }
 
     @Override
     public boolean process(Map<Entity, Boolean> changedEntities) {
@@ -67,12 +97,41 @@ public class TangibleEntity implements Entity {
         }
     }
 
+    public void addModification(Modification newModification) {
+        modifications.add(newModification);
+    }
+
+    public void removeModification(Modification oldModification) {
+        modifications.remove(oldModification);
+    }
+
+    public void setState(State newState) {
+        this.currentState = newState;
+    }
+
+    public void setCurrentHealth(double newHealth) {
+        this.currentHealth = newHealth;
+        notifyObservers();
+    }
+
+    public double getCurrentHealth() {
+        return this.currentHealth;
+    }
+
+    public double getMaximumHealth() {
+        return this.maximumHealth;
+    }
+
+    public void setMaximumHealth(double newMaximumHealth) {
+        this.maximumHealth = newMaximumHealth;
+    }
+
     public boolean isDead() {
         return dead;
     }
 
     protected void setDead(boolean dead) {
-      this.dead = dead;
+        this.dead = dead;
     }
 
     public Hitbox getHitbox() {
@@ -90,17 +149,17 @@ public class TangibleEntity implements Entity {
     public Point2D getPosition() {
         return position;
     }
-    
-    /** 
-     * The client should not have to call new Point2D
-     * every time.
+
+    /**
+     * The client should not have to call new Point2D every time.
+     *
      * @param x x coordinate
      * @param y y coordinate
      */
     public void setPos(double x, double y) {
-        setPosition(new Point2D(x,y));
+        setPosition(new Point2D(x, y));
     }
-    
+
     public void setPosition(Point2D newPosition) {
         position = newPosition;
     }
@@ -109,15 +168,16 @@ public class TangibleEntity implements Entity {
         return velocity;
     }
 
-    /** 
-     * The client should not have to call new Point2D
-     * every time.
+    /**
+     * The client should not have to call new Point2D every time.
+     *
      * @param x x coordinate
      * @param y y coordinate
      */
     public void setVel(double x, double y) {
-        setVelocity(new Point2D(x,y));
+        setVelocity(new Point2D(x, y));
     }
+
     public void setVelocity(Point2D newVelocity) {
         velocity = newVelocity;
     }
@@ -165,19 +225,37 @@ public class TangibleEntity implements Entity {
             colliding = false;
         }
     }
-    
+
     public boolean isColliding() {
         return colliding;
     }
 
     @Override
     public Level getLevel() {
-      return this.level;
+        return this.level;
     }
 
     @Override
     public void setLevel(Level level) {
-      this.level = level;
+        this.level = level;
     }
 
+    @Override
+    public void addObserver(Observer newObserver) {
+        this.observers.add(newObserver);
+    }
+
+    @Override
+    public void removeObserver(Observer oldObserver) {
+        observers.remove(oldObserver);
+    }
+
+    @Override
+    public void notifyObservers() {
+        this.observers.stream().forEach((observer) -> {
+            observer.update(getCurrentHealth());
+        });
+    }
+
+    public abstract void update();
 }

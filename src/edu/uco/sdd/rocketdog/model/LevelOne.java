@@ -16,6 +16,7 @@ public class LevelOne extends Level {
 
     public LevelOne(Group root, ImageView background, int width, int height) {
         super(root,background,width,height);
+        t = new Text();
         this.root = root; // Need a handle to root to add images
        
         bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll

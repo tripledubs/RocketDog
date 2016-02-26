@@ -4,7 +4,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 public interface IAnimateStrategy {
-    void handle();
-    Rectangle2D getCurrentView();
-    Image getImage();
+
+    public void handle();
+
+    public Rectangle2D getCurrentView();
+
+    public Image getImage();
 }

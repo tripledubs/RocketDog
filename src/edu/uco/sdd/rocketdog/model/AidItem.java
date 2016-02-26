@@ -21,21 +21,24 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 /**
  * @author Richard Dobie
  */
 public class AidItem extends TangibleEntity implements IAnimateStrategy {
-    private IAnimateStrategy animating; 
-    
-    public AidItem(Point2D position, IAnimateStrategy animate){
+
+    private IAnimateStrategy animating;
+
+    public AidItem(Point2D position, IAnimateStrategy animate) {
         super();
         this.setPosition(position);
         animating = animate;
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
     }
-    
-    public void update(){
+
+    @Override
+    public void update() {
         setPosition(new Point2D(getPosition().getX(), getPosition().getY()));
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
@@ -43,12 +46,9 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         getHitbox().setTranslateY(getPosition().getY());
         getSprite().setViewport(animating.getCurrentView());
         handle(); // Animations
-        if (this.isColliding()){
-            
-        }
-       
+
     }
-    
+
     public void setAnimation(IAnimateStrategy newAnimation) {
         animating = newAnimation;
         getSprite().setImage(animating.getImage());
