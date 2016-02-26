@@ -1,6 +1,7 @@
 
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.model.Animations.BrickAnimateStrategy;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 /**

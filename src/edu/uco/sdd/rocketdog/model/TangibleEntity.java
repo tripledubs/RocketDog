@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class TangibleEntity implements Entity {
 
-    private boolean isDead;
+    private boolean dead;
     private boolean colliding; //flag for collision
     private Point2D position;
     private Point2D acceleration;
@@ -18,9 +18,10 @@ public class TangibleEntity implements Entity {
     private Hitbox hitbox;
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
+    private Level level;
 
     public TangibleEntity() {
-        isDead = false;
+        dead = false;
         colliding = false;
         hitbox = new Hitbox(0, 0);
         acceleration = new Point2D(0, 0);
@@ -67,7 +68,11 @@ public class TangibleEntity implements Entity {
     }
 
     public boolean isDead() {
-        return isDead;
+        return dead;
+    }
+
+    protected void setDead(boolean dead) {
+      this.dead = dead;
     }
 
     public Hitbox getHitbox() {
@@ -165,8 +170,14 @@ public class TangibleEntity implements Entity {
         return colliding;
     }
 
-    public void setIsDead(boolean isDead) {
-        this.isDead = isDead;
+    @Override
+    public Level getLevel() {
+      return this.level;
     }
-     
+
+    @Override
+    public void setLevel(Level level) {
+      this.level = level;
+    }
+
 }

@@ -1,18 +1,22 @@
 package edu.uco.sdd.rocketdog.model;
 
+import edu.uco.sdd.rocketdog.controller.KeyMappingContext;
+import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class Level extends Scene {
+public class Level extends Scene implements ILevel {
 
     final private RocketDog rocketDog;
     final private EntityClass player;
@@ -21,11 +25,13 @@ public class Level extends Scene {
     private ArrayList<ActiveAidItem> ActiveAidItems; //container of ActiveAidItems
     private ArrayList<Hazard> Hazards; // container of Hazards
     private ArrayList<Obstruction> Obstructions; //container of Obstructions
+    private ArrayList<Projectile> projectiles;
     private boolean visibleHitBoxes;
-    private Pane root;
+    private Group root;
     private KeyMappingContext keyMapping;
+    private boolean isDone;
 
-    public Level(Pane root, ImageView background, int width, int height) {
+    public Level(Group root, ImageView background, int width, int height) {
         super(root, width, height);
         this.root = root;
 
@@ -34,11 +40,12 @@ public class Level extends Scene {
         visibleHitBoxes = false;
         rocketDog = new RocketDog();
         player = new EntityClass("Player");
-        enemies = new ArrayList();
-        AidItems = new ArrayList();
-        ActiveAidItems = new ArrayList();
-        Hazards = new ArrayList();
-        Obstructions = new ArrayList();
+        enemies = new ArrayList<>();
+        AidItems = new ArrayList<>();
+        ActiveAidItems = new ArrayList<>();
+        Hazards = new ArrayList<>();
+        Obstructions = new ArrayList<>();
+        projectiles = new ArrayList<>();
 
         //Background Added to game
         root.getChildren().add(background);
@@ -49,8 +56,10 @@ public class Level extends Scene {
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
+        rocketDog.setLevel(this);
         root.getChildren().add(rocketDog.getSprite());
         root.getChildren().add(rocketDog.getHitbox());
+        root.getChildren().add(rocketDog.getHealthText());
 
         //Keyboard Handling
         this.setOnKeyPressed((KeyEvent event) -> {
@@ -78,6 +87,17 @@ public class Level extends Scene {
         return player;
     }
 
+    public List<Enemy> getEnemies() {
+      return enemies;
+    }
+
+    public List<TangibleEntity> getAllEntities() {
+      ArrayList<TangibleEntity> entities = new ArrayList<>(1 + enemies.size());
+      entities.add(getRocketDog());
+      entities.addAll(getEnemies());
+      return entities;
+    }
+
     public void addEnemy(Enemy enemy, double width, double height) {
         //Setup enemy hitbox information
         enemy.getHitbox().setWidth(width);
@@ -90,7 +110,7 @@ public class Level extends Scene {
     }
 
     public void removeEnemy(Enemy enemy) {
-        //Make sure the ArrayList has the enemy within it 
+        //Make sure the ArrayList has the enemy within it
         //before tyring to remove
         if (enemies.indexOf(enemy) > -1) {
             enemies.remove(enemy);
@@ -233,6 +253,37 @@ public class Level extends Scene {
         }
     }
     
+    public void addProjectile(Projectile p, double width, double height) {
+        //Setup enemy hitbox information
+        p.getHitbox().setWidth(width);
+        p.getHitbox().setHeight(height);
+
+        //Add enemy information to level
+        projectiles.add(p);
+        root.getChildren().add(p.getSprite());
+        root.getChildren().add(p.getHitbox());
+    }
+
+    public void removeProjectile(Projectile p) {
+        //Make sure the ArrayList has the enemy within it
+        //before tyring to remove
+        if (projectiles.indexOf(p) > -1) {
+            projectiles.remove(p);
+        }
+
+        //Make sure the root has the enemy in its children
+        //before ting to remove
+        if (root.getChildren().indexOf(p.getSprite()) > -1) {
+            root.getChildren().remove(p.getSprite());
+        }
+
+        //Make sure the root has the enemy in its children
+        //before ting to remove
+        if (root.getChildren().indexOf(p.getHitbox()) > -1) {
+            root.getChildren().remove(p.getHitbox());
+        }
+    }
+
     public void setVisibleHitBoxes(boolean value) {
         visibleHitBoxes = value;
     }
@@ -245,6 +296,7 @@ public class Level extends Scene {
 
         //Set rocketDog hitbox visibility
         rocketDog.getHitbox().setVisible(visibleHitBoxes);
+        rocketDog.getHealthText().setVisible(visibleHitBoxes);
 
         Map<Entity, Boolean> changed = new HashMap<>();
         changed.put(rocketDog, true);
@@ -252,6 +304,11 @@ public class Level extends Scene {
         enemies.stream().forEach((enemy) -> {
             changed.put(enemy, true);
             enemy.process(changed);
+        });
+
+        projectiles.stream().forEach((p) -> {
+            changed.put(p, true);
+            p.process(changed);
         });
 
         enemies.stream().forEach((enemy) -> {
@@ -264,6 +321,23 @@ public class Level extends Scene {
             //Check for collision
             enemy.processCollision(rocketDog);
         });
+
+        for (int i = 0; i < projectiles.size(); ++i) {
+          Projectile p = projectiles.get(i);
+          if (!p.isDead()) {
+            //Update projectile
+            p.update();
+
+            //Set projectile hitbox visibility
+            p.getHitbox().setVisible(visibleHitBoxes);
+
+            //Check for collision
+            p.processCollision(rocketDog);
+          } else {
+            removeProjectile(p);
+            --i;
+          }
+        }
         
         AidItems.stream().forEach((aidItem) -> {
             //Update enemy
@@ -337,5 +411,10 @@ public class Level extends Scene {
                     rocketDog.setVelocity(new Point2D(0, 0));               
             }
         });
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
     }
 }

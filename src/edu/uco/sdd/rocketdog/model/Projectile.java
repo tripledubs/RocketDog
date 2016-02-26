@@ -1,8 +1,7 @@
 package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.MeleeAttackController;
-import edu.uco.sdd.rocketdog.controller.PatrolController;
-import edu.uco.sdd.rocketdog.controller.ProjectileAttackController;
+import edu.uco.sdd.rocketdog.controller.StraightLineMovementController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -12,17 +11,23 @@ import javafx.scene.image.ImageView;
  *
  * @author Dubs
  */
-public class Enemy extends TangibleEntity implements Attacker {
+public class Projectile extends TangibleEntity implements Attacker, Attackable {
 
     private Image img;
     private MeleeAttackController meleeAttack;
-    private ProjectileAttackController projectileAttack;
 
-    static class Builder {
+    @Override
+    public void damage(double attackStrength) {
+        this.setDead(true);
+        this.getSprite().setVisible(false);
+    }
+
+    public static class Builder {
 
         private Image img;
         private int x;
         private int y;
+        private Point2D velocity;
         private EntityClass entityClass;
         private Level level;
 
@@ -45,6 +50,11 @@ public class Enemy extends TangibleEntity implements Attacker {
             return this;
         }
 
+        public Builder setVelocity(Point2D velocity) {
+          this.velocity = velocity;
+          return this;
+        }
+
         public Builder setLevel(Level level) {
           this.level = level;
           return this;
@@ -59,22 +69,23 @@ public class Enemy extends TangibleEntity implements Attacker {
             return this.entityClass;
         }
 
-        public Enemy build() {
-            Enemy newBadGuy = new Enemy(this);
-            PatrolController controller = new PatrolController(newBadGuy);
-            newBadGuy.addController(controller);
-            controller.setRange(300.);
-            controller.setStart(x - 100.);
-            controller.setEnd(x + 100.);
-            newBadGuy.addEntityClass(entityClass, 1);
-            newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
-            newBadGuy.setProjectileAttack(new ProjectileAttackController(newBadGuy));
-            newBadGuy.setLevel(level);
-            return newBadGuy;
+        public Projectile build() {
+            Projectile newProjectile = new Projectile(this);
+            StraightLineMovementController controller = new StraightLineMovementController(newProjectile);
+            newProjectile.addController(controller);
+            controller.setAcceleration(new Point2D(0, 0));
+            controller.setVelocity(velocity);
+            if (entityClass != null)
+              newProjectile.addEntityClass(entityClass, 1);
+            MeleeAttackController attackController = new MeleeAttackController(newProjectile);
+            attackController.setDamage(1);
+            newProjectile.setMeleeAttack(attackController);
+            newProjectile.setLevel(level);
+            return newProjectile;
         }
     }
 
-    private Enemy(Builder builder) {
+    private Projectile(Builder builder) {
         super();
         img = builder.img;
         setSprite(new ImageView(img));
@@ -87,7 +98,6 @@ public class Enemy extends TangibleEntity implements Attacker {
 
         getHitbox().setTranslateX(getPosition().getX());
         getHitbox().setTranslateY(getPosition().getY());
-        System.out.println(getPosition().getX() + " " + getPosition().getY());
     }
 
     public MeleeAttackController getMeleeAttack() {
@@ -98,21 +108,11 @@ public class Enemy extends TangibleEntity implements Attacker {
         this.meleeAttack = meleeAttack;
     }
 
-    public ProjectileAttackController getProjectileAttack() {
-        return projectileAttack;
-    }
-
-    public void setProjectileAttack(ProjectileAttackController projectileAttack) {
-        this.projectileAttack = projectileAttack;
-    }
-
     @Override
     public void attack(TangibleEntity target) {
-        if (meleeAttack != null) {
-          meleeAttack.attack(target);
-        }
-        if (projectileAttack != null) {
-          projectileAttack.attack(target);
+        if (!isDead() && meleeAttack != null) {
+          if (meleeAttack.attack(target))
+            this.setDead(true);
         }
     }
 }
