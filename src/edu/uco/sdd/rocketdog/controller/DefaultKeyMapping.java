@@ -2,11 +2,13 @@ package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Animations.SpitzChargeGunAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.FullHealthState;
 import edu.uco.sdd.rocketdog.model.LargeLaserAttack;
 import edu.uco.sdd.rocketdog.model.LaserAttack;
 import edu.uco.sdd.rocketdog.model.Level;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 public class DefaultKeyMapping implements KeyMapping {
 
@@ -28,22 +30,37 @@ public class DefaultKeyMapping implements KeyMapping {
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), speed));
                 break;
             case J:
-                //If RocketDog is facing left, shoot left, otherwise shoot right
+                int i = currentLevel.checkFiredLaser();
+                if (i == -1) {
+                    break;
+                }
+                currentLevel.getLaserWeapon(i).getHitbox().setStroke(Color.GREEN);
+                currentLevel.getLaserWeapon(i).setVisableOn();
+                currentLevel.getLaserWeapon(i).setPosition(new Point2D(currentLevel.getRocketDog().getPosition().getX() + 100,
+                        currentLevel.getRocketDog().getPosition().getY() + 65));
                 if (currentLevel.getRocketDog().getSprite().getScaleX() == -1) {
-                    currentLevel.getRocketDog().addModification(new LaserAttack(currentLevel.getRocketDog().getPosition().add(0, 65), new Point2D(-5.0d, 0), true));
+                    currentLevel.getLaserWeapon(i).setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
                 } else {
-                    currentLevel.getRocketDog().addModification(new LaserAttack(currentLevel.getRocketDog().getPosition().add(100, 65), new Point2D(5.0d, 0), true));
+                    currentLevel.getLaserWeapon(i).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 }
                 break;
             case K:
-                //If RocketDog is facing left, shoot left, otherwise shoot right
+                int j = currentLevel.checkFiredLargerLaser();
+                if (j == -1) {
+                    break;
+                }
+                currentLevel.getLargeLaserWeapon(j).getHitbox().setStroke(Color.GREEN);
+                currentLevel.getLargeLaserWeapon(j).setVisableOn();
+                currentLevel.getLargeLaserWeapon(j).setPosition(new Point2D(currentLevel.getRocketDog().getPosition().getX() + 100,
+                        currentLevel.getRocketDog().getPosition().getY() + 15));
                 if (currentLevel.getRocketDog().getSprite().getScaleX() == -1) {
-                    currentLevel.getRocketDog().addModification(new LargeLaserAttack(currentLevel.getRocketDog().getPosition().add(0, 15), new Point2D(-5.0d, 0), true));
+                    currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
                 } else {
-                    currentLevel.getRocketDog().addModification(new LargeLaserAttack(currentLevel.getRocketDog().getPosition().add(100, 15), new Point2D(5.0d, 0), true));
+                    currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 }
                 break;
             case F1:
+                currentLevel.getRocketDog().setState(new FullHealthState(1000));
                 currentLevel.getRocketDog().setAnimation(new SpitzChargeGunAnimateStrategy());
                 break;
             case F2:
