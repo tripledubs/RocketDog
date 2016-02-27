@@ -37,7 +37,7 @@ public class SplashLevel extends Scene implements ILevel {
     private boolean isDone;
 
     public SplashLevel(StackPane root) {
-        super(root,800,800);
+        super(root,1000,924);
         isDone = false;
         this.root = root;
 
@@ -60,9 +60,14 @@ public class SplashLevel extends Scene implements ILevel {
          * *****************START APPLICATION******************
          */
         startButton.setOnAction((ActionEvent) -> {
-            isDone = true;
-            if (!optionsDefaultButton.isDisable()) {
+            CutSceneStage cs = new CutSceneStage();
+            String s = "/splash.mp4";
+            cs.CutSceneStage("./src/splash.mp4").showAndWait();
+            if (!cs.window.isShowing()) {
                 isDone = true;
+                if (!optionsDefaultButton.isDisable()) {
+                    isDone = true;
+                }
             }
         });
 

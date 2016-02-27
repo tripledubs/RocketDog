@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 
 public class RocketDogGame extends Application {
 
-    public static final int GAME_SCREEN_WIDTH = 800;
-    public static final int GAME_SCREEN_HEIGHT = 600;
+    public static final int GAME_SCREEN_WIDTH = 1000;
+    public static final int GAME_SCREEN_HEIGHT = 924;
     private GamePlayLoop gamePlayLoop;
     private Scene currentLevel;
     private ILevel updateableLevel;

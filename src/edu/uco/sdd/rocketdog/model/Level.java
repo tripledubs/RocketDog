@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -34,6 +35,9 @@ public class Level extends Scene implements Observer, ILevel {
     private KeyMappingContext keyMapping;
     private boolean isDone;
     private Text scoreText;
+    final private ArrayList<LaserAttack> weapon;
+    //final private LaserWeapon weapon;
+    final private ArrayList<LargeLaserAttack> largeWeapon;
 
     public Level(Group root, ImageView background, int width, int height) {
         super(root, width, height);
@@ -52,18 +56,47 @@ public class Level extends Scene implements Observer, ILevel {
         Hazards = new ArrayList<>();
         Obstructions = new ArrayList<>();
         projectiles = new ArrayList<>();
+        weapon = new ArrayList();
+        //largeWeapon = new LargeLaserWeapon();
+        largeWeapon = new ArrayList();
 
         //Background Added to game
         root.getChildren().add(background);
         //root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
-        rocketDog.setPosition(new Point2D(RocketDogGame.GAME_SCREEN_WIDTH / 3, RocketDogGame.GAME_SCREEN_HEIGHT / 2));
+        rocketDog.setPosition(new Point2D(150, 400));
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
         rocketDog.setLevel(this);
         rocketDog.setState(new FullHealthState(1000));
+
+        //Laser Weapon information added to game
+        for (int i = 0; i < 3; i++) {
+            weapon.add(new LaserAttack());
+            getLaserWeapon(i).setPosition(new Point2D(100, 600));
+            getLaserWeapon(i).getHitbox().setWidth(44);
+            getLaserWeapon(i).getHitbox().setHeight(44);
+            getLaserWeapon(i).getHitbox().setStroke(Color.TRANSPARENT);
+            root.getChildren().add(getLaserWeapon(i).getSprite());
+            root.getChildren().add(getLaserWeapon(i).getHitbox());
+            //weapon.getHitbox().setWidth(44);
+            //weapon.getHitbox().setHeight(44);
+            //root.getChildren().add(weapon.getSprite());
+            //root.getChildren().add(weapon.getHitbox());
+        }
+
+        //Large Laser Weapon information added to game
+        for (int i = 0; i < 3; i++) {
+            largeWeapon.add(new LargeLaserAttack());
+            getLargeLaserWeapon(i).setPosition(new Point2D(100, 600));
+            getLargeLaserWeapon(i).getHitbox().setWidth(200);
+            getLargeLaserWeapon(i).getHitbox().setHeight(133);
+            getLargeLaserWeapon(i).getHitbox().setStroke(Color.TRANSPARENT);
+            root.getChildren().add(getLargeLaserWeapon(i).getSprite());
+            root.getChildren().add(getLargeLaserWeapon(i).getHitbox());
+        }
 
         root.getChildren().add(rocketDog.getSprite());
         root.getChildren().add(rocketDog.getHitbox());
@@ -81,6 +114,14 @@ public class Level extends Scene implements Observer, ILevel {
         this.setOnKeyReleased((KeyEvent event) -> {
             keyMapping.getKeyMapping().handleKeyReleased(this, event, 0.0d);
         });
+    }
+
+    public LaserAttack getLaserWeapon(int i) {
+        return weapon.get(i);
+    }
+
+    public LargeLaserAttack getLargeLaserWeapon(int i) {
+        return largeWeapon.get(i);
     }
 
     public KeyMappingContext getKeyMapping() {
@@ -299,6 +340,33 @@ public class Level extends Scene implements Observer, ILevel {
         visibleHitBoxes = value;
     }
 
+    public int checkFiredLaser() {
+        for (int i = 0; i < weapon.size(); i++) {
+            if (weapon.get(i).getPosition().getX() > super.getHeight()) {
+                weapon.get(i).setDead(false);
+            }
+            if (!weapon.get(i).isDead()) {
+                weapon.get(i).setDead(true);
+                return i;
+            }
+
+        }
+        return -1;
+    }
+
+    public int checkFiredLargerLaser() {
+        for (int i = 0; i < largeWeapon.size(); i++) {
+            if (largeWeapon.get(i).getPosition().getX() > super.getWidth()) {
+                largeWeapon.get(i).setDead(false);
+            }
+            if (!largeWeapon.get(i).isDead()) {
+                largeWeapon.get(i).setDead(true);
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void update() {
 
@@ -313,65 +381,21 @@ public class Level extends Scene implements Observer, ILevel {
 
         Map<Entity, Boolean> changed = new HashMap<>();
         changed.put(rocketDog, true);
-        rocketDog.getModifications().forEach((modification) -> {
-            if (!root.getChildren().contains(modification.getSprite()) && modification.isActive()) {
-                rocketDog.count1 = 0;
-                rocketDog.count2 = 0;
-                rocketDog.getModifications().forEach((entity) -> rocketDog.count1 += (entity.getClass() == LaserAttack.class) ? 1: 0);
-                rocketDog.getModifications().forEach((entity) -> rocketDog.count2 += (entity.getClass() == LargeLaserAttack.class) ? 1: 0);
-                
-                if(modification.getClass() == LaserAttack.class && rocketDog.count1 <= 3) {
-                    addTangibleEntity(modification);
-                }
-                
-                if(modification.getClass() == LargeLaserAttack.class && rocketDog.count2 <= 3) {
-                    addTangibleEntity(modification);
-                }
-            }
+        //Update the weapon attack
+        weapon.stream().forEach((laser) -> {
+            laser.update();
+            laser.getHitbox().setVisible(visibleHitBoxes);
         });
+        //weapon.update();
 
-        entities.stream().forEach((entity) -> {
-            //Process Entities
-            changed.put(entity, true);
-            entity.process(changed);
-            entity.getState().doAction(entity);
-            entity.update();
-            System.out.println(entity.getPosition().getX());
-            if(entity.getPosition().getX() <= 0 || entity.getPosition().getX() >= this.getWidth()) {
-                removeTangibleEntity(entity);
-                rocketDog.removeModification(entity);
-                entity.setState(new DeathState());
-            }
+        //Set weapon hitbox visibility
+        //weapon.getHitbox().setVisible(visibleHitBoxes);
+        //Update the large weapon attack
+        largeWeapon.stream().forEach((largeLaser) -> {
+            largeLaser.update();
+            largeLaser.getHitbox().setVisible(visibleHitBoxes);
         });
-
-        entities.stream().forEach((entity) -> {
-            //Set enemy hitbox visibility
-            entity.getHitbox().setVisible(rocketDog.getHitbox().isVisible());
-        });
-
-        entities.stream().forEach((entity) -> {
-            //Detect Collisions
-            enemies.stream().forEach((otherEntity) -> {
-                if (entity.hasCollided(otherEntity)) {
-                    entity.setState(new CollisionState(entity.getCurrentHealth() - otherEntity.getCurrentHealth()));
-                } else if (!entity.hasCollided(otherEntity)) {
-                    entity.setState(new DamagedState());
-                }
-            });
-        });
-
-        entities.stream().forEach((entity) -> {
-            //Change entity states appropriately before detecting collision
-            if (entity.getCurrentHealth() < 0) {
-                entity.setState(new DeathState());
-            }
-        });
-
-        entities.forEach(entity -> {
-            if (entity.getState() instanceof DeathState) {
-                removeTangibleEntity(entity);
-            }
-        });
+        //largeWeapon.update();
 
         enemies.stream().forEach((enemy) -> {
             changed.put(enemy, true);
@@ -418,6 +442,9 @@ public class Level extends Scene implements Observer, ILevel {
 
                 //Check for collision
                 p.processCollision(rocketDog);
+                if(p.hasCollided(rocketDog)) {
+                    this.update(rocketDog.getCurrentHealth());
+                }
             } else {
                 removeProjectile(p);
                 --i;
@@ -519,7 +546,7 @@ public class Level extends Scene implements Observer, ILevel {
                 update(rocketDog.getCurrentHealth());
             }
         });
-        
+
         entities.removeIf(entity -> entity.getState() instanceof DeathState);
         ActiveAidItems.removeIf(entity -> entity.getState() instanceof DeathState);
         AidItems.removeIf(entity -> entity.getState() instanceof DeathState);
