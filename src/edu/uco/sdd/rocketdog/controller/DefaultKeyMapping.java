@@ -38,7 +38,11 @@ public class DefaultKeyMapping implements KeyMapping {
                 currentLevel.getLaserWeapon(i).setVisableOn();
                 currentLevel.getLaserWeapon(i).setPosition(new Point2D(currentLevel.getRocketDog().getPosition().getX() + 100,
                         currentLevel.getRocketDog().getPosition().getY() + 65));
-                currentLevel.getLaserWeapon(i).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
+                if (currentLevel.getRocketDog().getSprite().getScaleX() == -1) {
+                    currentLevel.getLaserWeapon(i).setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
+                } else {
+                    currentLevel.getLaserWeapon(i).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
+                }
                 break;
             case K:
                 int j = currentLevel.checkFiredLargerLaser();
@@ -49,7 +53,11 @@ public class DefaultKeyMapping implements KeyMapping {
                 currentLevel.getLargeLaserWeapon(j).setVisableOn();
                 currentLevel.getLargeLaserWeapon(j).setPosition(new Point2D(currentLevel.getRocketDog().getPosition().getX() + 100,
                         currentLevel.getRocketDog().getPosition().getY() + 15));
-                currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
+                if (currentLevel.getRocketDog().getSprite().getScaleX() == -1) {
+                    currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
+                } else {
+                    currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
+                }
                 break;
             case F1:
                 currentLevel.getRocketDog().setState(new FullHealthState(1000));

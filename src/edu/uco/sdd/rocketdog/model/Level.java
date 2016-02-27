@@ -65,7 +65,7 @@ public class Level extends Scene implements Observer, ILevel {
         //root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
-        rocketDog.setPosition(new Point2D(150, 400));
+        rocketDog.setPosition(new Point2D(350, 300));
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
@@ -409,10 +409,7 @@ public class Level extends Scene implements Observer, ILevel {
 
         enemies.stream().forEach((entity) -> {
             if (entity.hasCollided(rocketDog)) {
-                entity.setState(new CollisionState(entity.getCurrentHealth() - 15));
-                rocketDog.setCurrentHealth(rocketDog.getCurrentHealth() - 5);
-                rocketDog.setState(new DamagedState());
-                update(rocketDog.currentHealth);
+                update(rocketDog.getCurrentHealth());
             } else if (!entity.hasCollided(rocketDog)) {
                 entity.setState(new DamagedState());
             }
@@ -443,7 +440,8 @@ public class Level extends Scene implements Observer, ILevel {
                 //Check for collision
                 p.processCollision(rocketDog);
                 if(p.hasCollided(rocketDog)) {
-                    this.update(rocketDog.getCurrentHealth());
+                rocketDog.setState(new DamagedState());
+                update(rocketDog.currentHealth);
                 }
             } else {
                 removeProjectile(p);
