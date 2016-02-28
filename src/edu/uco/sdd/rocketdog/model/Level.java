@@ -368,7 +368,7 @@ public class Level extends Scene implements Observer, ILevel {
     }
 
     @Override
-    public void update() {
+    public void levelUpdate() {
 
         //Update RocketDog
         rocketDog.update();

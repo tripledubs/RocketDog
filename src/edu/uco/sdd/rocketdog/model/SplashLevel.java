@@ -174,7 +174,7 @@ public class SplashLevel extends Scene implements ILevel {
     }
 
     @Override
-    public void update() {
+    public void levelUpdate() {
         
     }
 
