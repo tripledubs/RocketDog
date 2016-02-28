@@ -68,7 +68,7 @@ public class RocketDogGame extends Application {
     }
 
     public void update() {
-        updateableLevel.update();
+        updateableLevel.levelUpdate();
         if (updateableLevel.isDone()) {
             lf.setLevel(levels[++levelIndex]);
             currentLevel = lf.getLevel();
