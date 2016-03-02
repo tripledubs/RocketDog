@@ -20,16 +20,17 @@ import edu.uco.sdd.rocketdog.model.SceneFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.scenicview.ScenicView;
 
 public class RocketDogGame extends Application {
 
-    public static final int GAME_SCREEN_WIDTH = 1000;
-    public static final int GAME_SCREEN_HEIGHT = 924;
+    public static final int GAME_SCREEN_WIDTH = 800;
+    public static final int GAME_SCREEN_HEIGHT = 600;
     private GamePlayLoop gamePlayLoop;
     private Scene currentLevel;
     private ILevel updateableLevel;
     Stage currentStage;
-   
+
     SceneFactory lf; // Level Factory will produce the level
     String[] levels; // Used to sequence the levels
     int levelIndex;  // Used to increment the current Level 
@@ -37,21 +38,21 @@ public class RocketDogGame extends Application {
     @Override
     public void init() {
         gamePlayLoop = new GamePlayLoop(this);
-        
+
         /**
-         * This array is used to sequence the levels that will be requested
-         * from LevelFactory
+         * This array is used to sequence the levels that will be requested from
+         * LevelFactory
          */
         levels = new String[]{
-            "Splash",
-            "One",
+            //"Splash",
+            //"One",
             "Two",
-            "Three",
+            //"Three",
         };
-        
+
         levelIndex = 0; // Used so levels can be incremented through
         lf = new SceneFactory(levels[levelIndex]); // Start the factory up
-        currentLevel = lf.getLevel();              
+        currentLevel = lf.getLevel();
         updateableLevel = (ILevel) currentLevel; // Level must obey ILevel interface
 
     }
@@ -62,13 +63,16 @@ public class RocketDogGame extends Application {
         /*  Stage and Scene must be constructed from within the start method */
         currentStage = primaryStage;
         primaryStage.setTitle("Rocket Dog!");
+        primaryStage.setMaxWidth(GAME_SCREEN_WIDTH);
+        primaryStage.setMaxHeight(GAME_SCREEN_HEIGHT);
         primaryStage.setScene(currentLevel);
         primaryStage.show();
+        //ScenicView.show(currentLevel);
         gamePlayLoop.start();
     }
 
     public void update() {
-        updateableLevel.update();
+        updateableLevel.levelUpdate();
         if (updateableLevel.isDone()) {
             lf.setLevel(levels[++levelIndex]);
             currentLevel = lf.getLevel();

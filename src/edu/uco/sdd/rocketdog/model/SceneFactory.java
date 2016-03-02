@@ -1,6 +1,6 @@
 package edu.uco.sdd.rocketdog.model;
 
-import Exceptions.LevelNotFound;
+import edu.uco.sdd.rocketdog.exceptions.LevelNotFound;
 import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_HEIGHT;
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_WIDTH;
@@ -28,7 +28,10 @@ public class SceneFactory {
                 return new SplashLevel(new StackPane());
             case "One":
                 return new LevelOne(new Group(), ldr.loadImage("/Level 2.png"), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+            case "Two":
+                return new LevelTwo(new Group(), LevelTwo.LEVEL_WIDTH, LevelTwo.LEVEL_HEIGHT); 
+            default: // Google Style Guide: default for switch is mandatory
+                throw new LevelNotFound(level + " is not valid for getLevel in LevelFactory.java");
         }
-        throw new LevelNotFound(level + " is not valid for getLevel in LevelFactory.java");
     }
 }
