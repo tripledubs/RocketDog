@@ -113,7 +113,7 @@ public class Level extends Scene implements Observer, ILevel {
 
         this.setOnKeyReleased((KeyEvent event) -> {
             keyMapping.getKeyMapping().handleKeyReleased(this, event, 0.0d);
-        });
+        }); 
     }
 
     public LaserAttack getLaserWeapon(int i) {
