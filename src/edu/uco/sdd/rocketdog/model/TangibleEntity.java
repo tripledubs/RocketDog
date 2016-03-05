@@ -16,7 +16,7 @@ public abstract class TangibleEntity implements Entity {
     private boolean colliding; //flag for collision
     private Point2D position;
     private Point2D acceleration;
-    private Point2D velocity;
+    private Point2D velocity, stuckVelocity;
     private Hitbox hitbox;
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
@@ -24,7 +24,7 @@ public abstract class TangibleEntity implements Entity {
     private State currentState;
     private ArrayList<Modification> modifications;
     private final ArrayList<Observer> observers;
-
+    private boolean movementRestricted;
     public TangibleEntity() {
         this(new Point2D(0, 0));
     }
@@ -36,6 +36,7 @@ public abstract class TangibleEntity implements Entity {
     public TangibleEntity(Point2D startPosition, double hitboxWidth, double hitboxHeight, int startHealth) {
         this.dead = false;
         this.colliding = false;
+        this.movementRestricted = false;
         this.modifications = new ArrayList<>();
         this.currentState = new FullHealthState(startHealth);
         this.observers = new ArrayList<>();
@@ -43,6 +44,7 @@ public abstract class TangibleEntity implements Entity {
         this.acceleration = new Point2D(0, 0);
         this.position = startPosition;
         this.velocity = new Point2D(0, 0);
+        this.stuckVelocity = new Point2D(0, 0);
         this.hitbox.setWidth(hitboxWidth);
         this.hitbox.setHeight(hitboxHeight);
     }
@@ -76,24 +78,32 @@ public abstract class TangibleEntity implements Entity {
                 }
             }
         }
-        if (acceleration == null) {
-            if (velocity == null) {
-                return false;
-            } else {
-                double x = velocity.getX();
-                if (x >= 1 || x <= -1) {
-                    position = position.add(velocity);
-                    return true;
-                }
-                return false;
-            }
-        } else {
-            if (velocity == null) {
-                velocity = new Point2D(0, 0);
-            }
-            position = position.add(velocity);
-            velocity = velocity.add(acceleration);
+        if (movementRestricted) {
+          if (stuckVelocity != null) {
+            position = position.add(stuckVelocity);
             return true;
+          }
+          return false;
+        } else {
+          if (acceleration == null) {
+              if (velocity == null) {
+                  return false;
+              } else {
+                  double x = velocity.getX();
+                  if (x >= 1 || x <= -1) {
+                      position = position.add(velocity);
+                      return true;
+                  }
+                  return false;
+              }
+          } else {
+              if (velocity == null) {
+                  velocity = new Point2D(0, 0);
+              }
+              position = position.add(velocity);
+              velocity = velocity.add(acceleration);
+              return true;
+          }
         }
     }
 
@@ -188,6 +198,16 @@ public abstract class TangibleEntity implements Entity {
 
     public void setAcceleration(Point2D newAcceleration) {
         acceleration = newAcceleration;
+    }
+
+    public boolean isMovementRestricted() {
+        return movementRestricted;
+    }
+
+    public void setMovementRestricted(boolean movementRestricted) {
+        this.movementRestricted = movementRestricted;
+        if (movementRestricted)
+          stuckVelocity = velocity;
     }
 
     public int getEntityClassPriority(EntityClass entityClass) {
