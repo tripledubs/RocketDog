@@ -17,7 +17,10 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     private final Text healthText;
     private int currentScore;
     public int count1 = 0, count2 = 0;
-
+    private boolean moving = false;
+    
+    private double leftSpeed, rightSpeed, upSpeed, downSpeed;
+    
     public RocketDog() {
         super();
         currentScore = 0;
@@ -32,7 +35,29 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
 
     @Override
     public void update() {
-        setPosition(new Point2D(getPosition().getX() + getVelocity().getX(), getPosition().getY() + getVelocity().getY()));
+        if(!moving && getRightSpeed() > 0){
+            setRightSpeed(getRightSpeed()-.3);
+            setPosition(new Point2D(getPosition().getX() + getRightSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getLeftSpeed() < 0){
+            setLeftSpeed(getLeftSpeed()+.3);
+            setPosition(new Point2D(getPosition().getX() + getLeftSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getUpSpeed() < 0){
+            setUpSpeed(getUpSpeed() +.3);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getUpSpeed()));
+        }
+        
+        if(!moving && getDownSpeed() > 0){
+            setDownSpeed(getDownSpeed() -.3);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getDownSpeed()));
+        }
+        if(moving){
+            setPosition(new Point2D(getPosition().getX() + getVelocity().getX(), getPosition().getY() + getVelocity().getY()));
+        }
+           
         /**
          * Moving the character is handled by the TangibleEntity class
          */
@@ -100,5 +125,44 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     public Text getHealthText() {
         return this.healthText;
     }
-
+    
+    public void setMoving(boolean x){
+        moving = x;
+    }
+    
+    public boolean getMoving(){
+        return moving;
+    }
+    
+    public double getLeftSpeed(){
+        return leftSpeed;
+    }
+    
+    public double getRightSpeed(){
+        return rightSpeed;
+    }
+    
+    public double getUpSpeed(){
+        return upSpeed;
+    }
+    
+    public double getDownSpeed(){
+        return downSpeed;
+    }
+    
+    public void setRightSpeed(double v){
+        rightSpeed = v;
+    }
+    
+    public void setLeftSpeed(double v){
+        leftSpeed = v;
+    }
+    
+    public void setUpSpeed(double v){
+        upSpeed = v;
+    }
+    
+    public void setDownSpeed(double v){
+        downSpeed = v;
+    }
 }
