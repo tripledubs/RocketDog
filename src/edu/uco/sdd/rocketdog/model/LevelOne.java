@@ -153,7 +153,7 @@ public class LevelOne extends Level {
     @Override
     public void levelUpdate() {
         super.levelUpdate();
-        //positionScreen();
+        positionScreen();
         //houses.setTranslateX(houses.getTranslateX()-1);
     }
 }
