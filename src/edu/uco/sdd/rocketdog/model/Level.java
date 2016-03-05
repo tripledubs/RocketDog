@@ -30,6 +30,7 @@ public class Level extends Scene implements Observer, ILevel {
     private ArrayList<Hazard> Hazards; // container of Hazards
     private ArrayList<Obstruction> Obstructions; //container of Obstructions
     private ArrayList<Projectile> projectiles;
+    private ArrayList<Surface> surfaces;
     private boolean visibleHitBoxes;
     private Group root;
     private KeyMappingContext keyMapping;
@@ -59,6 +60,7 @@ public class Level extends Scene implements Observer, ILevel {
         weapon = new ArrayList();
         //largeWeapon = new LargeLaserWeapon();
         largeWeapon = new ArrayList();
+        surfaces = new ArrayList<>();
 
         //Background Added to game
         root.getChildren().add(background);
@@ -257,6 +259,18 @@ public class Level extends Scene implements Observer, ILevel {
         if (root.getChildren().indexOf(hazard.getHitbox()) > -1) {
             root.getChildren().remove(hazard.getHitbox());
         }
+    }
+
+    public void addSurface(Surface surface) {
+        surfaces.add(surface);
+        root.getChildren().add(surface.getSprite());
+        root.getChildren().add(surface.getHitbox());
+    }
+
+    public void removeSurface(Surface surface) {
+        surfaces.remove(surface);
+        root.getChildren().remove(surface.getSprite());
+        root.getChildren().remove(surface.getHitbox());
     }
 
     public void addObstruction(Obstruction obstruction, double width, double height) {
@@ -532,6 +546,11 @@ public class Level extends Scene implements Observer, ILevel {
                 rocketDog.update();
                 rocketDog.setVelocity(new Point2D(0, 0));
             }
+        });
+
+        surfaces.stream().forEach(surface -> {
+            surface.update();
+            surface.process(changed);
         });
 
         enemies.stream().forEach((entity) -> {
