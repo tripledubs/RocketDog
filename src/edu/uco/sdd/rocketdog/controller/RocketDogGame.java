@@ -20,7 +20,6 @@ import edu.uco.sdd.rocketdog.model.SceneFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.scenicview.ScenicView;
 
 public class RocketDogGame extends Application {
 

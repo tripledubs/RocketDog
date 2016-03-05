@@ -33,7 +33,7 @@ public class Level extends Scene implements Observer, ILevel {
     private boolean visibleHitBoxes;
     private Group root;
     private KeyMappingContext keyMapping;
-    private boolean isDone;
+    protected boolean isDone;
     private Text scoreText;
     final private ArrayList<LaserAttack> weapon;
     //final private LaserWeapon weapon;
@@ -53,7 +53,8 @@ public class Level extends Scene implements Observer, ILevel {
         enemies = new ArrayList<>();
         AidItems = new ArrayList<>();
         ActiveAidItems = new ArrayList<>();
-        Hazards = new ArrayList<>();
+        Hazards = new ArrayList<>();        Hazards = new ArrayList<>();
+
         Obstructions = new ArrayList<>();
         projectiles = new ArrayList<>();
         weapon = new ArrayList();

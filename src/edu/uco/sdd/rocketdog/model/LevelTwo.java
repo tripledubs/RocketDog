@@ -19,6 +19,13 @@ public class LevelTwo extends Scene implements ILevel {
     public static final double LEVEL_WIDTH = 8000;
     public static final double LEVEL_HEIGHT = 600;
     
+    /**
+     * This is the game play speed of the level. Background objects
+     * should move slower than this, foreground objects should move
+     * faster than this. Velocity should match 
+     */
+    public static final double focalSpeed = 4;
+    
     AbstractMap<Group, Double> backgrounds; // Group followed by speed of scroll
     Group levelItems = new Group(); // Everything besides RocketDog and Backgrounds
     
@@ -52,10 +59,10 @@ public class LevelTwo extends Scene implements ILevel {
             double rddy = rocketdog.getVelocity().getY();
             switch (event.getCode()) {
                 case LEFT:
-                    rocketdog.setVel(-2, rddy);
+                    rocketdog.setVel(-focalSpeed, rddy);
                     break;
                 case RIGHT:
-                    rocketdog.setVel(4, rddy);
+                    rocketdog.setVel(focalSpeed, rddy);
                     break;
                 case DOWN:
                     rocketdog.setVel(rddx, 1);
@@ -94,9 +101,6 @@ public class LevelTwo extends Scene implements ILevel {
             root.getChildren().add(k);
         });
 
-        
-        
-
         // Add Everything else
         root.getChildren().add(levelItems);
         // Add RocketDog to root
@@ -131,8 +135,9 @@ public class LevelTwo extends Scene implements ILevel {
             rocketdog.setPos(zoneWidth[2] + 1, rdy);
         }
 
-        if (rdx < zoneWidth[1]) {
+        if (rdx < zoneWidth[0]) {
             scrollLeft();
+            rocketdog.setPos(zoneWidth[0] - 1, rdy);
 
         }
     }
@@ -149,6 +154,10 @@ public class LevelTwo extends Scene implements ILevel {
 
     }
 
+    private void stopScrolling() {
+        rocketdog.setVel(0, 0);
+    }
+
     private void scrollRight() {
         double rddx = rocketdog.getVelocity().getX();
         double rddy = rocketdog.getVelocity().getY();
@@ -157,7 +166,6 @@ public class LevelTwo extends Scene implements ILevel {
             return;
         }
 
-        double normal = rddx;
         backgrounds.forEach((group, scrollSpeed) -> {
             // Limit Scroll Speed to the velocity of RocketDog
             if (scrollSpeed > rddx) {
@@ -166,17 +174,14 @@ public class LevelTwo extends Scene implements ILevel {
             group.setTranslateX(group.getTranslateX() - scrollSpeed);
         });
         levelItems.setTranslateX(levelItems.getTranslateX() - rddx);
-
-    }
-
-    private void stopScrolling() {
-        rocketdog.setVel(0, 0);
     }
 
     private void scrollLeft() {
-        int fast = -3;
-        int medium = -2;
-        int slow = -1;
+        double rddx = rocketdog.getVelocity().getX();
+        backgrounds.forEach((group, scrollSpeed) -> {
+            group.setTranslateX(group.getTranslateX() + scrollSpeed );
+        });
+        levelItems.setTranslateX(levelItems.getTranslateX() + Math.abs(rddx));
 
     }
 
@@ -189,13 +194,11 @@ public class LevelTwo extends Scene implements ILevel {
         bgMedium.getChildren().add(Props.sod(5, 1200, 600));
 
         Group bgFast = new Group();
-        bgFast.getChildren().add(Props.sod(0, 1200, 600));
-
-        
+        bgFast.getChildren().add(Props.sod(0, 12000, 600));
 
         backgrounds.put(bgSlow, .005);
         backgrounds.put(bgMedium, .08);
-        backgrounds.put(bgFast, .1);
+        backgrounds.put(bgFast, focalSpeed - 1);
 
     }
 
