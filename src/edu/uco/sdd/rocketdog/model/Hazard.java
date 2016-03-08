@@ -17,6 +17,7 @@
 package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.model.Animations.IAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -50,6 +51,12 @@ public class Hazard extends TangibleEntity implements IAnimateStrategy {
             
         }
        
+    }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
     }
     
     public void setAnimation(IAnimateStrategy newAnimation) {

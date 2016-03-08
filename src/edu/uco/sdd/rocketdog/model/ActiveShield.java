@@ -14,9 +14,58 @@ import edu.uco.sdd.rocketdog.model.Animations.ShieldAnimateStrategy;
  * 
  * @author Richard Dobie
  */
-public class ActiveShield extends ActiveAidItem{
+public class ActiveShield extends ActiveAidItem {
     
     public ActiveShield(TangibleEntity te){
         super(te, new ShieldAnimateStrategy(), 500);
     }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (te.getClass() == edu.uco.sdd.rocketdog.model.Projectile.class) {
+            if (this.isColliding() && this.currentHealth < 1) {
+                this.setActive(false);
+                te.setDead(true);
+            } else if (this.isColliding()){
+                this.currentHealth--;
+                this.setState(new DamagedState());
+                te.setDead(true);
+            } 
+            
+            if (this.currentHealth < 1) this.setActive(false);
+        
+            if (!this.isActive()) {
+                this.setState(new DeathState());
+            }
+        }
+        
+        if (te.getClass() == edu.uco.sdd.rocketdog.model.Enemy.class) {
+            if (this.isColliding() && this.currentHealth < 1) {
+                this.setActive(true);
+            } else if (this.isColliding()){
+                this.currentHealth--;
+                this.setState(new DamagedState());
+            } 
+            
+            if (this.currentHealth < 1) this.setActive(false);
+        
+            if (!this.isActive()) {
+                this.setState(new DeathState());
+            }
+        }
+                
+    }
+
+    
+    /*public void damage(double attackStrength){
+        if (this.currentHealth > 0) {
+            this.currentHealth -= attackStrength;
+            if (this.currentHealth <= 0) {
+                this.setDead(true);
+                this.setActive(false);
+            }
+        }
+    }*/
 }

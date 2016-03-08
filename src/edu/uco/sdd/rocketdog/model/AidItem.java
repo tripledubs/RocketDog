@@ -48,6 +48,21 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         handle(); // Animations
 
     }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.ShieldItem.class) {
+            this.setDead(true);
+            this.setState(new DeathState());
+            this.getLevel().addActiveAidItem(new ActiveShield(te), 153, 150);
+        } else if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
+            this.setState(new DeathState());
+            te.setVelocity(new Point2D(40, 0));
+            this.getLevel().addActiveAidItem(new ActiveBoost(te), 153, 150);
+        }
+    }
 
     public void setAnimation(IAnimateStrategy newAnimation) {
         animating = newAnimation;

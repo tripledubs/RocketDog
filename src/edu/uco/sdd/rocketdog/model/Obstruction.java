@@ -51,6 +51,20 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
        
     }
     
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (this.isColliding()) {
+                //set X and Y velocity in the opposite direction
+                //then update and set velocity to 0
+                //this prevents RD from moving through the obstruction
+                te.setVelocity(new Point2D(-te.getVelocity().getX(), -te.getVelocity().getY()));
+                te.update();
+                te.setVelocity(new Point2D(0, 0));
+            }
+    }
+    
     public void setAnimation(IAnimateStrategy newAnimation) {
         animating = newAnimation;
         getSprite().setImage(animating.getImage());
