@@ -20,6 +20,11 @@ public class LevelOne extends Level {
         this.root = root; // Need a handle to root to add images
        
         bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll
+
+        //Surfaces
+        Ice ice = new Ice(400, 100);
+        ice.setPosition(new Point2D(300, 750));
+        addSurface(ice);
         
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
@@ -45,6 +50,9 @@ public class LevelOne extends Level {
         addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
+
+        //done
+        finishLevel();
     }
     
     /**

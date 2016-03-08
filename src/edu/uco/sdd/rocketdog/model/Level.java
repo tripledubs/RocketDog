@@ -26,6 +26,7 @@ public class Level extends Scene implements Observer, ILevel {
     private ArrayList<Hazard> Hazards; // container of Hazards
     private ArrayList<Obstruction> Obstructions; //container of Obstructions
     private ArrayList<Projectile> projectiles;
+    private ArrayList<Surface> surfaces;
     private boolean visibleHitBoxes;
     private Group root;
     private KeyMappingContext keyMapping;
@@ -55,6 +56,7 @@ public class Level extends Scene implements Observer, ILevel {
         weapon = new ArrayList();
         //largeWeapon = new LargeLaserWeapon();
         largeWeapon = new ArrayList();
+        surfaces = new ArrayList<>();
 
         //Background Added to game
         root.getChildren().add(background);
@@ -94,7 +96,6 @@ public class Level extends Scene implements Observer, ILevel {
             root.getChildren().add(getLargeLaserWeapon(i).getHitbox());
         }
 
-        root.getChildren().add(rocketDog.getSprite());
         root.getChildren().add(rocketDog.getHitbox());
         root.getChildren().add(scoreText);
 
@@ -254,6 +255,18 @@ public class Level extends Scene implements Observer, ILevel {
         }
     }
 
+    public void addSurface(Surface surface) {
+        surfaces.add(surface);
+        root.getChildren().add(surface.getSprite());
+        root.getChildren().add(surface.getHitbox());
+    }
+
+    public void removeSurface(Surface surface) {
+        surfaces.remove(surface);
+        root.getChildren().remove(surface.getSprite());
+        root.getChildren().remove(surface.getHitbox());
+    }
+
     public void addObstruction(Obstruction obstruction, double width, double height) {
         //Setup powerup hitbox information
         obstruction.getHitbox().setWidth(width);
@@ -329,6 +342,10 @@ public class Level extends Scene implements Observer, ILevel {
         //Remove entity information from root
         this.root.getChildren().remove(oldEntity.getSprite());
         this.root.getChildren().remove(oldEntity.getHitbox());
+    }
+
+    protected void finishLevel() {
+        root.getChildren().add(rocketDog.getSprite());
     }
 
     public void setVisibleHitBoxes(boolean value) {
@@ -539,6 +556,12 @@ public class Level extends Scene implements Observer, ILevel {
                 rocketDog.update();
                 rocketDog.setVelocity(new Point2D(0, 0));
             }
+        });
+
+        surfaces.stream().forEach(surface -> {
+            surface.update();
+            surface.getHitbox().setVisible(visibleHitBoxes);
+            surface.process(changed);
         });
 
         enemies.stream().forEach((entity) -> {
