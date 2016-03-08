@@ -15,12 +15,16 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
 
     private IAnimateStrategy animating;
     private final Text healthText;
+    private int powerAttribute;
+    private int agilityAttribute;
     private int currentScore;
     public int count1 = 0, count2 = 0;
 
     public RocketDog() {
         super();
         currentScore = 0;
+        powerAttribute = 0;
+        agilityAttribute = 1;
         animating = new SpitzIdleAnimateStrategy();
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
@@ -51,6 +55,22 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
         getSprite().setImage(animating.getImage());
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
+    }
+
+    public void setPowerAttribute(int newPowerAttribute) {
+        this.powerAttribute = newPowerAttribute;
+    }
+
+    public void setAgilityAttribute(int newAgilityAttribute) {
+        this.agilityAttribute = newAgilityAttribute;
+    }
+
+    public int getPowerAttribute() {
+        return powerAttribute;
+    }
+
+    public int getAgilityAttribute() {
+        return agilityAttribute;
     }
 
     public void setScore(int newScore) {

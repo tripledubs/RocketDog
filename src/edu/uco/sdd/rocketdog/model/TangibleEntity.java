@@ -1,6 +1,7 @@
 package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.MovementController;
+import edu.uco.sdd.rocketdog.model.Animations.IAnimateStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public abstract class TangibleEntity implements Entity {
+public abstract class TangibleEntity implements Entity{
 
     protected double currentHealth;
     private double maximumHealth;
