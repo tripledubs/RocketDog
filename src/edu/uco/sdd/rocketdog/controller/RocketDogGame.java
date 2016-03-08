@@ -43,10 +43,10 @@ public class RocketDogGame extends Application {
          * LevelFactory
          */
         levels = new String[]{
-            //"Splash",
-            //"One",
+            "Splash",
+            "One",
             "Two",
-            //"Three",
+            "Three",
         };
 
         levelIndex = 0; // Used so levels can be incremented through
