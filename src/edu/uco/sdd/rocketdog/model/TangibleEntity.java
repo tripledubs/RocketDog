@@ -16,7 +16,8 @@ public abstract class TangibleEntity implements Entity {
     private boolean colliding; //flag for collision
     private Point2D position;
     private Point2D acceleration;
-    private Point2D velocity, stuckVelocity;
+    private Point2D velocity;
+    protected Point2D stuckVelocity;
     private Hitbox hitbox;
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
@@ -178,6 +179,13 @@ public abstract class TangibleEntity implements Entity {
         return velocity;
     }
 
+    public Point2D getActualVelocity() {
+        if (isMovementRestricted())
+          return stuckVelocity;
+        else
+          return velocity;
+    }
+
     /**
      * The client should not have to call new Point2D every time.
      *
@@ -205,9 +213,9 @@ public abstract class TangibleEntity implements Entity {
     }
 
     public void setMovementRestricted(boolean movementRestricted) {
-        this.movementRestricted = movementRestricted;
-        if (movementRestricted)
+        if (!this.movementRestricted && movementRestricted)
           stuckVelocity = velocity;
+        this.movementRestricted = movementRestricted;
     }
 
     public int getEntityClassPriority(EntityClass entityClass) {

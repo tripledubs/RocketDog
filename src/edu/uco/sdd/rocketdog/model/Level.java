@@ -100,7 +100,6 @@ public class Level extends Scene implements Observer, ILevel {
             root.getChildren().add(getLargeLaserWeapon(i).getHitbox());
         }
 
-        root.getChildren().add(rocketDog.getSprite());
         root.getChildren().add(rocketDog.getHitbox());
         root.getChildren().add(rocketDog.getHealthText());
         root.getChildren().add(scoreText);
@@ -350,6 +349,10 @@ public class Level extends Scene implements Observer, ILevel {
         this.root.getChildren().remove(oldEntity.getHitbox());
     }
 
+    protected void finishLevel() {
+        root.getChildren().add(rocketDog.getSprite());
+    }
+
     public void setVisibleHitBoxes(boolean value) {
         visibleHitBoxes = value;
     }
@@ -550,6 +553,7 @@ public class Level extends Scene implements Observer, ILevel {
 
         surfaces.stream().forEach(surface -> {
             surface.update();
+            surface.getHitbox().setVisible(visibleHitBoxes);
             surface.process(changed);
         });
 
