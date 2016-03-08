@@ -1,4 +1,4 @@
-package edu.uco.sdd.rocketdog.model;
+ package edu.uco.sdd.rocketdog.model;
 
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_HEIGHT;
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_WIDTH;
