@@ -14,23 +14,23 @@ public class WASDKeyMapping implements KeyMapping {
         switch (keyEvent.getCode()) {
             case A:
                 currentLevel.getRocketDog().getSprite().setScaleX(-1); // Flip image so facing left
-                currentLevel.getRocketDog().setLeftSpeed(-speed);  
+                //currentLevel.getRocketDog().setLeftSpeed(-speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
                 currentLevel.getRocketDog().setMoving(true);
                 break;
             case D:
                 currentLevel.getRocketDog().getSprite().setScaleX(1); // Flip image so facing right
-                currentLevel.getRocketDog().setRightSpeed(speed);
+                //currentLevel.getRocketDog().setRightSpeed(speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 currentLevel.getRocketDog().setMoving(true);
                 break;
             case W:
-               currentLevel.getRocketDog().setUpSpeed(-speed);
+                //currentLevel.getRocketDog().setUpSpeed(-speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), -speed)); 
                 currentLevel.getRocketDog().setMoving(true);
                 break;
             case S:
-                currentLevel.getRocketDog().setDownSpeed(speed);
+                //currentLevel.getRocketDog().setDownSpeed(speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), speed));
                 currentLevel.getRocketDog().setMoving(true);
                 break;

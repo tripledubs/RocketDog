@@ -15,23 +15,27 @@ public class DefaultKeyMapping implements KeyMapping {
         switch (keyEvent.getCode()) {
             case LEFT:
                 currentLevel.getRocketDog().getSprite().setScaleX(-1); // Flip image so facing left
-                currentLevel.getRocketDog().setLeftSpeed(-speed);  
+                //currentLevel.getRocketDog().setLeftSpeed(-speed);   //ORIG
+                currentLevel.getRocketDog().setHorzSpeed(-speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
-                currentLevel.getRocketDog().setMoving(true);
+                currentLevel.getRocketDog().setMoving(true); 
                 break;
             case RIGHT:
                 currentLevel.getRocketDog().getSprite().setScaleX(1); // Flip image so facing right
-                currentLevel.getRocketDog().setRightSpeed(speed);
+                //currentLevel.getRocketDog().setRightSpeed(speed);  //ORIG
+                currentLevel.getRocketDog().setHorzSpeed(speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 currentLevel.getRocketDog().setMoving(true);
                 break;
             case UP:
-                currentLevel.getRocketDog().setUpSpeed(-speed);
+                currentLevel.getRocketDog().setVertSpeed(-speed);
+                //currentLevel.getRocketDog().setUpSpeed(-speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), -speed)); 
                 currentLevel.getRocketDog().setMoving(true);
                 break;
             case DOWN:
-                currentLevel.getRocketDog().setDownSpeed(speed);
+                currentLevel.getRocketDog().setVertSpeed(speed);
+                //currentLevel.getRocketDog().setDownSpeed(speed);
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), speed));
                 currentLevel.getRocketDog().setMoving(true);
                 break;      
@@ -60,8 +64,10 @@ public class DefaultKeyMapping implements KeyMapping {
                 currentLevel.getLargeLaserWeapon(j).setPosition(new Point2D(currentLevel.getRocketDog().getPosition().getX() + 100,
                         currentLevel.getRocketDog().getPosition().getY() + 15));
                 if (currentLevel.getRocketDog().getSprite().getScaleX() == -1) {
+                    currentLevel.getLargeLaserWeapon(j).getSprite().setScaleX(-1);
                     currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(-speed, currentLevel.getRocketDog().getVelocity().getY()));
                 } else {
+                    currentLevel.getLargeLaserWeapon(j).getSprite().setScaleX(1);
                     currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 }
                 break;
@@ -85,12 +91,12 @@ public class DefaultKeyMapping implements KeyMapping {
     public void handleKeyReleased(Level currentLevel, KeyEvent keyEvent, double speed) {
         switch (keyEvent.getCode()) {
             case LEFT:
+                currentLevel.getRocketDog().setMoving(false);
                 currentLevel.getRocketDog().setVelocity(new Point2D(0, currentLevel.getRocketDog().getVelocity().getY()));
-                currentLevel.getRocketDog().setMoving(false);              
                 break;
             case RIGHT:
+                currentLevel.getRocketDog().setMoving(false);
                 currentLevel.getRocketDog().setVelocity(new Point2D(0, currentLevel.getRocketDog().getVelocity().getY()));
-                currentLevel.getRocketDog().setMoving(false);             
                 break;
             case UP:
                 currentLevel.getRocketDog().setVelocity(new Point2D(currentLevel.getRocketDog().getVelocity().getX(), 0));

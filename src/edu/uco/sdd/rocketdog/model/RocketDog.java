@@ -19,7 +19,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     public int count1 = 0, count2 = 0;
     private boolean moving = false;
     
-    private double leftSpeed, rightSpeed, upSpeed, downSpeed;
+    private double horzSpeed, vertSpeed;
     
     public RocketDog() {
         super();
@@ -35,29 +35,41 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
 
     @Override
     public void update() {
-        if(!moving && getRightSpeed() > 0){
-            setRightSpeed(getRightSpeed()-.3);
-            setPosition(new Point2D(getPosition().getX() + getRightSpeed(), getPosition().getY()));
-        }
-        
-        if(!moving && getLeftSpeed() < 0){
-            setLeftSpeed(getLeftSpeed()+.3);
-            setPosition(new Point2D(getPosition().getX() + getLeftSpeed(), getPosition().getY()));
-        }
-        
-        if(!moving && getUpSpeed() < 0){
-            setUpSpeed(getUpSpeed() +.3);
-            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getUpSpeed()));
-        }
-        
-        if(!moving && getDownSpeed() > 0){
-            setDownSpeed(getDownSpeed() -.3);
-            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getDownSpeed()));
-        }
         if(moving){
             setPosition(new Point2D(getPosition().getX() + getVelocity().getX(), getPosition().getY() + getVelocity().getY()));
         }
-           
+        
+        if(!moving && getHorzSpeed() > 0){
+            setHorzSpeed(getHorzSpeed()-.5);
+            setPosition(new Point2D(getPosition().getX() + getHorzSpeed(), getPosition().getY()));
+            //if(!moving && getRightSpeed() > 0){
+            //setRightSpeed(getRightSpeed()-.3);
+            //setPosition(new Point2D(getPosition().getX() + getRightSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getHorzSpeed() < 0){
+            setHorzSpeed(getHorzSpeed()+.5);
+            setPosition(new Point2D(getPosition().getX() + getHorzSpeed(), getPosition().getY()));
+        //if(!moving && getLeftSpeed() < 0){
+            //setLeftSpeed(getLeftSpeed()+.3);
+            //setPosition(new Point2D(getPosition().getX() + getLeftSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getVertSpeed() < 0){
+            setVertSpeed(getVertSpeed()+.5);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getVertSpeed()));
+        //if(!moving && getUpSpeed() < 0){
+            //setUpSpeed(getUpSpeed() +.5);
+            //setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getUpSpeed()));
+        }      
+        if(!moving && getVertSpeed() > 0){
+            setVertSpeed(getVertSpeed()-.5);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getVertSpeed()));
+        //if(!moving && getDownSpeed() > 0){
+            //setDownSpeed(getDownSpeed() -.5);
+            //setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getDownSpeed()));
+        }
+        
         /**
          * Moving the character is handled by the TangibleEntity class
          */
@@ -134,35 +146,19 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
         return moving;
     }
     
-    public double getLeftSpeed(){
-        return leftSpeed;
+    public double getHorzSpeed(){
+        return horzSpeed;
     }
     
-    public double getRightSpeed(){
-        return rightSpeed;
+    public double getVertSpeed(){
+        return vertSpeed;
     }
     
-    public double getUpSpeed(){
-        return upSpeed;
+    public void setHorzSpeed(double v){
+        horzSpeed = v;
     }
     
-    public double getDownSpeed(){
-        return downSpeed;
-    }
-    
-    public void setRightSpeed(double v){
-        rightSpeed = v;
-    }
-    
-    public void setLeftSpeed(double v){
-        leftSpeed = v;
-    }
-    
-    public void setUpSpeed(double v){
-        upSpeed = v;
-    }
-    
-    public void setDownSpeed(double v){
-        downSpeed = v;
-    }
+    public void setVertSpeed(double v){
+        vertSpeed = v;
+    }   
 }
