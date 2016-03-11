@@ -43,7 +43,7 @@ public class LevelOne extends Level {
 
         //Surfaces
         Ice ice = new Ice(400, 50);
-        ice.setPosition(new Point2D(150, 450));
+        ice.setPosition(new Point2D(150, 425));
         addSurface(ice);
 
         // Bad Guys
