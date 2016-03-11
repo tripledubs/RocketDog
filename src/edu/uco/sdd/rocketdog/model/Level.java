@@ -490,6 +490,7 @@ public class Level extends Scene implements Observer, ILevel {
                     rocketDog.setPowerAttribute(25);
                     rocketDog.setAgilityAttribute(15);
                     update(rocketDog.getCurrentHealth());
+                    removeAidItem(aidItem);
                 } else if (aidItem.isColliding() && aidItem.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
                     removeAidItem(aidItem);
                 }
