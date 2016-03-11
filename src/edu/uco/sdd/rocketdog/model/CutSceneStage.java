@@ -56,6 +56,7 @@ public class CutSceneStage {
                 window.close();
             }
         });
+        mediaView.getMediaPlayer().setOnEndOfMedia(this::close);
         window.setScene(scene);
         return window;
 
