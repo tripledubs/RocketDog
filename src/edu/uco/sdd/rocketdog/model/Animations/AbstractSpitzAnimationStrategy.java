@@ -42,10 +42,12 @@ public abstract class AbstractSpitzAnimationStrategy implements IAnimateStrategy
         currentView = frames[showIndex];
     }
     
+    @Override
     public Rectangle2D getCurrentView() {
         return currentView;
     }
     
+    @Override
     public Image getImage() {
         return image;
     }

@@ -26,6 +26,11 @@ public class Enemy extends TangibleEntity implements Attacker {
         private EntityClass entityClass;
         private Level level;
 
+        /**
+         * @param imgFile
+         * @param x requestWidth
+         * @param y requestHeight
+         */
         public Builder(String imgFile, double x, double y) {
             try {
                 img = new Image(imgFile, x, y, true, false);
@@ -33,6 +38,9 @@ public class Enemy extends TangibleEntity implements Attacker {
                 System.out.println("'" + imgFile + "'" + " not found, exiting...");
                 Platform.exit();
             }
+            // Set Defaults so client code can use out of the box
+            x = y = 0;
+            entityClass = new EntityClass("Enemy");
         }
 
         public Builder setX(int x) {
@@ -78,16 +86,20 @@ public class Enemy extends TangibleEntity implements Attacker {
         super();
         img = builder.img;
         setSprite(new ImageView(img));
+        ImageView s = this.getSprite();
+        s.setLayoutX(builder.x);
+        s.setLayoutY(builder.y);
         setPosition(new Point2D(builder.x, builder.y));
     }
 
-    void update() {
+    @Override
+    public void update() {
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
 
         getHitbox().setTranslateX(getPosition().getX());
         getHitbox().setTranslateY(getPosition().getY());
-        System.out.println(getPosition().getX() + " " + getPosition().getY());
+        //System.out.println(getPosition().getX() + " " + getPosition().getY());
     }
 
     public MeleeAttackController getMeleeAttack() {
