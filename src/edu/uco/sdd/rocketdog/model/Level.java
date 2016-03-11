@@ -272,6 +272,7 @@ public class Level extends Scene implements Observer, ILevel {
 
     public void addObstruction(Obstruction obstruction, double width, double height) {
         //Setup powerup hitbox information
+        obstruction.setLevel(this);
         obstruction.getHitbox().setWidth(width);
         obstruction.getHitbox().setHeight(height);
 

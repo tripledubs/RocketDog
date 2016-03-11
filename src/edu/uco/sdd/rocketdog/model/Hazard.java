@@ -26,7 +26,8 @@ import javafx.scene.image.ImageView;
  * @author Richard Dobie
  */
 public class Hazard extends TangibleEntity implements IAnimateStrategy {
-    private IAnimateStrategy animating; 
+    private IAnimateStrategy animating;
+    protected RocketDog rd;
     
     public Hazard(Point2D position, IAnimateStrategy animate){
         super();
