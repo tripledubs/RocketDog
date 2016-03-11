@@ -18,8 +18,11 @@ package edu.uco.sdd.rocketdog.controller;
 import edu.uco.sdd.rocketdog.model.ILevel;
 import edu.uco.sdd.rocketdog.model.SceneFactory;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class RocketDogGame extends Application {
 
@@ -66,6 +69,10 @@ public class RocketDogGame extends Application {
         primaryStage.setMaxHeight(GAME_SCREEN_HEIGHT);
         primaryStage.setScene(currentLevel);
         primaryStage.show();
+        primaryStage.setOnCloseRequest((WindowEvent t) -> {
+            Platform.exit();
+            System.exit(0);
+        });
         gamePlayLoop.start();
     }
 

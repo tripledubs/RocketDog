@@ -34,7 +34,6 @@ import javafx.stage.Stage;
 
 public class SplashLevel extends Scene implements ILevel {
 
-    public Stage window;
     public SoundManager soundManager;
     public MediaView mediaView;
     private  ImageView splashScreenTextArea,splashScreenBackplate;
@@ -81,12 +80,7 @@ public class SplashLevel extends Scene implements ILevel {
             CutSceneStage cs = new CutSceneStage();
             String s = "/splash.mp4";
             cs.CutSceneStage("./src/splash.mp4").showAndWait();
-            if (!cs.window.isShowing()) {
-                isDone = true;
-                if (!optionsDefaultButton.isDisable()) {
-                    isDone = true;
-                }
-            }
+            isDone=true;
         });
 
         /**
