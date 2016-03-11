@@ -19,7 +19,10 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     private int agilityAttribute;
     private int currentScore;
     public int count1 = 0, count2 = 0;
-
+    private boolean moving = false;
+    
+    private double horzSpeed, vertSpeed;
+    
     public RocketDog() {
         super();
         currentScore = 0;
@@ -36,11 +39,47 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
 
     @Override
     public void update() {
+        Point2D currentVelocity = null;
         if (isMovementRestricted())
-          setPosition(new Point2D(getPosition().getX() + stuckVelocity.getX(), getPosition().getY() + stuckVelocity.getY()));
+            currentVelocity = stuckVelocity;
         else
-          setPosition(new Point2D(getPosition().getX() + getVelocity().getX(), getPosition().getY() + getVelocity().getY()));
+            currentVelocity = getVelocity();
 
+        if(moving){
+            setPosition(new Point2D(getPosition().getX() + currentVelocity.getX(), getPosition().getY() + currentVelocity.getY()));
+        }
+        
+        if(!moving && getHorzSpeed() > 0){
+            setHorzSpeed(getHorzSpeed()-.5);
+            setPosition(new Point2D(getPosition().getX() + getHorzSpeed(), getPosition().getY()));
+            //if(!moving && getRightSpeed() > 0){
+            //setRightSpeed(getRightSpeed()-.3);
+            //setPosition(new Point2D(getPosition().getX() + getRightSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getHorzSpeed() < 0){
+            setHorzSpeed(getHorzSpeed()+.5);
+            setPosition(new Point2D(getPosition().getX() + getHorzSpeed(), getPosition().getY()));
+        //if(!moving && getLeftSpeed() < 0){
+            //setLeftSpeed(getLeftSpeed()+.3);
+            //setPosition(new Point2D(getPosition().getX() + getLeftSpeed(), getPosition().getY()));
+        }
+        
+        if(!moving && getVertSpeed() < 0){
+            setVertSpeed(getVertSpeed()+.5);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getVertSpeed()));
+        //if(!moving && getUpSpeed() < 0){
+            //setUpSpeed(getUpSpeed() +.5);
+            //setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getUpSpeed()));
+        }      
+        if(!moving && getVertSpeed() > 0){
+            setVertSpeed(getVertSpeed()-.5);
+            setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getVertSpeed()));
+        //if(!moving && getDownSpeed() > 0){
+            //setDownSpeed(getDownSpeed() -.5);
+            //setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getDownSpeed()));
+        }
+        
         /**
          * Moving the character is handled by the TangibleEntity class
          */
@@ -124,5 +163,28 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     public Text getHealthText() {
         return this.healthText;
     }
-
+    
+    public void setMoving(boolean x){
+        moving = x;
+    }
+    
+    public boolean getMoving(){
+        return moving;
+    }
+    
+    public double getHorzSpeed(){
+        return horzSpeed;
+    }
+    
+    public double getVertSpeed(){
+        return vertSpeed;
+    }
+    
+    public void setHorzSpeed(double v){
+        horzSpeed = v;
+    }
+    
+    public void setVertSpeed(double v){
+        vertSpeed = v;
+    }   
 }

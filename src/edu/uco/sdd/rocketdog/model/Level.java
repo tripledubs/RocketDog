@@ -110,7 +110,7 @@ public class Level extends Scene implements Observer, ILevel {
 
         this.setOnKeyReleased((KeyEvent event) -> {
             keyMapping.getKeyMapping().handleKeyReleased(this, event, 0.0d);
-        });
+        }); 
     }
 
     public LaserAttack getLaserWeapon(int i) {
@@ -357,8 +357,9 @@ public class Level extends Scene implements Observer, ILevel {
 
     public int checkFiredLaser() {
         for (int i = 0; i < weapon.size(); i++) {
-            if (weapon.get(i).getPosition().getX() > super.getHeight()) {
+            if (weapon.get(i).getPosition().getX() > super.getWidth() || weapon.get(i).getPosition().getX() < 0) {
                 weapon.get(i).setDead(false);
+                weapon.get(i).setVisableOff();
             }
             if (!weapon.get(i).isDead()) {
                 weapon.get(i).setDead(true);
@@ -371,7 +372,7 @@ public class Level extends Scene implements Observer, ILevel {
 
     public int checkFiredLargerLaser() {
         for (int i = 0; i < largeWeapon.size(); i++) {
-            if (largeWeapon.get(i).getPosition().getX() > super.getWidth()) {
+            if (largeWeapon.get(i).getPosition().getX() > super.getWidth() || weapon.get(i).getPosition().getX() < 0) {
                 largeWeapon.get(i).setDead(false);
             }
             if (!largeWeapon.get(i).isDead()) {
@@ -559,7 +560,7 @@ public class Level extends Scene implements Observer, ILevel {
     @Override
     public void update(double currentHealth) {
         //Update score
-        this.scoreText.setText("Score : " + rocketDog.getScore() + "                 Health: " + rocketDog.getCurrentHealth()
+        this.scoreText.setText("Score : " + rocketDog.getScore() + "                 Health: " + rocketDog.getCurrentHealth()  + "      \nMoving: " + rocketDog.getMoving()
                 + "\nPower: " + rocketDog.getPowerAttribute() + "\nAgility: " + rocketDog.getAgilityAttribute());
     }
 
