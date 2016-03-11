@@ -1,6 +1,8 @@
 package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.controller.ImageViewLoader;
+import java.io.File;
+import java.net.URI;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -29,9 +31,8 @@ public class CutSceneIntro extends Scene implements ILevel {
         hbox.getChildren().add(t);
         root.setBottom(hbox);
         
-        // Create Video
-        // Have to find somewhere online to stash this video
-        video = new Media("file:///c:/Users/Dubs/Documents/NetBeansProjects/RocketDog/src/splashReduced.mp4");
+        String fileToPlay = new File("src").toURI().toString() + "splashReduced.mp4";
+        video = new Media(fileToPlay);
         mp = new MediaPlayer(video);
         mv = new MediaView(mp);
         mp.setAutoPlay(true);
