@@ -71,9 +71,9 @@ public class Enemy extends TangibleEntity implements Attacker {
             Enemy newBadGuy = new Enemy(this);
             PatrolController controller = new PatrolController(newBadGuy);
             newBadGuy.addController(controller);
-            controller.setRange(300.);
-            controller.setStart(x - 100.);
-            controller.setEnd(x + 100.);
+            controller.setRange(150.);
+            controller.setStart(x - 50.);
+            controller.setEnd(x + 50.);
             newBadGuy.addEntityClass(entityClass, 1);
             newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
             newBadGuy.setProjectileAttack(new ProjectileAttackController(newBadGuy));
@@ -89,6 +89,8 @@ public class Enemy extends TangibleEntity implements Attacker {
         ImageView s = this.getSprite();
         s.setLayoutX(builder.x);
         s.setLayoutY(builder.y);
+        getHitbox().setLayoutX(builder.x);
+        getHitbox().setLayoutY(builder.y);
         setPosition(new Point2D(builder.x, builder.y));
     }
 

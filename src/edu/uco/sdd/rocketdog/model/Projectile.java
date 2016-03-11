@@ -91,6 +91,11 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
         img = builder.img;
         setSprite(new ImageView(img));
         setPosition(new Point2D(builder.x, builder.y));
+        ImageView s = this.getSprite();
+        s.setLayoutX(builder.x);
+        s.setLayoutY(builder.y);
+        getHitbox().setLayoutX(builder.x);
+        getHitbox().setLayoutY(builder.y);
     }
 
     @Override
