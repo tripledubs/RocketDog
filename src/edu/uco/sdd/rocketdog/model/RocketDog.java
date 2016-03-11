@@ -40,12 +40,13 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     @Override
     public void update() {
         Point2D currentVelocity = null;
-        if (isMovementRestricted())
+        if (isMovementRestricted()) {
             currentVelocity = stuckVelocity;
-        else
+        } else {
             currentVelocity = getVelocity();
+        }
 
-        if(moving){
+        if(moving || isMovementRestricted()){
             setPosition(new Point2D(getPosition().getX() + currentVelocity.getX(), getPosition().getY() + currentVelocity.getY()));
         }
         
