@@ -20,8 +20,8 @@ public class ProjectileAttackController implements AttackController {
       throw new IllegalArgumentException(new NullPointerException("entity"));
     this.controlledObject = entity;
     this.damage = 1.;
-    this.minRange = 200.;
-    this.maxRange = 600.;
+    this.minRange = 100.;
+    this.maxRange = 300.;
   }
 
   public double getDamage() {
@@ -56,7 +56,7 @@ public class ProjectileAttackController implements AttackController {
         Point2D velocity = target.getPosition()
                                  .subtract(controlledObject.getPosition())
                                  .normalize()
-                                 .multiply(8);
+                                 .multiply(4);
 
         Projectile projectile = new Projectile.Builder("/bullet.png", 32, 32)
                         .setX((int)controlledObject.getPosition().getX())

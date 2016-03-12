@@ -22,7 +22,7 @@ import javafx.scene.image.ImageView;
  *
  * @author Richard Dobie
  */
-public class ActiveAidItem extends TangibleEntity implements IAnimateStrategy {
+public class ActiveAidItem extends TangibleEntity implements IAnimateStrategy, Attackable {
     private IAnimateStrategy animating;
     private int duration;
     private int offset = 0;
@@ -47,15 +47,17 @@ public class ActiveAidItem extends TangibleEntity implements IAnimateStrategy {
         getHitbox().setTranslateY(getPosition().getY());
         getSprite().setViewport(animating.getCurrentView());
         handle(); // Animations
-        if (this.isColliding()){
-            
-        }
+        
         if (duration > 0) {
             duration -= 1;
         } else if (duration == 0){
             this.active = false;//insert removal code
         } else {
             //insert other code
+        }
+        
+        if (!this.isActive()) {
+            this.setState(new DeathState());
         }
     }
     
@@ -65,6 +67,23 @@ public class ActiveAidItem extends TangibleEntity implements IAnimateStrategy {
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
     }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+    }
+    
+    
+    public void damage(double attackStrength){
+        if (this.currentHealth > 0) {
+            this.currentHealth -= attackStrength;
+            if (this.currentHealth <= 0) {
+                this.setDead(true);
+                this.setActive(false);
+            }
+        }
+    }
+
 
     @Override
     public void handle() {

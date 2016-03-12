@@ -20,36 +20,41 @@ public class LevelOne extends Level {
         this.root = root; // Need a handle to root to add images
        
         bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll
-
-        //Surfaces
-        Ice ice = new Ice(400, 100);
-        ice.setPosition(new Point2D(300, 750));
-        addSurface(ice);
         
-        // Bad Guys
-        EntityClass enemy = new EntityClass("Enemy");
-        enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 128, 128).setX(650).setY(600).setEntityClass(enemy).setLevel(this).build(), 128, 128);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(500).setY(700).setEntityClass(enemy).setLevel(this).build(), 64, 64);
         addHouses();
         
         // Aid Items
-        addAidItem(new ShieldItem(new Point2D(200,200)),56,56);
-        addAidItem(new ShieldItem(new Point2D(600,200)),56,56);
-        //addAidItem(new BoostItem(new Point2D(400,200)),56,56);
+        //Shield Items
+        addAidItem(new ShieldItem(new Point2D(200,200)),28,28);
+        addAidItem(new ShieldItem(new Point2D(600,200)),28,28);
+        addAidItem(new ShieldItem(new Point2D(400,200)),28,28);
+        
+        //health items
+        addAidItem(new HealthItem(new Point2D(1,1)),56,56);
         
         // Hazards
-        addHazard(new HazardSpikes(new Point2D(936,300)),64,64);
-        addHazard(new HazardSpikes(new Point2D(936,236)),64,64);
-        addHazard(new HazardSpikes(new Point2D(936,172)),64,64);
+        addHazard(new HazardSpikes(new Point2D(700,300)),64,64);
+        addHazard(new HazardSpikes(new Point2D(700,236)),64,64);
+        addHazard(new HazardSpikes(new Point2D(700,172)),64,64);
         
         //Obstructions
-        addObstruction(new ObstructionBrickWall(new Point2D(700,300)),64,64);
-        addObstruction(new ObstructionBrickWall(new Point2D(700,236)),64,64);
-        addObstruction(new ObstructionBrickWall(new Point2D(700,172)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,300)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,236)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,172)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
+
+        //Surfaces
+        Ice ice = new Ice(400, 50);
+        ice.setPosition(new Point2D(150, 425));
+        addSurface(ice);
+
+        // Bad Guys
+        EntityClass enemy = new EntityClass("Enemy");
+        enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(300).setY(200).setEntityClass(enemy).setLevel(this).build(), 64, 64);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(200).setY(175).setEntityClass(enemy).setLevel(this).build(), 32, 32);
 
         //done
         finishLevel();

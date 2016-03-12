@@ -24,7 +24,9 @@ import javafx.scene.image.ImageView;
  * @author Richard Dobie
  */
 public class Obstruction extends TangibleEntity implements IAnimateStrategy {
-    private IAnimateStrategy animating; 
+    private IAnimateStrategy animating;
+    private Level level;
+    private RocketDog rd;
     
     public Obstruction(Point2D position, IAnimateStrategy animate){
         super();
@@ -38,6 +40,7 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
      * function like the other Tangible Entities for now
      */
     public void update(){
+        //if (level != null) this.rd = level.getRocketDog();
         setPosition(new Point2D(getPosition().getX(), getPosition().getY()));
         getSprite().setTranslateX(getPosition().getX());
         getSprite().setTranslateY(getPosition().getY());
@@ -49,6 +52,26 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
             
         }
        
+    }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (this.isColliding()) {
+
+                //set accel to 0,0
+                //set X and Y velocity in the opposite direction
+                //then update and set velocity to 0
+                //this prevents RD from moving through the obstruction
+                this.rd = (RocketDog)te;
+                this.rd.setHorzSpeed(0);
+                this.rd.setVertSpeed(0);
+                te.setAcceleration(new Point2D(0,0));
+                te.setVelocity(new Point2D(-te.getVelocity().getX(), -te.getVelocity().getY()));
+                te.update();
+                te.setVelocity(new Point2D(0, 0));
+            }
     }
     
     public void setAnimation(IAnimateStrategy newAnimation) {
