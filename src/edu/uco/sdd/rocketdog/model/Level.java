@@ -359,13 +359,11 @@ public class Level extends Scene implements Observer, ILevel {
         for (int i = 0; i < weapon.size(); i++) {
             if (weapon.get(i).getPosition().getX() > super.getWidth() || weapon.get(i).getPosition().getX() < 0) {
                 weapon.get(i).setDead(false);
-                weapon.get(i).setVisableOff();
             }
             if (!weapon.get(i).isDead()) {
                 weapon.get(i).setDead(true);
                 return i;
             }
-
         }
         return -1;
     }
@@ -399,6 +397,13 @@ public class Level extends Scene implements Observer, ILevel {
         changed.put(rocketDog, true);
         //Update the weapon attack
         weapon.stream().forEach((laser) -> {
+            //checkFiredLaser();
+            if(laser.getPosition().getX() > super.getWidth() || laser.getPosition().getX() < 0){
+                laser.setPos(0, -45);
+                laser.setDead(false);
+                laser.setVisableOff();
+                laser.setVel(0, 0);
+            }
             laser.update();
             laser.getHitbox().setVisible(visibleHitBoxes);
         });
@@ -408,6 +413,12 @@ public class Level extends Scene implements Observer, ILevel {
         //weapon.getHitbox().setVisible(visibleHitBoxes);
         //Update the large weapon attack
         largeWeapon.stream().forEach((largeLaser) -> {
+            if(largeLaser.getPosition().getX() > super.getWidth() || largeLaser.getPosition().getX() < 0){
+                largeLaser.setPos(0, -150);
+                largeLaser.setDead(false);
+                largeLaser.setVisableOff();
+                largeLaser.setVel(0, 0);
+            }
             largeLaser.update();
             largeLaser.getHitbox().setVisible(visibleHitBoxes);
         });
