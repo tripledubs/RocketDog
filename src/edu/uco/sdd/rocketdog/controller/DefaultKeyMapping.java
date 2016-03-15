@@ -4,6 +4,7 @@ import edu.uco.sdd.rocketdog.model.Animations.SpitzChargeGunAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.FullHealthState;
 import edu.uco.sdd.rocketdog.model.Level;
+import edu.uco.sdd.rocketdog.model.SplashLevel;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -81,6 +82,8 @@ public class DefaultKeyMapping implements KeyMapping {
             case H:
                 currentLevel.setVisibleHitBoxes(!currentLevel.getVisibleHitBoxes());
                 break;
+            case P:
+                currentLevel.setDone(true);
             case O:
                 //game.displayOptionsScreen();
                 break;

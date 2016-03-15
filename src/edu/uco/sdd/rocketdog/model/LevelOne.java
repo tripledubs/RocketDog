@@ -53,8 +53,8 @@ public class LevelOne extends Level {
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(300).setY(200).setEntityClass(enemy).setLevel(this).build(), 64, 64);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(200).setY(175).setEntityClass(enemy).setLevel(this).build(), 32, 32);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(400).setY(400).setEntityClass(enemy).setLevel(this).build(), 64, 64);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(300).setY(350).setEntityClass(enemy).setLevel(this).build(), 32, 32);
 
         //done
         finishLevel();

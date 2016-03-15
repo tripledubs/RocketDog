@@ -21,6 +21,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -64,6 +65,7 @@ public class SplashLevel extends Scene implements ILevel {
         super(root,1000,924);
         isDone = false;
         this.root = root;
+        ck= new CheckBox("Enable");
         HBox hboxTop= addHBox();
         HBox hboxBottom=addHBox();
         soundManager= new SoundManager();
@@ -106,6 +108,8 @@ public class SplashLevel extends Scene implements ILevel {
         /**
          * *****************KEYBOARD KEY MAPPING******************
          */
+        musicSlider = new Slider(0.0, 1.0, 1.0);
+        ambientSlider = new Slider(0.0, 1.0, 1.0);
         optionsButton.setOnAction((ActionEvent) -> {
             try{grid=createOptionsGridPane();}
             catch(Exception e){System.out.println("createOptionsGridPane");}
@@ -146,6 +150,13 @@ public class SplashLevel extends Scene implements ILevel {
         root.setBottom(hboxBottom);
         hboxBottom.setAlignment(Pos.CENTER);
         addStackPaneCopyRight(hboxBottom);
+
+                        this.setOnKeyPressed((KeyEvent event) -> {
+            switch (event.getCode()) {
+                case L:
+                    ck.setSelected(false);
+            }
+        });
     }
     private void loadImages() {
            // load all needed images
@@ -184,13 +195,10 @@ public class SplashLevel extends Scene implements ILevel {
         soundLabel = new Label("Sound");
         sepHor = new Separator();
         VBox vCheckBox= new VBox();
-        ck= new CheckBox("Enable");
-        ck.setSelected(true);
         root.getChildren().add(vCheckBox);
         musicLabel = new Label("Music");
         ambianceVolumeLabel= new Label("Ambient");
-        musicSlider = new Slider(0.0, 1.0, 1.0);
-        ambientSlider = new Slider(0.0, 1.0, 1.0);
+        
     }
     public GridPane createOptionsGridPane(){
         GridPane optionsPane=new GridPane();// grid holding options pane components
@@ -257,7 +265,6 @@ public class SplashLevel extends Scene implements ILevel {
             optionsWASDButton.setDisable(true);
             optionsDefaultButton.setDisable(false);
         });
-
         optionsPane.getChildren().addAll(optionsDefaultButton,optionsWASDButton,
                 soundLabel,ck,musicLabel,musicSlider,sepHor,ambianceVolumeLabel,ambientSlider);
         return optionsPane;

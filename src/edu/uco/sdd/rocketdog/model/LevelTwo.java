@@ -3,7 +3,6 @@ package edu.uco.sdd.rocketdog.model;
 import edu.uco.sdd.rocketdog.controller.KeyMappingContext;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import edu.uco.sdd.rocketdog.view.Props;
 import java.util.AbstractMap;
@@ -14,10 +13,10 @@ import javafx.scene.image.ImageView;
  *
  * @author Dubs
  */
-public class LevelTwo extends Scene implements ILevel {
+public class LevelTwo extends Level{
 
-    public static final double LEVEL_WIDTH = 8000;
-    public static final double LEVEL_HEIGHT = 600;
+    public static final int LEVEL_WIDTH = 8000;
+    public static final int LEVEL_HEIGHT = 924;
     
     /**
      * This is the game play speed of the level. Background objects
@@ -28,19 +27,11 @@ public class LevelTwo extends Scene implements ILevel {
     
     AbstractMap<Group, Double> backgrounds; // Group followed by speed of scroll
     Group levelItems = new Group(); // Everything besides RocketDog and Backgrounds
-    
-    private KeyMappingContext keyMapping;
-    
-    private RocketDog rocketdog;
 
-    public LevelTwo(Group root, double width, double height) {
-        super(root, width, height);
+    public LevelTwo(Group root, int width, int height) {
+        super(root,width,height);
         root.setAutoSizeChildren(false);
         backgrounds = new LinkedHashMap<>(); // Linked hash map keeps iteration order
-
-        rocketdog = new RocketDog();
-        ImageView rocketdogSprite = rocketdog.getSprite();
-        rocketdog.getSprite().setId("Rocketdog");
 
         makeBackgrounds(); // Fills background with content
 
@@ -54,27 +45,7 @@ public class LevelTwo extends Scene implements ILevel {
                 .setY(500)
                 .build();
 
-        this.setOnKeyPressed((KeyEvent event) -> {
-            double rddx = rocketdog.getVelocity().getX();
-            double rddy = rocketdog.getVelocity().getY();
-            switch (event.getCode()) {
-                case LEFT:
-                    rocketdog.setVel(-focalSpeed, rddy);
-                    break;
-                case RIGHT:
-                    rocketdog.setVel(focalSpeed, rddy);
-                    break;
-                case DOWN:
-                    rocketdog.setVel(rddx, 1);
-                    break;
-                case UP:
-                    rocketdog.setVel(rddx, -1);
-                    break;
-                case SPACE:
-                    rocketdog.setVel(0,0);
-                    break;
-             }
-        });
+
 
         // Add items to levelItems
         levelItems.getChildren().add(Props.house(300, 600 - 245));
@@ -104,7 +75,7 @@ public class LevelTwo extends Scene implements ILevel {
         // Add Everything else
         root.getChildren().add(levelItems);
         // Add RocketDog to root
-        root.getChildren().add(rocketdog.getSprite());
+        root.getChildren().add(super.getRocketDog().getSprite());
     }
 
     public void positionScreen() {
@@ -112,8 +83,8 @@ public class LevelTwo extends Scene implements ILevel {
         double width = RocketDogGame.GAME_SCREEN_WIDTH;
         double height = RocketDogGame.GAME_SCREEN_HEIGHT;
 
-        double rdx = rocketdog.getSprite().getBoundsInParent().getMinX();
-        double rdy = rocketdog.getPosition().getY();
+        double rdx = super.getRocketDog().getSprite().getBoundsInParent().getMinX();
+        double rdy = super.getRocketDog().getPosition().getY();
 
         /**
          * Divide the screen into 10 zones
@@ -132,12 +103,12 @@ public class LevelTwo extends Scene implements ILevel {
 
         if (rdx >= zoneWidth[2]) {
             scrollRight();
-            rocketdog.setPos(zoneWidth[2] + 1, rdy);
+            super.getRocketDog().setPos(zoneWidth[2] + 1, rdy);
         }
 
         if (rdx < zoneWidth[0]) {
             scrollLeft();
-            rocketdog.setPos(zoneWidth[0] - 1, rdy);
+            super.getRocketDog().setPos(zoneWidth[0] - 1, rdy);
 
         }
     }
@@ -149,18 +120,18 @@ public class LevelTwo extends Scene implements ILevel {
 
     @Override
     public void levelUpdate() {
-        rocketdog.update();
+        super.levelUpdate();
         positionScreen();
 
     }
 
     private void stopScrolling() {
-        rocketdog.setVel(0, 0);
+        super.getRocketDog().setVel(0, 0);
     }
 
     private void scrollRight() {
-        double rddx = rocketdog.getVelocity().getX();
-        double rddy = rocketdog.getVelocity().getY();
+        double rddx = super.getRocketDog().getVelocity().getX();
+        double rddy = super.getRocketDog().getVelocity().getY();
 
         if (rddx < 1) {
             return;
@@ -177,7 +148,7 @@ public class LevelTwo extends Scene implements ILevel {
     }
 
     private void scrollLeft() {
-        double rddx = rocketdog.getVelocity().getX();
+        double rddx = super.getRocketDog().getVelocity().getX();
         backgrounds.forEach((group, scrollSpeed) -> {
             group.setTranslateX(group.getTranslateX() + scrollSpeed );
         });
