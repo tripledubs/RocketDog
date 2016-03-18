@@ -30,7 +30,9 @@ public class SceneFactory {
             case "One":
                 return new LevelOne(new Group(), ldr.loadImage("/Level 2.png"), GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
             case "Two":
-                return new LevelTwo(new Group(), LevelTwo.LEVEL_WIDTH, LevelTwo.LEVEL_HEIGHT); 
+                return new LevelTwo(new Group(), LevelTwo.LEVEL_WIDTH, LevelTwo.LEVEL_HEIGHT);
+            case "Test":
+                return new LevelTest(new Group(), LevelTwo.LEVEL_WIDTH, LevelTwo.LEVEL_HEIGHT);
             default: // Google Style Guide: default for switch is mandatory
                 throw new LevelNotFound(level + " is not valid for getLevel in LevelFactory.java");
         }
