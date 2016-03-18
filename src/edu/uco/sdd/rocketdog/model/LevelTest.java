@@ -85,6 +85,25 @@ public class LevelTest extends Scene implements ILevel {
         return false;
     }
 
+    /**
+     * Returns the absolute Bound positioning of the Node in the Scene
+     * @param x Node
+     * @return Bounds
+     */
+    public Bounds absoluteBounds(Node x) {
+        return x.localToScene(x.getBoundsInLocal());
+    }
+
+    /**
+     * Returns true if the bounds of two nodes intersect in the Scene
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean levelIntersect(Node x, Node y) {
+        return absoluteBounds(x).intersects(absoluteBounds(y));
+    }
+
     @Override
     public void levelUpdate() {
         viewportCoordinates.setText(
@@ -93,14 +112,12 @@ public class LevelTest extends Scene implements ILevel {
         );
 
         for (Node node : backgroundGroup.getChildren()) {
-            Bounds nodeBounds = node.localToScene(node.getBoundsInLocal()); // Absolute Bounds
-            if (nodeBounds.intersects(viewportSquare.localToScene(viewportSquare.getBoundsInLocal()))) {
-                // In the Viewport
+            if (levelIntersect(node,viewportSquare)) {
                 viewportSquare.setFill(Color.RED);
             } else {
                 viewportSquare.setFill(Color.GREEN);
             }
-            if (nodeBounds.intersects(whiteCircle.localToScene(whiteCircle.getBoundsInLocal()))) {
+            if (levelIntersect(node,whiteCircle)) {
                 whiteCircle.setFill(Color.RED);
             } else {
                 whiteCircle.setFill(Color.WHITE);
