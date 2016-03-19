@@ -96,12 +96,11 @@ public class Enemy extends TangibleEntity implements Attacker {
 
     @Override
     public void update() {
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        getSprite().setLayoutX(getPosition().getX());
+        getSprite().setLayoutY(getPosition().getY());
 
-        getHitbox().setTranslateX(getPosition().getX());
-        getHitbox().setTranslateY(getPosition().getY());
-        //System.out.println(getPosition().getX() + " " + getPosition().getY());
+        getHitbox().setLayoutX(getPosition().getX());
+        getHitbox().setLayoutY(getPosition().getY());
     }
 
     public MeleeAttackController getMeleeAttack() {
