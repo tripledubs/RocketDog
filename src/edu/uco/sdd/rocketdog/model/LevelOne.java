@@ -25,36 +25,39 @@ public class LevelOne extends Level {
         
         // Aid Items
         //Shield Items
-        addAidItem(new ShieldItem(new Point2D(200,200)),28,28);
-        addAidItem(new ShieldItem(new Point2D(600,200)),28,28);
-        addAidItem(new ShieldItem(new Point2D(400,200)),28,28);
+        //addAidItem(new ShieldItem(new Point2D(200,200)),28,28);
+        //addAidItem(new ShieldItem(new Point2D(600,200)),28,28);
+        //addAidItem(new ShieldItem(new Point2D(400,200)),28,28);
         
         //health items
-        addAidItem(new HealthItem(new Point2D(1,1)),56,56);
+        addAidItem(new HealthItem(new Point2D(1,100)),56,56);
+        addAidItem(new HealthItem(new Point2D(800,1)),56,56);
+        addAidItem(new HealthItem(new Point2D(400,1)),56,56);
         
         // Hazards
-        addHazard(new HazardSpikes(new Point2D(700,300)),64,64);
-        addHazard(new HazardSpikes(new Point2D(700,236)),64,64);
-        addHazard(new HazardSpikes(new Point2D(700,172)),64,64);
+        //addHazard(new HazardSpikes(new Point2D(700,300)),64,64);
+        //addHazard(new HazardSpikes(new Point2D(700,236)),64,64);
+        //addHazard(new HazardSpikes(new Point2D(700,172)),64,64);
         
         //Obstructions
         //addObstruction(new ObstructionBrickWall(new Point2D(700,300)),64,64);
         //addObstruction(new ObstructionBrickWall(new Point2D(700,236)),64,64);
         //addObstruction(new ObstructionBrickWall(new Point2D(700,172)),64,64);
-        addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
-        addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
-        addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
+        //addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
 
         //Surfaces
-        Ice ice = new Ice(400, 50);
-        ice.setPosition(new Point2D(150, 425));
-        addSurface(ice);
+        //Ice ice = new Ice(400, 50);
+        //ice.setPosition(new Point2D(150, 425));
+        //addSurface(ice);
 
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(400).setY(400).setEntityClass(enemy).setLevel(this).build(), 64, 64);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(300).setY(350).setEntityClass(enemy).setLevel(this).build(), 32, 32);
+        //addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(400).setY(400).setEntityClass(enemy).setLevel(this).build(), 64, 64);
+        //addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(300).setY(350).setEntityClass(enemy).setLevel(this).build(), 32, 32);
+        addEnemy(new DeliveryMan(500, 400),400, 400);
 
         //done
         finishLevel();
@@ -112,7 +115,8 @@ public class LevelOne extends Level {
             bg.setTranslateX(bg.getTranslateX()+1);
             houses.setTranslateX(houses.getTranslateX()+1);
         }
-        
+
+        /* turning off vertical scrolling
         if (rdy > zoneHeight[8]) {
             bg.setTranslateY(bg.getTranslateY()-5);
             houses.setTranslateY(houses.getTranslateY()-5);
@@ -134,7 +138,7 @@ public class LevelOne extends Level {
             bg.setTranslateY(bg.getTranslateY()+5);
             houses.setTranslateY(houses.getTranslateY()+5);
             rd.setPos(rdx,zoneHeight[0]);
-        }
+        } */
     }
     
     /**

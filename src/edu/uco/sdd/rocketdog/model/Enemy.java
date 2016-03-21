@@ -94,6 +94,10 @@ public class Enemy extends TangibleEntity implements Attacker {
         setPosition(new Point2D(builder.x, builder.y));
     }
 
+    public Enemy() { // constructor for a child of enemy I.E. DeliveryMan
+        super();
+    }
+
     @Override
     public void update() {
         getSprite().setTranslateX(getPosition().getX());

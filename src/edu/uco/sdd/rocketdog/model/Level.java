@@ -76,6 +76,12 @@ public class Level extends Scene implements Observer, ILevel {
         rocketDog.setLevel(this);
         rocketDog.setState(new FullHealthState(10000));
 
+        //Invisible obstruction on screen border
+        addObstruction(new Obstruction(new Point2D(0,0)),width, 1);
+        addObstruction(new Obstruction(new Point2D(0,0)),1, height);
+        addObstruction(new Obstruction(new Point2D(0,height)),width, 1);
+        addObstruction(new Obstruction(new Point2D(width,0)),1, height);
+
         //Laser Weapon information added to game
         for (int i = 0; i < 3; i++) {
             weapon.add(new LaserAttack());
@@ -150,6 +156,7 @@ public class Level extends Scene implements Observer, ILevel {
         enemy.getHitbox().setWidth(width);
         enemy.getHitbox().setHeight(height);
         enemy.setState(new FullHealthState(10000));
+        enemy.setLevel(this);
 
         //Add enemy information to level
         enemies.add(enemy);
@@ -275,7 +282,10 @@ public class Level extends Scene implements Observer, ILevel {
 
         //Add powerup information to level
         Obstructions.add(obstruction);
-        root.getChildren().add(obstruction.getSprite());
+        if (obstruction.isVisible()){
+            root.getChildren().add(obstruction.getSprite());
+        }
+        
         root.getChildren().add(obstruction.getHitbox());
     }
 
@@ -506,7 +516,7 @@ public class Level extends Scene implements Observer, ILevel {
                     rocketDog.setScore(rocketDog.getScore() + 5);
                     rocketDog.setPowerAttribute(25);
                     rocketDog.setAgilityAttribute(5);
-                    update(rocketDog.getCurrentHealth());
+                    //update(rocketDog.getCurrentHealth());
                     removeAidItem(aidItem);
                 } else if (aidItem.isColliding() && aidItem.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
                     removeAidItem(aidItem);
