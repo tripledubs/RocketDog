@@ -6,6 +6,7 @@
 package edu.uco.sdd.rocketdog.model;
 
 import edu.uco.sdd.rocketdog.model.Animations.ShieldAnimateStrategy;
+import javafx.scene.paint.Color;
 
 /**
  * Class for a shield power up 
@@ -30,14 +31,14 @@ public class ActiveShield extends ActiveAidItem {
                 te.setDead(true);
             } else if (this.isColliding()){
                 this.currentHealth--;
-                this.setState(new DamagedState());
+                this.getHitbox().setStroke(Color.GREEN);
                 te.setDead(true);
             } 
             
             if (this.currentHealth < 1) this.setActive(false);
         
             if (!this.isActive()) {
-                this.setState(new DeathState());
+                this.setCurrentHealth(0);
             }
         }
         
@@ -46,13 +47,13 @@ public class ActiveShield extends ActiveAidItem {
                 this.setActive(true);
             } else if (this.isColliding()){
                 this.currentHealth--;
-                this.setState(new DamagedState());
+                this.getHitbox().setStroke(Color.GREEN);
             } 
             
             if (this.currentHealth < 1) this.setActive(false);
         
             if (!this.isActive()) {
-                this.setState(new DeathState());
+                this.setCurrentHealth(0);
             }
         }
                 

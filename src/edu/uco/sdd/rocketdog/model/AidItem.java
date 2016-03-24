@@ -55,10 +55,10 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         
         if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.ShieldItem.class) {
             this.setDead(true);
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
             this.getLevel().addActiveAidItem(new ActiveShield(te), 153, 150);
         } else if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
             te.setVelocity(new Point2D(40, 0));
             this.getLevel().addActiveAidItem(new ActiveBoost(te), 153, 150);
         }

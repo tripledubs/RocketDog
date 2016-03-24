@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -69,12 +70,12 @@ public class Level extends Scene implements Observer, ILevel {
         //root.setAlignment(Pos.TOP_LEFT);
 
         //Hero information added to game
-        rocketDog.setPosition(new Point2D(150, 550));
+        rocketDog.setPosition(new Point2D(150, 350));
         rocketDog.addEntityClass(player, 1);
         rocketDog.getHitbox().setWidth(130);
         rocketDog.getHitbox().setHeight(130);
         rocketDog.setLevel(this);
-        rocketDog.setState(new FullHealthState(10000));
+        rocketDog.setCurrentHealth(10000);
 
         //Laser Weapon information added to game
         for (int i = 0; i < 3; i++) {
@@ -149,7 +150,7 @@ public class Level extends Scene implements Observer, ILevel {
         //Setup enemy hitbox information
         enemy.getHitbox().setWidth(width);
         enemy.getHitbox().setHeight(height);
-        enemy.setState(new FullHealthState(10000));
+        enemy.setCurrentHealth(10000);
 
         //Add enemy information to level
         enemies.add(enemy);
@@ -200,7 +201,7 @@ public class Level extends Scene implements Observer, ILevel {
         activeAidItem.getHitbox().setHeight(height);
         activeAidItem.setLevel(this);
         activeAidItem.addObserver(this);
-        activeAidItem.setState(new FullHealthState(3));
+        activeAidItem.setCurrentHealth(3);
         //Add active powerup information to level
         ActiveAidItems.add(activeAidItem);
         root.getChildren().add(activeAidItem.getSprite());
@@ -392,7 +393,6 @@ public class Level extends Scene implements Observer, ILevel {
 
         //Update RocketDog
         rocketDog.update();
-        rocketDog.getState().doAction(rocketDog);
 
         //Set rocketDog hitbox visibility
         rocketDog.getHitbox().setVisible(visibleHitBoxes);
@@ -437,20 +437,26 @@ public class Level extends Scene implements Observer, ILevel {
 
         projectiles.stream().forEach((p) -> {
             changed.put(p, true);
+            if (p.hasCollided(rocketDog)) {
+                p.setDead(true);
+                rocketDog.setCurrentHealth(rocketDog.getCurrentHealth() - 5);
+                rocketDog.getHitbox().setStroke(Color.RED);
+                update(rocketDog.getCurrentHealth());
+            }
             p.process(changed);
         });
 
         enemies.stream().forEach((entity) -> {
             if (entity.hasCollided(rocketDog)) {
                 if (rocketDog.getPowerAttribute() > 1) {
-                    entity.setState(new CollisionState(entity.getCurrentHealth() - 1));
-                } else {
-                    entity.setState(new CollisionState(entity.getCurrentHealth()));
+                    entity.setCurrentHealth(entity.getCurrentHealth() - 1);
                 }
-                rocketDog.setState(new CollisionState(rocketDog.getCurrentHealth() - 1));
+                entity.getHitbox().setStroke(Color.RED);
+                rocketDog.setCurrentHealth(rocketDog.getCurrentHealth() - 1);
+                rocketDog.getHitbox().setStroke(Color.RED);
                 update(rocketDog.getCurrentHealth());
-            } else if (!entity.hasCollided(rocketDog)) {
-                entity.setState(new DamagedState());
+            } else {
+                entity.getHitbox().setStroke(Color.GREEN);
             }
         });
 
@@ -463,8 +469,6 @@ public class Level extends Scene implements Observer, ILevel {
 
             //Check for collision
             enemy.processCollision(rocketDog);
-
-            enemy.getState().doAction(enemy);
         });
 
         for (int i = 0; i < projectiles.size(); ++i) {
@@ -479,10 +483,11 @@ public class Level extends Scene implements Observer, ILevel {
                 //Check for collision
                 p.processCollision(rocketDog);
                 if (p.hasCollided(rocketDog)) {
-                    rocketDog.setState(new CollisionState(rocketDog.getCurrentHealth() - 5));
+                    rocketDog.setCurrentHealth(rocketDog.getCurrentHealth() - 5);
+                    rocketDog.getHitbox().setStroke(Color.RED);
                     update(rocketDog.currentHealth);
                 } else {
-                    rocketDog.setState(new DamagedState());
+                    rocketDog.getHitbox().setStroke(Color.GREEN);
                 }
             } else {
                 removeProjectile(p);
@@ -517,7 +522,6 @@ public class Level extends Scene implements Observer, ILevel {
         ActiveAidItems.stream().forEach((activeAidItem) -> {
             //Update active power ups
             activeAidItem.update();
-            activeAidItem.getState().doAction(activeAidItem);
 
             //Set active power up hitbox visibility
             activeAidItem.getHitbox().setVisible(visibleHitBoxes);
@@ -566,18 +570,16 @@ public class Level extends Scene implements Observer, ILevel {
         enemies.stream().forEach((entity) -> {
             //Change entity states appropriately before detecting collision
             if (entity.getCurrentHealth() < 0) {
-                entity.setState(new DeathState());
                 removeEnemy(entity);
-                entity.getState().doAction(entity);
                 rocketDog.setScore(rocketDog.getScore() + 10);
                 update(rocketDog.getCurrentHealth());
             }
         });
 
-        entities.removeIf(entity -> entity.getState() instanceof DeathState);
-        ActiveAidItems.removeIf(entity -> entity.getState() instanceof DeathState);
-        AidItems.removeIf(entity -> entity.getState() instanceof DeathState);
-        enemies.removeIf(entity -> entity.getState() instanceof DeathState);
+        entities.removeIf(entity -> entity.getCurrentHealth() <= 0);
+        ActiveAidItems.removeIf(entity -> entity.getCurrentHealth() <= 0);
+        AidItems.removeIf(entity -> entity.getCurrentHealth() <= 0);
+        enemies.removeIf(entity -> entity.getCurrentHealth() <= 0);
     }
 
     @Override
@@ -594,5 +596,9 @@ public class Level extends Scene implements Observer, ILevel {
 
     public void setDone(boolean value) {
         isDone = value;
+    }
+
+    public ArrayList<Obstruction> getObstructions() {
+        return (ArrayList<Obstruction>)Obstructions.clone();
     }
 }

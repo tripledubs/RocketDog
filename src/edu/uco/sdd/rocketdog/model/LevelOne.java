@@ -44,17 +44,19 @@ public class LevelOne extends Level {
         addObstruction(new ObstructionBrickWall(new Point2D(700,108)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,44)),64,64);
         addObstruction(new ObstructionBrickWall(new Point2D(700,-20)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(200,624)),64,64);
+        addObstruction(new ObstructionBrickWall(new Point2D(500,624)),64,64);
 
         //Surfaces
         Ice ice = new Ice(400, 50);
-        ice.setPosition(new Point2D(150, 425));
+        ice.setPosition(new Point2D(150, 725));
         addSurface(ice);
 
         // Bad Guys
         EntityClass enemy = new EntityClass("Enemy");
         enemy.setRelationship(getPlayer(), EntityClass.Relationship.ENEMY);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(400).setY(400).setEntityClass(enemy).setLevel(this).build(), 64, 64);
-        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(300).setY(350).setEntityClass(enemy).setLevel(this).build(), 32, 32);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 64, 64).setX(400).setY(700).setStart(350).setEnd(450).setRange(150).setEntityClass(enemy).setLevel(this).build(), 64, 64);
+        addEnemy(new Enemy.Builder("/Ugly Dog.png", 32, 32).setX(300).setY(650).setStart(50).setEnd(650).setRange(150).setEntityClass(enemy).setLevel(this).build(), 32, 32);
 
         //done
         finishLevel();

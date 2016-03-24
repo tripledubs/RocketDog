@@ -27,7 +27,7 @@ public class HealthItem extends AidItem { //implements IAnimateStrategy {
         else if (isColliding() && te.getCurrentHealth() > (te.getMaximumHealth() - healthAmount)) te.setCurrentHealth(te.getMaximumHealth());
         if (isColliding()){
             this.setDead(true);
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
         }
     }
     
