@@ -1,11 +1,8 @@
 package edu.uco.sdd.rocketdog.controller;
 
-import edu.uco.sdd.rocketdog.model.Animations.SpitzChargeGunAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzIdleAnimateStrategy;
-import edu.uco.sdd.rocketdog.model.FullHealthState;
 import edu.uco.sdd.rocketdog.model.Level;
-import edu.uco.sdd.rocketdog.model.SplashLevel;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -77,7 +74,7 @@ public class DefaultKeyMapping implements KeyMapping {
                 }
                 break;
             case F1:
-                currentLevel.getRocketDog().setState(new FullHealthState(1000));
+                currentLevel.getRocketDog().setCurrentHealth(1000);
                 currentLevel.getRocketDog().setDead(false);
                 currentLevel.getRocketDog().setAnimation(new SpitzIdleAnimateStrategy());
                 break;

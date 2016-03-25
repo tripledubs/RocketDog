@@ -25,16 +25,14 @@ public class HealthItem extends AidItem { //implements IAnimateStrategy {
 
         if (isColliding() && te.getCurrentHealth() < (te.getMaximumHealth() - healthAmount)){ // Add Health
             te.setCurrentHealth(te.getCurrentHealth() + healthAmount);
-            te.setState(new DamagedState());
         }
         else if (isColliding() && te.getCurrentHealth() > (te.getMaximumHealth() - healthAmount)){ //Set to Full Health
             te.setCurrentHealth(te.getMaximumHealth());
-            te.setState(new FullHealthState(te.getMaximumHealth()));
         }
         if (isColliding()){
             getLevel().update(currentHealth);
             this.setDead(true);
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
         }
     }
     

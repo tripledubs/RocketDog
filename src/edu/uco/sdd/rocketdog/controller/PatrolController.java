@@ -7,6 +7,8 @@ import edu.uco.sdd.rocketdog.model.TangibleEntity;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 
 public class PatrolController extends AccelerationController {
@@ -134,6 +136,21 @@ public class PatrolController extends AccelerationController {
     }
     if (controlledObject.getVelocity() == null || Math.abs(controlledObject.getVelocity().getX()) < 1)
       controlledObject.setVelocity(new Point2D(2.5, 0));
+
+    if (!controlledObject.isMovementRestricted()) {
+        Bounds cbtemp = controlledObject.getHitbox().getBoundsInParent();
+        Point2D veltemp = controlledObject.getVelocity();
+        Bounds controlledBounds = new BoundingBox(cbtemp.getMinX() + veltemp.getX(), cbtemp.getMinY() + veltemp.getY(), cbtemp.getWidth(), cbtemp.getHeight());
+
+        controlledObject.getLevel().getObstructions().stream().forEach(obstruction -> {
+            if (controlledBounds.intersects(obstruction.getHitbox().getBoundsInParent())) {
+                double temp = end;
+                end = start;
+                start = temp;
+                controlledObject.setVelocity(controlledObject.getVelocity().multiply(-1));
+            }
+        });
+    }
     return true;
   }
 }

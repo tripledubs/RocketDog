@@ -4,6 +4,7 @@ package edu.uco.sdd.rocketdog.model;
 import edu.uco.sdd.rocketdog.model.Animations.SpikeAnimateStrategy;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 /**
  * Class for a Spike Hazard 
  * Inherits from Hazard, see description in Hazard.java 
@@ -50,8 +51,8 @@ public class HazardSpikes extends Hazard { //implements IAnimateStrategy {
                 te.update();
                 te.setVelocity(new Point2D(0, 0));
                 if (!disabled){
-                    rd.setState(new DamagedState());
-                    rd.setState(new CollisionState(rd.getCurrentHealth() - damage));
+                    rd.getHitbox().setStroke(Color.RED);
+                    rd.setCurrentHealth(rd.getCurrentHealth() - damage);
                     disabled = true;
                     disabledCounter = MAX_COUNTER;
                 }

@@ -2,7 +2,6 @@ package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Animations.SpitzChargeGunAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
-import edu.uco.sdd.rocketdog.model.FullHealthState;
 import edu.uco.sdd.rocketdog.model.Level;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
@@ -55,7 +54,7 @@ public class WASDKeyMapping implements KeyMapping {
                 currentLevel.getLargeLaserWeapon(j).setVelocity(new Point2D(speed, currentLevel.getRocketDog().getVelocity().getY()));
                 break;
             case F1:
-                currentLevel.getRocketDog().setState(new FullHealthState(1000));
+                currentLevel.getRocketDog().setCurrentHealth(1000);
                 currentLevel.getRocketDog().setAnimation(new SpitzChargeGunAnimateStrategy());
                 break;
             case F2:

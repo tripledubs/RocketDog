@@ -36,7 +36,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
         animating = new SpitzIdleAnimateStrategy();
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
-        this.setState(new FullHealthState(20.));
+        this.currentHealth = 20;
         this.healthText = new Text(0, 20, Double.toString(super.getCurrentHealth()));
         this.healthText.setFont(new Font(20));
         this.healthText.setStroke(Color.GREEN);
@@ -97,10 +97,10 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
          * Moving the character is handled by the TangibleEntity class
          */
         getSprite().setLayoutX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        getSprite().setLayoutY(getPosition().getY());
 
         getHitbox().setLayoutX(getPosition().getX());
-        getHitbox().setTranslateY(getPosition().getY());
+        getHitbox().setLayoutY(getPosition().getY());
 
         getSprite().setViewport(animating.getCurrentView());
         handle(); // Animations
