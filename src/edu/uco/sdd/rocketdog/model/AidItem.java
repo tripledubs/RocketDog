@@ -35,6 +35,7 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         animating = animate;
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
+        this.setCurrentHealth(1);
     }
 
     @Override

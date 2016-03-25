@@ -181,6 +181,7 @@ public class Level extends Scene implements Observer, ILevel {
 
     public void addAidItem(AidItem aidItem, double width, double height) {
         //Setup powerup hitbox information
+        aidItem.setLevel(this);
         aidItem.getHitbox().setWidth(width);
         aidItem.getHitbox().setHeight(height);
 
@@ -524,8 +525,6 @@ public class Level extends Scene implements Observer, ILevel {
         }
 
         AidItems.stream().forEach((aidItem) -> {
-            if (aidItem != null) {
-                aidItem.setLevel(this);
                 //Update AidItem
                 aidItem.update();
 
@@ -545,7 +544,7 @@ public class Level extends Scene implements Observer, ILevel {
                 } else if (aidItem.isColliding() && aidItem.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
                     removeAidItem(aidItem);
                 }
-            }
+            
         });
 
         ActiveAidItems.stream().forEach((activeAidItem) -> {

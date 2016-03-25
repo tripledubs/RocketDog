@@ -30,9 +30,9 @@ public class LevelOne extends Level {
         //addAidItem(new ShieldItem(new Point2D(400,200)),28,28);
         
         //health items
-        addAidItem(new HealthItem(new Point2D(1,100)),56,56);
-        addAidItem(new HealthItem(new Point2D(800,1)),56,56);
-        addAidItem(new HealthItem(new Point2D(400,1)),56,56);
+        addAidItem(new HealthItem(new Point2D(10,100)),56,56);
+        addAidItem(new ShieldItem(new Point2D(800,200)),56,56);
+        addAidItem(new HealthItem(new Point2D(400,10)),56,56);
         
         // Hazards
         //addHazard(new HazardSpikes(new Point2D(700,300)),64,64);
