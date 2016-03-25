@@ -15,9 +15,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import java.util.Map;
+
 
 public class Level extends Scene implements Observer, ILevel {
-
+    SoundManager s;
     final private RocketDog rocketDog;
     final private EntityClass player;
     private ArrayList<Modification> entities;
@@ -56,7 +58,6 @@ public class Level extends Scene implements Observer, ILevel {
         enemies = new ArrayList<>();
         AidItems = new ArrayList<>();
         ActiveAidItems = new ArrayList<>();
-        Hazards = new ArrayList<>();
         Hazards = new ArrayList<>();
 
         Obstructions = new ArrayList<>();
