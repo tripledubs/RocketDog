@@ -23,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.scenicview.ScenicView;
 
 public class RocketDogGame extends Application {
 
@@ -46,11 +47,11 @@ public class RocketDogGame extends Application {
          * LevelFactory
          */
         levels = new String[]{
-            "Test",
-            "Splash",
-            "One",
+            //"Test",
+            //"Splash",
+            //"One",
             "Two",
-            "Three",
+            "One",
         };
 
         levelIndex = 0; // Used so levels can be incremented through
@@ -69,6 +70,7 @@ public class RocketDogGame extends Application {
         primaryStage.setMaxWidth(GAME_SCREEN_WIDTH);
         primaryStage.setMaxHeight(GAME_SCREEN_HEIGHT);
         primaryStage.setScene(currentLevel);
+        ScenicView.show(currentLevel);
         primaryStage.show();
         primaryStage.setOnCloseRequest((WindowEvent t) -> {
             Platform.exit();

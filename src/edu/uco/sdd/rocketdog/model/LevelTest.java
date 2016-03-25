@@ -28,14 +28,17 @@ public class LevelTest extends Scene implements ILevel {
     Rectangle blackSquare;
 
     Circle whiteCircle;
+    boolean isDone;
 
     LevelTest(Group root, int width, int height) {
         super(root, width, height);
 
+        isDone = false;
+
         // Initialize Groups
         backgroundGroup = new Group();
         viewPortGroup = new Group();
-        
+
         root.getChildren().add(backgroundGroup);
         root.getChildren().add(viewPortGroup);
 
@@ -45,9 +48,9 @@ public class LevelTest extends Scene implements ILevel {
         // Black Square
         viewportSquare = new Rectangle(
                 VIEWPORT_MIN_X,
-                VIEWPORT_MIN_Y, 
+                VIEWPORT_MIN_Y,
                 VIEWPORT_MAX_X - VIEWPORT_MIN_X, // WIDTH
-                VIEWPORT_MAX_Y - VIEWPORT_MIN_Y  // HEIGHT
+                VIEWPORT_MAX_Y - VIEWPORT_MIN_Y // HEIGHT
         );
         viewportSquare.setOpacity(.25); // 0 = Fully transparent
 
@@ -72,13 +75,16 @@ public class LevelTest extends Scene implements ILevel {
                 case RIGHT:
                     moveRight();
                     break;
+                case P:
+                    isDone = true;
+                    break;
             }
         });
     }
 
     @Override
     public boolean isDone() {
-        return false;
+        return isDone;
     }
 
     /**
