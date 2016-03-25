@@ -1,4 +1,4 @@
- package edu.uco.sdd.rocketdog.model;
+package edu.uco.sdd.rocketdog.model;
 
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_HEIGHT;
 import static edu.uco.sdd.rocketdog.controller.RocketDogGame.GAME_SCREEN_WIDTH;
@@ -21,22 +21,19 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class SplashLevel extends Scene implements ILevel {
 
-    public SoundManager soundManager;
-    public MediaView mediaView;
     private  ImageView splashScreenTextArea,splashScreenBackplate;
     private  VBox buttonContainer;
     private  Insets buttonContainerPadding;
@@ -60,21 +57,20 @@ public class SplashLevel extends Scene implements ILevel {
     private Label ambianceVolumeLabel,musicLabel,soundLabel;
     public CheckBox ck;
     private String selectedFont="Comic Sans MS";
+    private boolean musicIsEnabled=true;
+    SoundManager soundManager;
 
-    public SplashLevel(BorderPane root) {
+    public SplashLevel(BorderPane root, SoundManager soundManager) {
         super(root,1000,924);
         isDone = false;
         this.root = root;
-        ck= new CheckBox("Enable");
-        ck.setSelected(true);
+        this.soundManager= soundManager;
         HBox hboxTop= addHBox();
         HBox hboxBottom=addHBox();
-        soundManager= new SoundManager();
+
         createOtherComponents();
         buttonContainer=createMenuVBox();
         loadImages();
-        soundManager.playBgSound("bgmusic.mp3");
-        soundManager.playAmSound("forest.mp3");
 
         /**
          * *****************START APPLICATION******************
@@ -109,8 +105,6 @@ public class SplashLevel extends Scene implements ILevel {
         /**
          * *****************KEYBOARD KEY MAPPING******************
          */
-        musicSlider = new Slider(0.0, 1.0, .5);
-        ambientSlider = new Slider(0.0, 1.0, .5);
         optionsButton.setOnAction((ActionEvent) -> {
             try{grid=createOptionsGridPane();}
             catch(Exception e){System.out.println("createOptionsGridPane");}
@@ -151,20 +145,8 @@ public class SplashLevel extends Scene implements ILevel {
         root.setBottom(hboxBottom);
         hboxBottom.setAlignment(Pos.CENTER);
         addStackPaneCopyRight(hboxBottom);
-
-                        this.setOnKeyPressed((KeyEvent event) -> {
-            switch (event.getCode()) {
-                case L:
-                    ck.setSelected(true);
-            }
-        });
-       
-        if(ck.isSelected()){                
-            soundManager.playBgSound(musicSlider.getValue());
-            soundManager.playAmSound(musicSlider.getValue());
-        }
-        
     }
+
     private void loadImages() {
            // load all needed images
            splashScreenbg = new Image("/splashscreenbg.png",GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, true, true, true);
@@ -202,10 +184,13 @@ public class SplashLevel extends Scene implements ILevel {
         soundLabel = new Label("Sound");
         sepHor = new Separator();
         VBox vCheckBox= new VBox();
+        ck= new CheckBox("Enable");
+        ck.selectedProperty().setValue(musicIsEnabled);
         root.getChildren().add(vCheckBox);
         musicLabel = new Label("Music");
         ambianceVolumeLabel= new Label("Ambient");
-        
+        musicSlider = new Slider(0.0, 1.0, 1.0);
+        ambientSlider = new Slider(0.0, 1.0, 1.0);
     }
     public GridPane createOptionsGridPane(){
         GridPane optionsPane=new GridPane();// grid holding options pane components
@@ -216,13 +201,14 @@ public class SplashLevel extends Scene implements ILevel {
 
         createOptionsButtons();
         createMusicControls();
-
+        musicSlider.setValue(soundManager.mp_bg.getVolume());
+        ambientSlider.setValue(soundManager.mp_am.getVolume());
         //column then rown
         GridPane.setConstraints(optionsDefaultButton, 0, 3);
         GridPane.setConstraints(optionsWASDButton, 1, 3);
         GridPane.setConstraints(optionsCloseButton, 2, 3);// u can always add this to anchorpane instead
 
-        // ***** Sound constraints ***********
+        //Sound constraints
         GridPane.setConstraints(soundLabel, 0, 4);
         sepHor.setValignment(VPos.CENTER);
         GridPane.setConstraints(sepHor, 0, 5);
@@ -233,34 +219,27 @@ public class SplashLevel extends Scene implements ILevel {
         GridPane.setConstraints(ambianceVolumeLabel, 0, 8);
         GridPane.setConstraints(ambientSlider, 1, 8);
         optionsPane.setAlignment(Pos.TOP_CENTER);
-        ck.selectedProperty().addListener(new ChangeListener<Boolean>() {
-           public void changed(ObservableValue<? extends Boolean> ov,
-             Boolean old_val, Boolean new_val) {
-             System.out.println(ck.isSelected());
-             if(ck.isSelected()){
-                 soundManager.muteBgSound(false);
-                 soundManager.mp_bg.setVolume(musicSlider.getValue());
-                 soundManager.muteAmSound(false);
-                 soundManager.mp_am.setVolume(ambientSlider.getValue());
 
-             }
-             else{
-                 soundManager.muteAmSound(true);
-                 soundManager.muteBgSound(true);
-             }
-          }
-        });
-        musicSlider.valueProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
+        ck.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+            System.out.println(ck.isSelected());
+            if(ck.isSelected()){
+                soundManager.muteBgSound(false);
                 soundManager.mp_bg.setVolume(musicSlider.getValue());
+                soundManager.muteAmSound(false);
+                soundManager.mp_am.setVolume(ambientSlider.getValue());
+                musicIsEnabled=true;
+            }
+            else{
+                musicIsEnabled=false;
+                soundManager.muteAmSound(true);
+                soundManager.muteBgSound(true);
             }
         });
-        ambientSlider.valueProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                soundManager.mp_am.setVolume(ambientSlider.getValue());
-            }
+        musicSlider.valueProperty().addListener((Observable observable) -> {
+            soundManager.mp_bg.setVolume(musicSlider.getValue());
+        });
+        ambientSlider.valueProperty().addListener((Observable observable) -> {
+            soundManager.mp_am.setVolume(ambientSlider.getValue());
         });
 
         optionsDefaultButton.setOnAction((ActionEvent) -> {
@@ -272,6 +251,7 @@ public class SplashLevel extends Scene implements ILevel {
             optionsWASDButton.setDisable(true);
             optionsDefaultButton.setDisable(false);
         });
+
         optionsPane.getChildren().addAll(optionsDefaultButton,optionsWASDButton,
                 soundLabel,ck,musicLabel,musicSlider,sepHor,ambianceVolumeLabel,ambientSlider);
         return optionsPane;
@@ -306,6 +286,7 @@ public class SplashLevel extends Scene implements ILevel {
         scoreBox.setMargin(imgView, new Insets(0, 10, 0, 0)); // Center Pane
         return scoreBox;
         }
+
     public HBox createCreditsHBox(){
         HBox creditsBox= new HBox();
         imgView= new ImageView(creditsLayer);
@@ -426,6 +407,6 @@ public class SplashLevel extends Scene implements ILevel {
 
     @Override
     public void levelUpdate() {
-        
+
     }
 }

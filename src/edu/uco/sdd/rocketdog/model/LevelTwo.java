@@ -30,8 +30,9 @@ public class LevelTwo extends Level {
     Rectangle blackSquare;
     Boolean isDone;
     RocketDog rocketdog;
+    SoundManager soundManager = new SoundManager();
 
-    public LevelTwo(Group root, int width, int height) {
+    public LevelTwo(Group root, int width, int height, SoundManager soundManager) {
         super(root, width, height);
         root.setAutoSizeChildren(false);
         isDone = false;
@@ -39,6 +40,9 @@ public class LevelTwo extends Level {
         // Initialize Groups
         backgroundGroup = new Group();
         viewportGroup = new Group();
+
+        this.soundManager = soundManager;
+        soundManager.resetMediaPlayer(this.soundManager.getMp_bg(), "intense.mp3");
 
         // Initialize Viewport
         rocketdog = new RocketDog();
@@ -120,7 +124,7 @@ public class LevelTwo extends Level {
         // Do not move right of level_WIDTH
         if (backgroundGroup.getTranslateX() - RocketDogGame.GAME_SCREEN_WIDTH < -LEVEL_WIDTH) {
             return;
-        // If rocketdog would go right of the viewport, move background left
+            // If rocketdog would go right of the viewport, move background left
         } else if (maxX + FOCAL_SPEED > VIEWPORT_MAX_X) {
             backgroundGroup.setTranslateX(backgroundGroup.getTranslateX() - FOCAL_SPEED);
             // Otherwise, just move the circle to the right ie move within the viewport
