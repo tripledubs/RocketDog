@@ -32,6 +32,7 @@ public class Level extends Scene implements Observer, ILevel {
     private KeyMappingContext keyMapping;
     protected boolean isDone;
     private Text scoreText;
+    private int largeLaserCharge;
     final private ArrayList<LaserAttack> weapon;
     //final private LaserWeapon weapon;
     final private ArrayList<LargeLaserAttack> largeWeapon;
@@ -389,6 +390,17 @@ public class Level extends Scene implements Observer, ILevel {
         return -1;
     }
 
+    public int largeLaserCharge(){
+        if(largeLaserCharge >= 3){
+            largeLaserCharge = 0;
+        }
+        return largeLaserCharge += 1;
+    }
+
+    public int getLargeLaserCharge(){
+        return largeLaserCharge;
+    }
+
     @Override
     public void levelUpdate() {
         //Keyboard Handling
@@ -604,6 +616,7 @@ public class Level extends Scene implements Observer, ILevel {
         this.scoreText.setText(
                 "Score : " + rocketDog.getScore() + "                 Health: " + rocketDog.getCurrentHealth()
                 + "\nPower:   " + rocketDog.getPowerAttribute()
+                + "                 Charge: " + getLargeLaserCharge()
                 + "\nDefense: " + rocketDog.getDefenseAttribute()
                 + "\nAgility: " + rocketDog.getAgilityAttribute()
                 + "\nLuck:    " + rocketDog.getLuckAttribute());

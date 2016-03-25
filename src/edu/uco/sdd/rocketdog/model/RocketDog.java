@@ -28,6 +28,7 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     public RocketDog() {
         super();
         currentScore = 0;
+        currentHealth = 10000;
         powerAttribute = 0;
         agilityAttribute = 1;
         defenseAttribute = 1;
@@ -85,6 +86,13 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
             //setPosition(new Point2D(getPosition().getX(), getPosition().getY() + getDownSpeed()));
         }
 
+        
+        if(this.getCurrentHealth() <= 0 && !this.isDead())
+        {
+            this.setDead(true);
+            setAnimation(new SpitzDeadAnimateStrategy());
+        }
+        
         /**
          * Moving the character is handled by the TangibleEntity class
          */
@@ -117,8 +125,9 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
     public void setAnimation(IAnimateStrategy newAnimation) {
         animating = newAnimation;
         getSprite().setImage(animating.getImage());
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        setPosition(new Point2D(getPosition().getX(), getPosition().getY()));
+        //getSprite().setTranslateX(getPosition().getX());
+        //getSprite().setTranslateY(getPosition().getY());
     }
 
     public void setPowerAttribute(int newPowerAttribute) {
