@@ -19,7 +19,7 @@ import java.util.Map;
 
 
 public class Level extends Scene implements Observer, ILevel {
-    SoundManager s;
+    public SoundManager s;
     final private RocketDog rocketDog;
     final private EntityClass player;
     private ArrayList<Modification> entities;
@@ -404,9 +404,7 @@ public class Level extends Scene implements Observer, ILevel {
         return largeLaserCharge;
     }
 
-    @Override
-    public void levelUpdate() {
-        //Keyboard Handling
+    public void updateKeys() {
         this.setOnKeyPressed((KeyEvent event) -> {
             keyMapping.getKeyMapping().handleKeyPressed(this, event, 3.0d + rocketDog.getAgilityAttribute());
         });
@@ -414,6 +412,12 @@ public class Level extends Scene implements Observer, ILevel {
         this.setOnKeyReleased((KeyEvent event) -> {
             keyMapping.getKeyMapping().handleKeyReleased(this, event, 0.0d);
         });
+    }
+
+    @Override
+    public void levelUpdate() {
+        //Keyboard Handling
+        updateKeys();
 
         //Update RocketDog
         rocketDog.update();
@@ -540,7 +544,8 @@ public class Level extends Scene implements Observer, ILevel {
                     rocketDog.setPowerAttribute(25);
                     rocketDog.setDefenseAttribute(50);
                     rocketDog.setAgilityAttribute(5);
-                    //update(rocketDog.getCurrentHealth());
+                    rocketDog.setLuckAttribute(2);
+                    update(rocketDog.getCurrentHealth());
                     removeAidItem(aidItem);
                 } else if (aidItem.isColliding() && aidItem.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
                     removeAidItem(aidItem);
@@ -561,7 +566,7 @@ public class Level extends Scene implements Observer, ILevel {
             if (!activeAidItem.isActive()) {
                 rocketDog.setPowerAttribute(0);
                 rocketDog.setAgilityAttribute(1);
-                rocketDog.setAgilityAttribute(1);
+                rocketDog.setLuckAttribute(1);
                 rocketDog.setDefenseAttribute(1);
                 update(rocketDog.getCurrentHealth());
                 removeActiveAidItem(activeAidItem);

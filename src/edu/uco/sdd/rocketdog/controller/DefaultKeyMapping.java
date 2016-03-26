@@ -2,6 +2,7 @@ package edu.uco.sdd.rocketdog.controller;
 
 import edu.uco.sdd.rocketdog.model.Animations.SpitzDeadAnimateStrategy;
 import edu.uco.sdd.rocketdog.model.Animations.SpitzIdleAnimateStrategy;
+import edu.uco.sdd.rocketdog.model.HealthItem;
 import edu.uco.sdd.rocketdog.model.Level;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
@@ -86,6 +87,7 @@ public class DefaultKeyMapping implements KeyMapping {
                 break;
             case P:
                 currentLevel.setDone(true);
+                break;
             case O:
                 //game.displayOptionsScreen();
                 break;

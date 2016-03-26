@@ -36,16 +36,23 @@ public class LevelTwo extends Level {
         super(root, width, height);
         root.setAutoSizeChildren(false);
         isDone = false;
+        super.getKeyMapping().setKeyMapping(null);
 
         // Initialize Groups
         backgroundGroup = new Group();
         viewportGroup = new Group();
 
+        soundManager.resetMediaPlayer(soundManager.getMp_bg(), "intense.mp3");
+
+        soundManager.mp_bg.setVolume(0.04);
+        soundManager.mp_bg.setCycleCount(100);
+        soundManager.mp_am.setMute(true);
+
         this.soundManager = soundManager;
-        soundManager.resetMediaPlayer(this.soundManager.getMp_bg(), "intense.mp3");
 
         // Initialize Viewport
         rocketdog = new RocketDog();
+        super.update(rocketdog.getCurrentHealth());
         viewportGroup.getChildren().add(rocketdog.getSprite());
 
         // Initialize Background objects
@@ -56,7 +63,11 @@ public class LevelTwo extends Level {
         // Add Viewport + Background to root
         root.getChildren().add(viewportGroup);
         root.getChildren().add(backgroundGroup);
+    }
 
+    public void updateKeys() {
+        //This method overrides the updateKeys method in the parent
+        //when it is called in super.levelUpdate();
         this.setOnKeyPressed((KeyEvent event) -> {
             switch (event.getCode()) {
                 case LEFT:
@@ -85,6 +96,7 @@ public class LevelTwo extends Level {
 
     @Override
     public void levelUpdate() {
+        super.levelUpdate();
         rocketdog.update();
 
     }

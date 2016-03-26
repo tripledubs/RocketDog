@@ -13,14 +13,16 @@ public class LevelOne extends Level {
     ImageView bg;
     Group root;
     Group houses;
-    SoundManager soundManager = new SoundManager();
+    public SoundManager soundManager = new SoundManager();
 
     public LevelOne(Group root, ImageView background, int width, int height, SoundManager soundManager) {
         super(root, background, width, height);
         t = new Text();
         this.soundManager = soundManager;
         soundManager.resetMediaPlayer(this.soundManager.getMp_bg(), "ambienthorror.mp3");
-
+        soundManager.mp_bg.setVolume(0.05);
+        soundManager.mp_bg.setCycleCount(100);
+        soundManager.mp_am.setMute(true);
         this.root = root; // Need a handle to root to add images
 
         bg = (ImageView) root.getChildren().get(0); // Need a handle to bg to scroll
@@ -35,7 +37,7 @@ public class LevelOne extends Level {
         //health items
         addAidItem(new HealthItem(new Point2D(10, 100)), 56, 56);
         addAidItem(new ShieldItem(new Point2D(800, 200)), 56, 56);
-        addAidItem(new HealthItem(new Point2D(400, 10)), 56, 56);
+        //addAidItem(new HealthItem(new Point2D(400, 10)), 56, 56);
 
         // Hazards
         //addHazard(new HazardSpikes(new Point2D(700,300)),64,64);
