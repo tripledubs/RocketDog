@@ -84,11 +84,11 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
         /**
          * Moving the character is handled by the TangibleEntity class
          */
-        getSprite().setLayoutX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
-
-        getHitbox().setLayoutX(getPosition().getX());
-        getHitbox().setTranslateY(getPosition().getY());
+//        getSprite().setLayoutX(getPosition().getX());
+//        getSprite().setTranslateY(getPosition().getY());
+//
+//        getHitbox().setLayoutX(getPosition().getX());
+//        getHitbox().setTranslateY(getPosition().getY());
 
         getSprite().setViewport(animating.getCurrentView());
         handle(); // Animations
