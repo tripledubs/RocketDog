@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
  * @author Doobifier
  */
 public class HealthItem extends AidItem { //implements IAnimateStrategy {
-    private final int  healthAmount = 50;
+    private final int  healthAmount = 500;
 
     public HealthItem(Point2D position){
         super(position, new BoneAnimateStrategy());
@@ -23,11 +23,16 @@ public class HealthItem extends AidItem { //implements IAnimateStrategy {
     public void processCollision(TangibleEntity te){
         super.processCollision(te);
 
-        if (isColliding() && te.getCurrentHealth() < (te.getMaximumHealth() - healthAmount)) te.setCurrentHealth(te.getCurrentHealth() + healthAmount);
-        else if (isColliding() && te.getCurrentHealth() > (te.getMaximumHealth() - healthAmount)) te.setCurrentHealth(te.getMaximumHealth());
+        if (isColliding() && te.getCurrentHealth() < (te.getMaximumHealth() - healthAmount)){ // Add Health
+            te.setCurrentHealth(te.getCurrentHealth() + healthAmount);
+        }
+        else if (isColliding() && te.getCurrentHealth() > (te.getMaximumHealth() - healthAmount)){ //Set to Full Health
+            te.setCurrentHealth(te.getMaximumHealth());
+        }
         if (isColliding()){
+            getLevel().update(currentHealth);
             this.setDead(true);
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
         }
     }
     

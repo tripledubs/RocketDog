@@ -27,13 +27,22 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
     private IAnimateStrategy animating;
     private Level level;
     private RocketDog rd;
+    private boolean visible;
     
     public Obstruction(Point2D position, IAnimateStrategy animate){
         super();
         this.setPosition(position);
+        visible = true;
+
         animating = animate;
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
+    }
+
+    //constructor for a invisible wall
+    public Obstruction(Point2D position){
+        this.setPosition(position);
+        visible = false;
     }
     
     /* Obstructions may or may not move so we will leave the update
@@ -42,16 +51,18 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
     public void update(){
         //if (level != null) this.rd = level.getRocketDog();
         setPosition(new Point2D(getPosition().getX(), getPosition().getY()));
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        if (visible){
+            getSprite().setTranslateX(getPosition().getX());
+            getSprite().setTranslateY(getPosition().getY());
+        }
         getHitbox().setTranslateX(getPosition().getX());
         getHitbox().setTranslateY(getPosition().getY());
-        getSprite().setViewport(animating.getCurrentView());
-        handle(); // Animations
-        if (this.isColliding()){
-            
+        
+        if (visible){
+            getSprite().setViewport(animating.getCurrentView());
+            handle(); // Animations
         }
-       
+ 
     }
     
     @Override
@@ -99,5 +110,11 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
     public void setAnimating(IAnimateStrategy animating) {
         this.animating = animating;
     }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+
 
 }

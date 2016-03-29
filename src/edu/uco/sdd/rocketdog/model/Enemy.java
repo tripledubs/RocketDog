@@ -25,6 +25,9 @@ public class Enemy extends TangibleEntity implements Attacker {
         private int y;
         private EntityClass entityClass;
         private Level level;
+        private int start;
+        private int end;
+        private int range;
 
         /**
          * @param imgFile
@@ -67,13 +70,28 @@ public class Enemy extends TangibleEntity implements Attacker {
             return this.entityClass;
         }
 
+        public Builder setStart(int start) {
+            this.start = start;
+            return this;
+        }
+
+        public Builder setEnd(int end) {
+            this.end = end;
+            return this;
+        }
+
+        public Builder setRange(int range) {
+            this.range = range;
+            return this;
+        }
+
         public Enemy build() {
             Enemy newBadGuy = new Enemy(this);
             PatrolController controller = new PatrolController(newBadGuy);
             newBadGuy.addController(controller);
-            controller.setRange(150.);
-            controller.setStart(x - 50.);
-            controller.setEnd(x + 50.);
+            controller.setRange(range);
+            controller.setStart(start);
+            controller.setEnd(end);
             newBadGuy.addEntityClass(entityClass, 1);
             newBadGuy.setMeleeAttack(new MeleeAttackController(newBadGuy));
             newBadGuy.setProjectileAttack(new ProjectileAttackController(newBadGuy));
@@ -94,14 +112,17 @@ public class Enemy extends TangibleEntity implements Attacker {
         setPosition(new Point2D(builder.x, builder.y));
     }
 
+    public Enemy() { // constructor for a child of enemy I.E. DeliveryMan
+        super();
+    }
+
     @Override
     public void update() {
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        getSprite().setLayoutX(getPosition().getX());
+        getSprite().setLayoutY(getPosition().getY());
 
-        getHitbox().setTranslateX(getPosition().getX());
-        getHitbox().setTranslateY(getPosition().getY());
-        //System.out.println(getPosition().getX() + " " + getPosition().getY());
+        getHitbox().setLayoutX(getPosition().getX());
+        getHitbox().setLayoutY(getPosition().getY());
     }
 
     public MeleeAttackController getMeleeAttack() {

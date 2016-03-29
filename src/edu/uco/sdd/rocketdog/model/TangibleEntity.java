@@ -23,7 +23,6 @@ public abstract class TangibleEntity implements Entity{
     private final Map<EntityClass, Integer> entityClasses = new HashMap<>();
     private ImageView sprite;
     private Level level;
-    private State currentState;
     private ArrayList<Modification> modifications;
     private final ArrayList<Observer> observers;
     private boolean movementRestricted;
@@ -40,7 +39,6 @@ public abstract class TangibleEntity implements Entity{
         this.colliding = false;
         this.movementRestricted = false;
         this.modifications = new ArrayList<>();
-        this.currentState = new FullHealthState(startHealth);
         this.observers = new ArrayList<>();
         this.hitbox = new Hitbox(0, 0);
         this.acceleration = new Point2D(0, 0);
@@ -62,10 +60,6 @@ public abstract class TangibleEntity implements Entity{
 
     public boolean hasCollided(TangibleEntity otherEntity) {
         return getHitbox().getBoundsInParent().intersects(otherEntity.getHitbox().getBoundsInParent());
-    }
-
-    public State getState() {
-        return this.currentState;
     }
 
     @Override
@@ -117,10 +111,6 @@ public abstract class TangibleEntity implements Entity{
         modifications.remove(oldModification);
     }
 
-    public void setState(State newState) {
-        this.currentState = newState;
-    }
-
     public void setCurrentHealth(double newHealth) {
         this.currentHealth = newHealth;
         notifyObservers();
@@ -142,7 +132,7 @@ public abstract class TangibleEntity implements Entity{
         return dead;
     }
 
-    protected void setDead(boolean dead) {
+    public void setDead(boolean dead) {
         this.dead = dead;
     }
 

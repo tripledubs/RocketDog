@@ -100,11 +100,11 @@ public class Projectile extends TangibleEntity implements Attacker, Attackable {
 
     @Override
     public void update() {
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        getSprite().setLayoutX(getPosition().getX());
+        getSprite().setLayoutY(getPosition().getY());
 
-        getHitbox().setTranslateX(getPosition().getX());
-        getHitbox().setTranslateY(getPosition().getY());
+        getHitbox().setLayoutX(getPosition().getX());
+        getHitbox().setLayoutY(getPosition().getY());
     }
 
     public MeleeAttackController getMeleeAttack() {

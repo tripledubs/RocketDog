@@ -27,12 +27,12 @@ public class LevelTwo extends Scene implements ILevel {
     private Boolean isDone;
     private RocketDog rocketdog;
     private RocketDogController gameController;
+    SoundManager soundManager = new SoundManager();
 
-    public LevelTwo(Group root, int width, int height) {
+    public LevelTwo(Group root, int width, int height, SoundManager soundManager) {
         super(root, width, height);
         root.setAutoSizeChildren(false);
         isDone = false;
-        viewportCoordinates = new Text(10,10,"Hello");
 
         // Initialize Groups
         backgroundGroup = new Group();
@@ -43,6 +43,14 @@ public class LevelTwo extends Scene implements ILevel {
         rocketdog.setAnimation(new SpitzIdleAnimateStrategy());
 
         // Initialize Viewport
+        soundManager.resetMediaPlayer(soundManager.getMp_bg(), "intense.mp3");
+
+        soundManager.mp_bg.setVolume(0.04);
+        soundManager.mp_bg.setCycleCount(100);
+        soundManager.mp_am.setMute(true);
+
+        this.soundManager = soundManager;
+
         viewportGroup.getChildren().add(rocketdog.getSprite());
 
         // Initialize Background objects
@@ -93,5 +101,4 @@ public class LevelTwo extends Scene implements ILevel {
     public void levelUpdate() {
         rocketdog.update();
     }
-
 }

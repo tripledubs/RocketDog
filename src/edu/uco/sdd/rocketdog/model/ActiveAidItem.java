@@ -57,7 +57,7 @@ public class ActiveAidItem extends TangibleEntity implements IAnimateStrategy, A
         }
         
         if (!this.isActive()) {
-            this.setState(new DeathState());
+            this.setCurrentHealth(0);
         }
     }
     

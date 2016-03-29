@@ -46,10 +46,9 @@ public class RocketDogGame extends Application {
          */
         levels = new String[]{
             //"Test",
-            //"Splash",
-            //"One",
-            "Two",
+            "Splash",
             "One",
+            "Two"
         };
 
         levelIndex = 0; // Used so levels can be incremented through
