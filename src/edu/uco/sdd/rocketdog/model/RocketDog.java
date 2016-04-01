@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attackable {
+public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attackable, IVisitor, IElement {
 
     private IAnimateStrategy animating;
     private final Text healthText;
@@ -218,5 +218,36 @@ public class RocketDog extends TangibleEntity implements IAnimateStrategy, Attac
 
     public void setVertSpeed(double v) {
         vertSpeed = v;
+    }
+
+    @Override
+    public void accept(IVisitor v) {
+        v.visit(this);
+    }
+
+    @Override
+    public void visit(RocketDog rd) {
+    }
+
+    @Override
+    public void visit(Enemy e) {
+    }
+
+    @Override
+    public void visit(TangibleEntity te) {
+    }
+
+    public void visit(Obstruction obstruction) {
+    }
+
+    public void visit(AidItem ai) {
+    }
+
+    @Override
+    public void visit(UglyDog ud) {
+    }
+
+    @Override
+    public void visit(Bullet b) {
     }
 }

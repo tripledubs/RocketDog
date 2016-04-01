@@ -12,7 +12,7 @@ public class RocketDogController {
     private final TangibleEntity tangibleEntity;
     private final AbstractCommand moveLeft, moveRight, moveDown, moveUp;
     private final AbstractCommand scrollRight, scrollLeft;
-    private final AbstractCommand shoot;
+    private AbstractCommand shoot;
 
     private final int viewportMinX;
     private final int viewportMaxX;
@@ -58,17 +58,13 @@ public class RocketDogController {
         /**
          * Concrete Commands initialized here
          */
-        scrollRight = new ScrollRight(topLevelGroup, focalSpeed);
+        scrollRight = new ScrollRight(topLevelGroup, focalSpeed, levelWidth);
         scrollLeft = new ScrollLeft(topLevelGroup, focalSpeed);
 
         moveRight = new MoveRight(tangibleEntity, focalSpeed);
         moveLeft = new MoveLeft(tangibleEntity, focalSpeed);
         moveUp = new MoveUp(tangibleEntity, focalSpeed);
         moveDown = new MoveDown(tangibleEntity, focalSpeed, levelHeight);
-
-
-        shoot = new Shoot();
-
     }
 
     public void moveRightButton() {
@@ -110,8 +106,20 @@ public class RocketDogController {
         moveDown.execute();
     }
 
-    public void shootButton() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void shootButton(Group shootgroup) {
+        Node shooter = tangibleEntity.getSprite();
+        Bounds shooterBounds = shooter.localToScene(shooter.getBoundsInLocal());
+        double midY = (shooterBounds.getMaxY() + shooterBounds.getMinY()) / 2;
+        double maxX = shooterBounds.getMaxX();
+
+        /**
+         * background has negative coordinates possibly, but we are adding bullet
+         * with coordinates from tangibleEntity, need to subtract out the negative
+         * coordinates of the Group that we're adding the bullet to. 
+         */
+        shoot = new ShootRight(maxX + Math.abs(shootgroup.getTranslateX()),midY,shootgroup);
+        shoot.execute();
+
     }
 
 

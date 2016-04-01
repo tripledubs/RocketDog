@@ -15,15 +15,26 @@ class ScrollRight extends AbstractCommand {
 
     private final Group topLevelBackground;
     private final int focalSpeed;
+    private final int levelWidth;
 
-    public ScrollRight(Group topLevelGroup, int focalSpeed) {
+    public ScrollRight(Group topLevelGroup, int focalSpeed, int levelWidth) {
         this.focalSpeed = focalSpeed;
         this.topLevelBackground = topLevelGroup;
+        this.levelWidth = levelWidth;
     }
 
     @Override
     public void execute() {
-        topLevelBackground.setTranslateX(topLevelBackground.getTranslateX() - focalSpeed);
+        double translateX = topLevelBackground.getTranslateX();
+
+        // Do not scroll right of screen
+        if ( translateX - focalSpeed < -levelWidth) {
+            System.out.println("here");
+            topLevelBackground.setTranslateX(-levelWidth);
+        } else {
+            topLevelBackground.setTranslateX(translateX - focalSpeed);
+        }
+        
     }
 
 }
