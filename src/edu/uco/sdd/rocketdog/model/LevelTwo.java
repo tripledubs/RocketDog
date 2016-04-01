@@ -1,205 +1,131 @@
 package edu.uco.sdd.rocketdog.model;
 
-import edu.uco.sdd.rocketdog.controller.KeyMappingContext;
+import edu.uco.sdd.rocketdog.commands.RocketDogController;
 import edu.uco.sdd.rocketdog.controller.RocketDogGame;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
+import edu.uco.sdd.rocketdog.model.Animations.SpitzIdleAnimateStrategy;
 import edu.uco.sdd.rocketdog.view.Props;
-import java.util.AbstractMap;
-import java.util.LinkedHashMap;
-import javafx.scene.image.ImageView;
+import javafx.geometry.Bounds;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
  * @author Dubs
  */
-public class LevelTwo extends Scene implements ILevel {
+public class LevelTwo extends Level {
 
-    public static final double LEVEL_WIDTH = 8000;
-    public static final double LEVEL_HEIGHT = 600;
-    
-    /**
-     * This is the game play speed of the level. Background objects
-     * should move slower than this, foreground objects should move
-     * faster than this. Velocity should match 
-     */
-    public static final double focalSpeed = 4;
-    
-    AbstractMap<Group, Double> backgrounds; // Group followed by speed of scroll
-    Group levelItems = new Group(); // Everything besides RocketDog and Backgrounds
-    
-    private KeyMappingContext keyMapping;
-    
+    final public static int LEVEL_WIDTH = 3000; // Stage is 1000x924
+    final public static int LEVEL_HEIGHT = 924;
+    final public static int FOCAL_SPEED = 25;
+    final public static int VIEWPORT_MAX_X = RocketDogGame.GAME_SCREEN_WIDTH / 2;
+    final public static int VIEWPORT_MIN_X = 0;
+
+    private final Group backgroundGroup;
+    private final Group viewportGroup;
+    private Boolean isDone;
     private RocketDog rocketdog;
+    private RocketDogController gameController;
 
-    public LevelTwo(Group root, double width, double height) {
+    UglyDog badguy;
+
+    public LevelTwo(Group root, int width, int height, SoundManager soundManager) {
         super(root, width, height);
+
         root.setAutoSizeChildren(false);
-        backgrounds = new LinkedHashMap<>(); // Linked hash map keeps iteration order
+        isDone = false;
 
+        // Initialize Groups
+        backgroundGroup = new Group();
+        viewportGroup = new Group();
+
+        // Initialize Rocketdog
         rocketdog = new RocketDog();
-        ImageView rocketdogSprite = rocketdog.getSprite();
-        rocketdog.getSprite().setId("Rocketdog");
+        rocketdog.setAnimation(new SpitzIdleAnimateStrategy());
 
-        makeBackgrounds(); // Fills background with content
+        // Initialize sound
+        soundManager.resetMediaPlayer(soundManager.getMp_bg(), "intense.mp3");
+        soundManager.mp_bg.setVolume(0);
+        soundManager.mp_bg.setCycleCount(100);
+        soundManager.mp_am.setMute(true);
 
-        Enemy e = new Enemy.Builder("/Ugly Dog.png", 24, 24)
-                .setX(700)
-                .setY(500)
-                .build();
+        // Initialize Viewport
+        viewportGroup.getChildren().add(rocketdog.getSprite());
 
-        Enemy e1 = new Enemy.Builder("/Ugly Dog.png", 24, 24)
-                .setX(1200)
-                .setY(500)
-                .build();
+        // Initialize Background objects
+        backgroundGroup.getChildren().add(Props.sunAndSky());
+        backgroundGroup.getChildren().add(Props.sod(0, 2000, LEVEL_HEIGHT));
+        backgroundGroup.getChildren().add(Props.house(0, LEVEL_HEIGHT - 300));
+        backgroundGroup.getChildren().add(Props.house(LEVEL_WIDTH - 300, LEVEL_HEIGHT - 300));
 
+        // Add Viewport + Background to root
+        root.getChildren().add(backgroundGroup);
+        root.getChildren().add(viewportGroup);
+
+        badguy = new UglyDog("/Ugly Dog.png");
+        badguy.setTranslateX(500);
+        badguy.setTranslateY(500);
+
+        backgroundGroup.getChildren().add(badguy);
+
+        // All Commands go through gameController
+        gameController = new RocketDogController(
+                rocketdog, backgroundGroup, viewportGroup,
+                FOCAL_SPEED, VIEWPORT_MIN_X, VIEWPORT_MAX_X, LEVEL_WIDTH, LEVEL_HEIGHT
+        );
+
+        // Set up key controller
         this.setOnKeyPressed((KeyEvent event) -> {
-            double rddx = rocketdog.getVelocity().getX();
-            double rddy = rocketdog.getVelocity().getY();
             switch (event.getCode()) {
                 case LEFT:
-                    rocketdog.setVel(-focalSpeed, rddy);
+                    gameController.moveLeftButton();
                     break;
                 case RIGHT:
-                    rocketdog.setVel(focalSpeed, rddy);
-                    break;
-                case DOWN:
-                    rocketdog.setVel(rddx, 1);
+                    gameController.moveRightButton();
                     break;
                 case UP:
-                    rocketdog.setVel(rddx, -1);
+                    gameController.moveUpButton();
+                    break;
+                case DOWN:
+                    gameController.moveDownButton();
                     break;
                 case SPACE:
-                    rocketdog.setVel(0,0);
+                    gameController.shootButton(backgroundGroup);
                     break;
-             }
+            }
         });
-
-        // Add items to levelItems
-        levelItems.getChildren().add(Props.house(300, 600 - 245));
-        // Add houses every 300 pixels
-        for (int i=250; i < LEVEL_WIDTH; i+=300) {
-            levelItems.getChildren().add(Props.house(i,600-244));
-        }
-
-        for (int i = 200; i < LEVEL_WIDTH; i += 100) {
-            int random = (int) (Math.random() % 200 *100);
-            System.out.println("" + random);
-            Enemy enemy = new Enemy.Builder("/Ugly Dog.png", 24, 24)
-                    .setX(i + random)
-                    .setY(500)
-                    .build();
-            enemy.getSprite().setScaleX(-1);
-            levelItems.getChildren().add(enemy.getSprite());
-        }
-        levelItems.getChildren().addAll(e.getSprite(),e1.getSprite());
-
-
-        // Add backgrounds to root
-        backgrounds.forEach((k, v) -> {
-            root.getChildren().add(k);
-        });
-
-        // Add Everything else
-        root.getChildren().add(levelItems);
-        // Add RocketDog to root
-        root.getChildren().add(rocketdog.getSprite());
-    }
-
-    public void positionScreen() {
-        boolean screenMoving = false;
-        double width = RocketDogGame.GAME_SCREEN_WIDTH;
-        double height = RocketDogGame.GAME_SCREEN_HEIGHT;
-
-        double rdx = rocketdog.getSprite().getBoundsInParent().getMinX();
-        double rdy = rocketdog.getPosition().getY();
-
-        /**
-         * Divide the screen into 10 zones
-         */
-        int numZones = 5;
-        double[] zoneWidth = new double[numZones];
-        double[] zoneHeight = new double[numZones];
-        for (int i = 0; i < numZones; i++) {
-            zoneWidth[i] = i * (width / numZones);
-            zoneHeight[i] = i * (height / numZones);
-        }
-
-        if (rdx > LEVEL_WIDTH) {
-            stopScrolling();
-        }
-
-        if (rdx >= zoneWidth[2]) {
-            scrollRight();
-            rocketdog.setPos(zoneWidth[2] + 1, rdy);
-        }
-
-        if (rdx < zoneWidth[0]) {
-            scrollLeft();
-            rocketdog.setPos(zoneWidth[0] - 1, rdy);
-
-        }
     }
 
     @Override
     public boolean isDone() {
-        return false;
+        return isDone;
+    }
+
+    protected Bounds absoluteBounds(Node x) {
+        return x.localToScene(x.getBoundsInLocal());
+    }
+
+    public boolean levelIntersect(Node x, Node y) {
+        return absoluteBounds(x).intersects(absoluteBounds(y));
     }
 
     @Override
     public void levelUpdate() {
         rocketdog.update();
-        positionScreen();
+        for (Node x: backgroundGroup.getChildren()) {
+            if (x instanceof Bullet) {
+                x.setTranslateX(x.getTranslateX()+5);
+                Bullet b = (Bullet) x;
+                b.update();
+                if (levelIntersect(b,badguy)) {
+                    badguy.setTranslateY(badguy.getTranslateY()-5);
 
-    }
-
-    private void stopScrolling() {
-        rocketdog.setVel(0, 0);
-    }
-
-    private void scrollRight() {
-        double rddx = rocketdog.getVelocity().getX();
-        double rddy = rocketdog.getVelocity().getY();
-
-        if (rddx < 1) {
-            return;
+                }
+            }
         }
 
-        backgrounds.forEach((group, scrollSpeed) -> {
-            // Limit Scroll Speed to the velocity of RocketDog
-            if (scrollSpeed > rddx) {
-                scrollSpeed = rddx;
-            }
-            group.setTranslateX(group.getTranslateX() - scrollSpeed);
-        });
-        levelItems.setTranslateX(levelItems.getTranslateX() - rddx);
+        if (levelIntersect(rocketdog.getSprite(),badguy)) {
+            badguy.setTranslateX(badguy.getTranslateX()+10);
+        }
     }
-
-    private void scrollLeft() {
-        double rddx = rocketdog.getVelocity().getX();
-        backgrounds.forEach((group, scrollSpeed) -> {
-            group.setTranslateX(group.getTranslateX() + scrollSpeed );
-        });
-        levelItems.setTranslateX(levelItems.getTranslateX() + Math.abs(rddx));
-
-    }
-
-    private void makeBackgrounds() {
-        Group bgSlow = new Group();
-        bgSlow.getChildren().add(Props.sunAndSky());
-        bgSlow.getChildren().add(Props.sod(0, 1200, 600));
-
-        Group bgMedium = new Group();
-        bgMedium.getChildren().add(Props.sod(5, 1200, 600));
-
-        Group bgFast = new Group();
-        bgFast.getChildren().add(Props.sod(0, 12000, 600));
-
-        backgrounds.put(bgSlow, .005);
-        backgrounds.put(bgMedium, .08);
-        backgrounds.put(bgFast, focalSpeed - 1);
-
-    }
-
 }

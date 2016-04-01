@@ -18,15 +18,18 @@ package edu.uco.sdd.rocketdog.controller;
 import edu.uco.sdd.rocketdog.model.ILevel;
 import edu.uco.sdd.rocketdog.model.SceneFactory;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.scenicview.ScenicView;
 
 public class RocketDogGame extends Application {
 
-    public static final int GAME_SCREEN_WIDTH = 800;
-    public static final int GAME_SCREEN_HEIGHT = 600;
+    public static final int GAME_SCREEN_WIDTH = 1000;
+    public static final int GAME_SCREEN_HEIGHT = 924;
     private GamePlayLoop gamePlayLoop;
-    private Scene currentLevel;
+    public Scene currentLevel;
     private ILevel updateableLevel;
     Stage currentStage;
 
@@ -43,10 +46,10 @@ public class RocketDogGame extends Application {
          * LevelFactory
          */
         levels = new String[]{
-            "Splash",
-            "One",
-            "Two",
-            "Three",
+            //"Test",
+            //"Splash",
+            //"One",
+            "Two"
         };
 
         levelIndex = 0; // Used so levels can be incremented through
@@ -65,8 +68,12 @@ public class RocketDogGame extends Application {
         primaryStage.setMaxWidth(GAME_SCREEN_WIDTH);
         primaryStage.setMaxHeight(GAME_SCREEN_HEIGHT);
         primaryStage.setScene(currentLevel);
+        ScenicView.show(currentLevel);
         primaryStage.show();
-        //ScenicView.show(currentLevel);
+        primaryStage.setOnCloseRequest((WindowEvent t) -> {
+            Platform.exit();
+            System.exit(0);
+        });
         gamePlayLoop.start();
     }
 

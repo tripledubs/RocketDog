@@ -38,10 +38,10 @@ public class MeleeAttackController implements AttackController {
 
   @Override
   public boolean attack(TangibleEntity target) {
-    if (target instanceof Attackable && Math.abs(controlledObject.getPosition().distance(target.getPosition())) < range) {
+    /*if (target instanceof Attackable && Math.abs(controlledObject.getPosition().distance(target.getPosition())) < range) {
       ((Attackable)target).damage(damage);
       return true;
-    }
+    }*/
     return false;
   }
 }

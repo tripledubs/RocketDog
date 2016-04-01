@@ -24,31 +24,65 @@ import javafx.scene.image.ImageView;
  * @author Richard Dobie
  */
 public class Obstruction extends TangibleEntity implements IAnimateStrategy {
-    private IAnimateStrategy animating; 
+    private IAnimateStrategy animating;
+    private Level level;
+    private RocketDog rd;
+    private boolean visible;
     
     public Obstruction(Point2D position, IAnimateStrategy animate){
         super();
         this.setPosition(position);
+        visible = true;
+
         animating = animate;
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
+    }
+
+    //constructor for a invisible wall
+    public Obstruction(Point2D position){
+        this.setPosition(position);
+        visible = false;
     }
     
     /* Obstructions may or may not move so we will leave the update
      * function like the other Tangible Entities for now
      */
     public void update(){
+        //if (level != null) this.rd = level.getRocketDog();
         setPosition(new Point2D(getPosition().getX(), getPosition().getY()));
-        getSprite().setTranslateX(getPosition().getX());
-        getSprite().setTranslateY(getPosition().getY());
+        if (visible){
+            getSprite().setTranslateX(getPosition().getX());
+            getSprite().setTranslateY(getPosition().getY());
+        }
         getHitbox().setTranslateX(getPosition().getX());
         getHitbox().setTranslateY(getPosition().getY());
-        getSprite().setViewport(animating.getCurrentView());
-        handle(); // Animations
-        if (this.isColliding()){
-            
+        
+        if (visible){
+            getSprite().setViewport(animating.getCurrentView());
+            handle(); // Animations
         }
-       
+ 
+    }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (this.isColliding()) {
+
+                //set accel to 0,0
+                //set X and Y velocity in the opposite direction
+                //then update and set velocity to 0
+                //this prevents RD from moving through the obstruction
+                this.rd = (RocketDog)te;
+                this.rd.setHorzSpeed(0);
+                this.rd.setVertSpeed(0);
+                te.setAcceleration(new Point2D(0,0));
+                te.setVelocity(new Point2D(-te.getVelocity().getX(), -te.getVelocity().getY()));
+                te.update();
+                te.setVelocity(new Point2D(0, 0));
+            }
     }
     
     public void setAnimation(IAnimateStrategy newAnimation) {
@@ -76,5 +110,11 @@ public class Obstruction extends TangibleEntity implements IAnimateStrategy {
     public void setAnimating(IAnimateStrategy animating) {
         this.animating = animating;
     }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+
 
 }

@@ -35,6 +35,7 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         animating = animate;
         setSprite(new ImageView(animating.getImage()));
         getSprite().setViewport(animating.getCurrentView());
+        this.setCurrentHealth(1);
     }
 
     @Override
@@ -47,6 +48,21 @@ public class AidItem extends TangibleEntity implements IAnimateStrategy {
         getSprite().setViewport(animating.getCurrentView());
         handle(); // Animations
 
+    }
+    
+    @Override
+    public void processCollision(TangibleEntity te){
+        super.processCollision(te);
+        
+        if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.ShieldItem.class) {
+            this.setDead(true);
+            this.setCurrentHealth(0);
+            this.getLevel().addActiveAidItem(new ActiveShield(te), 153, 150);
+        } else if (this.isColliding() && this.getClass() == edu.uco.sdd.rocketdog.model.BoostItem.class) {
+            this.setCurrentHealth(0);
+            te.setVelocity(new Point2D(40, 0));
+            this.getLevel().addActiveAidItem(new ActiveBoost(te), 153, 150);
+        }
     }
 
     public void setAnimation(IAnimateStrategy newAnimation) {

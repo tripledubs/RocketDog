@@ -21,3 +21,4 @@ nbactions.xml
 .nb-gradle/
 nbproject/*-impl_backup*.xml
 nbproject/genfiles.properties
+scenicView.properties
